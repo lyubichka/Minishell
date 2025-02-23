@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/23 21:50:21 by saherrer         ###   ########.fr       */
+/*   Created: 2024/06/27 19:15:29 by saherrer          #+#    #+#             */
+/*   Updated: 2024/06/30 21:44:08 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <signal.h>
-
-typedef struct s_env
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	char			*value;
-	char			*name;
-	struct s_env	*next;
-} 					t_env;
+	char	*src;
+	char	d;
+	size_t	i;
 
-//lst
-t_env *lst_create_envp(char *env_name, char	*env_value);
-void lst_add_back(t_env *new, t_env **lst);
-
-//signals
-void	init_signal(void)
-
-#endif
+	src = (char *)s;
+	d = (char)c;
+	i = 0;
+	while (i < n)
+	{
+		if (src[i] == d)
+			return (src + i);
+		i++;
+	}
+	return (NULL);
+}

@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/23 21:50:21 by saherrer         ###   ########.fr       */
+/*   Created: 2024/06/24 21:58:58 by saherrer          #+#    #+#             */
+/*   Updated: 2024/07/06 21:29:26 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <signal.h>
-
-typedef struct s_env
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	char			*value;
-	char			*name;
-	struct s_env	*next;
-} 					t_env;
+	char		*ptr_dst;
+	const char	*ptr_src;
+	size_t		i;
 
-//lst
-t_env *lst_create_envp(char *env_name, char	*env_value);
-void lst_add_back(t_env *new, t_env **lst);
-
-//signals
-void	init_signal(void)
-
-#endif
+	ptr_dst = (char *) dst;
+	ptr_src = (const char *) src;
+	i = 0;
+	while (i < n && (dst != NULL || src != NULL))
+	{
+		ptr_dst[i] = ptr_src[i];
+		i++;
+	}
+	return (dst);
+}

@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/23 21:50:21 by saherrer         ###   ########.fr       */
+/*   Created: 2024/06/25 21:41:23 by saherrer          #+#    #+#             */
+/*   Updated: 2024/07/01 20:32:55 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <signal.h>
-
-typedef struct s_env
+int	ft_toupper(int c)
 {
-	char			*value;
-	char			*name;
-	struct s_env	*next;
-} 					t_env;
-
-//lst
-t_env *lst_create_envp(char *env_name, char	*env_value);
-void lst_add_back(t_env *new, t_env **lst);
-
-//signals
-void	init_signal(void)
-
-#endif
+	if (c >= 97 && c <= 122)
+	{
+		return (c - 32);
+	}
+	return (c);
+}

@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/23 21:50:21 by saherrer         ###   ########.fr       */
+/*   Created: 2024/06/29 19:05:40 by saherrer          #+#    #+#             */
+/*   Updated: 2024/07/01 20:24:56 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "libft/libft.h"
-# include <signal.h>
-
-typedef struct s_env
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char			*value;
-	char			*name;
-	struct s_env	*next;
-} 					t_env;
+	int		len;
+	int		i;
+	char	*ret;
 
-//lst
-t_env *lst_create_envp(char *env_name, char	*env_value);
-void lst_add_back(t_env *new, t_env **lst);
-
-//signals
-void	init_signal(void)
-
-#endif
+	len = ft_strlen(s);
+	i = 0;
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	if (!ret)
+		return (NULL);
+	while (s[i] != '\0')
+	{
+		ret[i] = f(i, s[i]);
+		i++;
+	}
+	ret[len] = '\0';
+	return (ret);
+}

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/23 20:26:20 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/02/23 21:09:41 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int boot_shell(int ac, char **envp, t_env **env_list)
 		return (1);
 	}
 	init_signal();
-	envp_to_list(envp);
+	envp_to_list(envp, env_list);
 	
 	
 }
