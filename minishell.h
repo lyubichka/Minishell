@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/24 19:51:51 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:38:03 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,19 @@ typedef struct s_env
 	char			*name;
 	struct s_env	*next;
 } 					t_env;
+
+typedef struct s_token
+{
+	char			type; //command,argument,operatior, pipe, redirect
+	char			*value; //> echo ls 
+	struct s_token	*next;
+}					t_token;
+
+typedef struct s_command
+{
+	
+	struct s_command	*next;
+}	t_command;
 
 //lst
 t_env *lst_create_envp(char *env_name, char	*env_value);
