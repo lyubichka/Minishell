@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/24 20:38:03 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/02/26 21:27:36 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ void	init_signal(void);
 
 //others
 void shlvl_increase (t_env **env_list);
+int	check_quotes(char *line);
 
 #endif

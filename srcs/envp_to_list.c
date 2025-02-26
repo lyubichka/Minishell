@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:31:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/24 19:15:26 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/02/26 21:12:16 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,5 @@ int envp_to_list(char **envp, char **env_list)
 		i++;
 	}
 }
+
+// should add the ? here to update it between runs?
