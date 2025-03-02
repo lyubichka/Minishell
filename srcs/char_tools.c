@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   char_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/24 20:21:00 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/02 19:58:04 by saherrer         ###   ########.fr       */
+/*   Created: 2025/03/02 21:43:53 by saherrer          #+#    #+#             */
+/*   Updated: 2025/03/02 21:44:48 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void parse_exec_line(t_env **env_list, char* new_line)
+int	is_quote(char c)
 {
-	t_token		*tokens;
-	t_command	*commands;
-	char		delimiters[10];
-	
-	ft_strlcpy(delimiters, "|<>;()& \n",10);
-	if (check_quotes(new_line) == 0)
-	{
-		tokenizer(&tokens, new_line, delimiters);
-		//parse
-		//exec
-		
-	}
+	if (c == '\'' || c == '\"')
+		return (1);
+	return (0);
+}
+
+int	is_operator(char c, char *delimiters)
+{
+	if (ft_strchr(delimiters, (int)c) != NULL)
+		return (1);
+	return (0);
 }
