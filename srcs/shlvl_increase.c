@@ -6,13 +6,13 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:15:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/24 19:46:50 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:29:10 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void lvl_change (int *lvl, char *value)
+static void	lvl_change(int *lvl, char *value)
 {
 	*lvl = ft_atoi(value);
 	if (*lvl <= 0)
@@ -21,8 +21,7 @@ static void lvl_change (int *lvl, char *value)
 		*lvl++;
 }
 
-
-void shlvl_increase (t_env **env_list)
+void	shlvl_increase(t_env **env_list)
 {
 	t_env	*tmp;
 	int		lvl;
@@ -35,11 +34,11 @@ void shlvl_increase (t_env **env_list)
 		if (ft_strncmp(tmp->name, "SHLVL", ft_strlen(tmp->name)) == 0)
 		{
 			lvl_change(&lvl, tmp->value);
-			break;
+			break ;
 		}
 		tmp = tmp->next;
 	}
-	if(tmp == 0)
+	if (tmp == 0)
 	{
 		node = lst_create_envp(ft_strdup("SHLVL"), ft_strdup("1"));
 		lst_add_back(node, env_list);

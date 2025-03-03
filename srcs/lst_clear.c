@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   lst_clear.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/24 20:21:00 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/03 20:11:09 by saherrer         ###   ########.fr       */
+/*   Created: 2025/03/03 20:03:06 by saherrer          #+#    #+#             */
+/*   Updated: 2025/03/03 20:06:24 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void parse_exec_line(t_env **env_list, char* new_line)
+void	lst_clear_tokens(t_token **tokens)
 {
-	t_token		*tokens;
-	t_command	*commands;
-	char		delimiters[10];
-	
-	ft_strlcpy(delimiters, "|<>;()& \n",10);
-	if (check_quotes(new_line) == 0)
+	t_token *tmp1;
+	t_token *tmp2;
+
+	tmp1 = *tokens;
+	while (tmp1)
 	{
-		if (tokenizer(&tokens, new_line, delimiters) == -1)
-			return ;
-		
-		//parse
-		//exec
-		lst_clear_tokens(&tokens);
+		tmp2 = tmp1->next;
+		free(tmp1->value);
+		free(tmp1);
+		tmp1 = tmp2;
 	}
+	*tokens = NULL;
 }

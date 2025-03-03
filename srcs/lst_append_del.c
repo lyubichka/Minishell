@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   lst_append_del.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/24 20:21:00 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/03 20:11:09 by saherrer         ###   ########.fr       */
+/*   Created: 2025/03/03 19:01:15 by saherrer          #+#    #+#             */
+/*   Updated: 2025/03/03 19:29:27 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void parse_exec_line(t_env **env_list, char* new_line)
+void	lst_token_append(t_token *new_elem, t_token *tmp1, t_token *tmp2)
 {
-	t_token		*tokens;
-	t_command	*commands;
-	char		delimiters[10];
-	
-	ft_strlcpy(delimiters, "|<>;()& \n",10);
-	if (check_quotes(new_line) == 0)
-	{
-		if (tokenizer(&tokens, new_line, delimiters) == -1)
-			return ;
-		
-		//parse
-		//exec
-		lst_clear_tokens(&tokens);
-	}
+	tmp1->next = new_elem;
+	new_elem->next = tmp2;
+}
+
+void	lst_token_del(t_token *prev, t_token *curr, t_token *forw)
+{
+	if (prev)
+		prev->next = forw;
+	free(curr->value);
+	free(curr);
 }
