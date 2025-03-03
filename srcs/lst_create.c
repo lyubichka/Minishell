@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:31:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/02 20:38:57 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:39:38 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_env *lst_create_envp(char *env_name, char	*env_value)
 	return(new_elem);
 }
 
-t_token *token_create(char type, char *value)
+t_token *lst_token_create(char type, char *value)
 {
 	t_token		*new_elem;
 

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/02 21:45:09 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:39:53 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_command
 //lst
 t_env *lst_create_envp(char *env_name, char	*env_value);
 void lst_add_back(t_env *new, t_env **lst);
-t_token *token_create(char type, char *value);
-void token_add_back(t_token *new, t_token **lst);
+t_token *lst_token_create(char type, char *value);
+void lst_token_add_back(t_token *new, t_token **lst);
 
 //signals
 void	init_signal(void);

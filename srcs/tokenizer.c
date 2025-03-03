@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/02 22:11:54 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:53:14 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void extract_quote(t_token **tokens, char* line, int *line_pos)
 	}
 	extract = ft_substr(line, *line_pos, j - *line_pos + 1);
 	new_token = token_create('w', extract);
-	token_add_back(new_token, tokens);
+	lst_token_add_back(new_token, tokens);
 	if (line[j] != '\0')
 		*line_pos = j + 1;
 	else
@@ -79,7 +79,7 @@ static void extract_operator(t_token **tokens, char *line, int *line_pos, char *
 	}
 	extract = ft_substr(line, *line_pos, j - *line_pos + 1);
 	new_token = token_create('o', extract);
-	token_add_back(new_token, tokens);
+	lst_token_add_back(new_token, tokens);
 	if (line[j] != '\0')
 		*line_pos = j + 1;
 	else
@@ -104,20 +104,62 @@ static void	extract_word(t_token *tokens, char *line, int *line_pos, char *delim
 	}
 	extract = ft_substr(line, *line_pos, j - *line_pos + 1);
 	new_token = token_create('w', extract);
-	token_add_back(new_token, tokens);
+	lst_token_add_back(new_token, tokens);
 	if (line[j] != '\0')
 		*line_pos = j + 1;
 	else
 		*line_pos = j;
 }
 
+void lst_token_append(t_token *new_elem, t_token *tmp1, t_token *tmp2)
+{
+	tmp1->next = new_elem;
+	new_elem->next = tmp2;
+}
+
+void token_append(t_token *tmp1, t_token *tmp2)
+{
+	char	**tmp_array;
+	int		i;
+	t_token *new_elem;
+
+	i = 0;
+	tmp_array = ft_split(tmp1->value, ' ');
+	if (tmp_array && tmp_array[0])
+	{
+		while(tmp_array[i])
+		{
+			new_elem = lst_token_create('o', tmp_array[i]);
+			lst_token_append(new_elem, tmp1, tmp2);
+			tmp1 = new_elem;
+			i++;
+		}
+		free(tmp_array);
+	}
+}
+
+void token_split(t_token **tokens)
+{
+	t_token	*tmp1;
+	t_token *tmp2;
+
+	tmp1 = *tokens;
+	while (tmp1)
+	{
+		tmp2 = tmp1->next;
+		if(tmp1->type == 'o' && ft_strchr(tmp1->value, ' ') != NULL)
+			token_append(tmp1, tmp2);
+		tmp1 = tmp2;
+	}
+}
+
+void	token_cleanup(t_token **tokens, char *delimiters)
+{
+	token_split(tokens);
+}
+
 void	tokenizer(t_token **tokens, char *line, char *delimiters)
 {
-	//search for first pair of single/double quotes
-	//keep track of where am i in the line
-	//extract words and operators (delimiters outside quotes)
-	//add them to the t_token
-
 	int	i;
 	int	end_token;
 
@@ -140,5 +182,5 @@ void	tokenizer(t_token **tokens, char *line, char *delimiters)
 		else
 			extract_word(tokens, line, &i, delimiters);
 	}
-	token_cleanup(tokens);
+	token_cleanup(tokens, delimiters);
 }
