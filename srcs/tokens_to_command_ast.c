@@ -6,13 +6,13 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/04 21:12:20 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/04 21:13:07 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_command(t_command **commands)
+static void	init_command(t_command **commands)
 {
 	(*commands) = (t_command *)malloc(sizeof(t_command));
 	(*commands)->fd_in = 0;
