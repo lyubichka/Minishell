@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/26 21:29:55 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:22:58 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int main(char **av, int ac, char **envp)
 {
 	t_env	*env_list;
 	char	*new_line;
+	int		status;
 	
 	if (boot_shell(ac, envp, &env_list) == 1)
 		return (0);
@@ -46,7 +47,8 @@ int main(char **av, int ac, char **envp)
 			parse_exec_line(&env_list, new_line); //we can execute from here as well
 		}
 		free(new_line);
-		//break in case of signal
+		//break in case of signal and update status
 	}
 	//clear env list
+	return(status);
 }

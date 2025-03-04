@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/03 20:08:12 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:35:37 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ typedef struct s_token
 
 typedef struct s_command
 {
-	
+	char				**argv;
+	char				*path;
+	int					fd_in;
+	int					fd_out;
+	int					is_pipe;
 	struct s_command	*next;
 }	t_command;
 
@@ -60,7 +64,7 @@ void	lst_clear_tokens(t_token **tokens);
 void	token_split(t_token **tokens);
 void	token_cleanup(t_token **tokens);
 int		tokenizer(t_token **tokens, char *line, char *delimiters);
-
+int		tokens_to_command_ast(t_command **commands, t_token **tokens, t_env **env_list);
 
 
 #endif

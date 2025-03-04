@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   tokens_to_command_ast.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/24 20:21:00 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/04 20:43:13 by saherrer         ###   ########.fr       */
+/*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
+/*   Updated: 2025/03/04 20:43:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void parse_exec_line(t_env **env_list, char* new_line)
+int	tokens_to_command_ast(t_command **commands, t_token **tokens, t_env **env_list)
 {
-	t_token		*tokens;
-	t_command	*commands;
-	char		delimiters[10];
+	t_token	*tmp;
 	
-	ft_strlcpy(delimiters, "|<>;()& \n",10);
-	if (check_quotes(new_line) == 0)
+	tmp = *tokens;
+	init_command(commands);
+	while(tmp)
 	{
-		if (tokenizer(&tokens, new_line, delimiters) == -1)
-			return ;
-		if (tokens_to_command_ast(&commands, &tokens, env_list) == 1)
-			//execute
-		//lst_clear_commands(&commands);
-		lst_clear_tokens(&tokens);
+		if(parse_command(commands, tokens, env_list) == -1)
+			return(-1);
+		tmp = tmp->next;
 	}
+	return (0);
 }
