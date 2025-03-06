@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/04 20:35:37 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:58:14 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_env
 
 typedef struct s_token
 {
-	char			type; //command,argument,operatior, pipe, redirect
+	char			type; //word or operator (r for redirect / p for pipe / d for delete / v for redirect value / h for heredoc)
 	char			*value; //> echo ls 
 	struct s_token	*next;
 }					t_token;
@@ -39,6 +39,7 @@ typedef struct s_command
 	int					fd_in;
 	int					fd_out;
 	int					is_pipe;
+	int					is_builtin;
 	struct s_command	*next;
 }	t_command;
 
@@ -60,6 +61,7 @@ void	lst_token_append(t_token *new_elem, t_token *tmp1, t_token *tmp2);
 void	lst_token_del(t_token *prev, t_token *curr, t_token *forw);
 void	lst_clear_tokens(t_token **tokens);
 
+int		envp_to_list(char **envp, t_env **env_list);
 
 void	token_split(t_token **tokens);
 void	token_cleanup(t_token **tokens);

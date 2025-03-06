@@ -6,13 +6,13 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:31:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/26 21:12:16 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:37:22 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int envp_to_list(char **envp, char **env_list)
+int envp_to_list(char **envp, t_env **env_list)
 {
 	int i;
 	char *env_name;

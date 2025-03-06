@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:15:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/03 19:29:10 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/06 18:37:07 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	lvl_change(int *lvl, char *value)
 	if (*lvl <= 0)
 		*lvl = 1;
 	else
-		*lvl++;
+		(*lvl)++;
 }
 
 void	shlvl_increase(t_env **env_list)
