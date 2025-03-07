@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/03 20:02:54 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/07 18:33:24 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ static void	extract_quote(t_token **tokens, char *line, int *line_pos)
 		j++;
 	}
 	extract = ft_substr(line, *line_pos, j - *line_pos + 1);
-	new_token = token_create('w', extract);
+	if (quote == '\'')
+		new_token = token_create('w', extract, 1);
+	else
+		new_token = token_create('w', extract, 2);
 	lst_token_add_back(new_token, tokens);
 	if (line[j] != '\0')
 		*line_pos = j + 1;
@@ -54,7 +57,7 @@ static void	extract_operator(t_token **tokens, char *line, int *line_pos, char *
 			break ;
 	}
 	extract = ft_substr(line, *line_pos, j - *line_pos + 1);
-	new_token = token_create('o', extract);
+	new_token = token_create('o', extract, 0);
 	lst_token_add_back(new_token, tokens);
 	if (line[j] != '\0')
 		*line_pos = j + 1;
@@ -79,7 +82,7 @@ static void	extract_word(t_token *tokens, char *line, int *line_pos, char *delim
 			j++;
 	}
 	extract = ft_substr(line, *line_pos, j - *line_pos + 1);
-	new_token = token_create('w', extract);
+	new_token = token_create('w', extract, 0);
 	lst_token_add_back(new_token, tokens);
 	if (line[j] != '\0')
 		*line_pos = j + 1;
