@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/07 18:33:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:38:34 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,10 @@ static int	check_operators(t_token* tokens)
 		{
 			if(ft_strncmp((tokens->value), "<", 2) == 0 || \
 				ft_strncmp((tokens->value), ">", 2) == 0 || \
-				ft_strncmp((tokens->value), "<<", 3) == 0 || \
 				ft_strncmp((tokens->value), ">>", 3) == 0)
 				tokens->type = 'r';
+			else if (ft_strncmp((tokens->value), "<<", 3) == 0)
+				tokens->type = 'h';
 			else if (ft_strncmp((tokens->value), "|", 2) == 0)
 				tokens->type = 'p';
 			else
@@ -116,7 +117,7 @@ static int	check_operators(t_token* tokens)
 	return (1);
 }
 
-int	tokenizer(t_token **tokens, char *line, char *delimiters)
+int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
 {
 	int	i;
 	int	end_token;
@@ -133,8 +134,9 @@ int	tokenizer(t_token **tokens, char *line, char *delimiters)
 	}
 	token_split(tokens);
 	token_cleanup(tokens);
-	if (check_operators(*tokens) == -1)
+	if (check_operators(*tokens) == -1 || first_is_pipe(*tokens) == -1)
 	{
+		update_exit_status(1, env_list);
 		lst_clear_tokens(tokens);
 		return (-1);
 	}

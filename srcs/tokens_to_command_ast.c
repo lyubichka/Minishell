@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/06 19:19:41 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:51:28 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,19 @@ static void	init_command(t_command **commands)
 
 int	tokens_to_command_ast(t_command **commands, t_token **tokens, t_env **env_list)
 {
-	t_token	*tmp;
+	t_token		*tmp;
+	t_command	*current_cmd;
 	
 	tmp = *tokens;
-	init_command(commands);
+	current_cmd = NULL;
 	while(tmp)
 	{
+		if (!current_cmd)
+		{
+			init_command(&current_cmd);
+			if(!*commands)
+				*commands = current_cmd;
+		}
 		if(command_parse(commands, tokens, env_list) == -1)
 			return(-1);
 		tmp = tmp->next;

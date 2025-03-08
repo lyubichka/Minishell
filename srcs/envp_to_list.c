@@ -6,11 +6,23 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:31:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/06 18:37:22 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/08 21:07:38 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void exit_status_node(t_env **env_list)
+{
+	char	*value;
+	char	*name;
+	t_env	*new_exit_node;
+
+	value = ft_strdup("0");
+	name = ft_strdup("?");
+	new_exit_node = lst_create_envp(name, value);
+	lst_add_front(new_exit_node, env_list);
+}
 
 int envp_to_list(char **envp, t_env **env_list)
 {
@@ -33,6 +45,8 @@ int envp_to_list(char **envp, t_env **env_list)
 		}
 		i++;
 	}
+	exit_status_node(env_list);
+	return (0);
 }
 
 // should add the ? here to update it between runs?

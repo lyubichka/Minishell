@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                       :+:      :+:    :+:   */
+/*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/24 20:21:00 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/04 20:43:13 by saherrer         ###   ########.fr       */
+/*   Created: 2025/03/08 21:19:11 by saherrer          #+#    #+#             */
+/*   Updated: 2025/03/08 21:34:58 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void parse_exec_line(t_env **env_list, char* new_line)
+void	update_exit_status(int status, t_env **env_list)
 {
-	t_token		*tokens;
-	t_command	*commands;
-	char		delimiters[10];
-	
-	ft_strlcpy(delimiters, "|<>;()& \n",10);
-	if (check_quotes(new_line) == 0)
+	t_env	*tmp;
+	char	*status_char;
+
+	tmp = *env_list;
+	while (tmp)
 	{
-		if (tokenizer(&tokens, new_line, delimiters) == -1)
-			return ;
-		if (tokens_to_command_ast(&commands, &tokens, env_list) == 1)
-			//execute
-		//lst_clear_commands(&commands);
-		lst_clear_tokens(&tokens);
+		if (ft_strlen(tmp->name) == 1 && ft_strncmp(tmp->name, "?", 2))
+			break;
+		tmp = tmp->next;
+	}
+	if (tmp)
+	{
+		free(tmp->value);
+		status_char = ft_itoa(status);
+		tmp->value = ft_strdup(status_char);
 	}
 }

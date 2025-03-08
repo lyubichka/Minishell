@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/07 20:43:28 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/08 20:27:29 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,9 @@ void	var_expansion(t_token *token, t_env *env_list)
 		return ;
 	while(token->value[i] != '\0')
 	{
-		if(token->value[i] == '$' && token->value[i + 1] != '\0' && token->value[i + 1] != ' ')
+		if(token->value[i] == '$' && \
+		token->value[i + 1] != '\0' && \
+		token->value[i + 1] != ' ')
 		{
 			if(i == 0 || token->value[i - 1] != '\\' )
 			{
