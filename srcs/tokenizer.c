@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/08 21:38:34 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/09 20:54:08 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void	extract_word(t_token *tokens, char *line, int *line_pos, char *delim
 		*line_pos = j;
 }
 
-static int	check_operators(t_token* tokens)
+static int	check_operators(t_token *tokens)
 {
 	while(tokens)
 	{
@@ -134,7 +134,7 @@ int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
 	}
 	token_split(tokens);
 	token_cleanup(tokens);
-	if (check_operators(*tokens) == -1 || first_is_pipe(*tokens) == -1)
+	if (check_operators(*tokens) == -1 || first_or_last_is_pipe(*tokens) == -1)
 	{
 		update_exit_status(1, env_list);
 		lst_clear_tokens(tokens);

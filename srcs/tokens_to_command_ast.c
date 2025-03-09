@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/08 20:51:28 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/09 21:00:58 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	tokens_to_command_ast(t_command **commands, t_token **tokens, t_env **env_li
 		}
 		if(command_parse(commands, tokens, env_list) == -1)
 			return(-1);
+		link_commands(commands, tokens, env_list);
 		tmp = tmp->next;
 	}
 	return (0);
