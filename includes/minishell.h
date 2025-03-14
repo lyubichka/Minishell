@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/09 20:57:25 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/14 20:04:00 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_env
 
 typedef struct s_token
 {
-	char			type; //word or operator (r for redirect / p for pipe / d for delete / v for redirect value / h for heredoc)
+	char			type; //word or operator (w for word / r for redirect / p for pipe / d for delete / h for heredoc)
 	char			*value; //> echo ls 
 	int				quote;
 	struct s_token	*next;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_status.c                                      :+:      :+:    :+:   */
+/*   update_exit_status.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:19:11 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/08 21:34:58 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:29:18 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	update_exit_status(int status, t_env **env_list)
 {
 	t_env	*tmp;
-	char	*status_char;
+	char	*status_str;
 
 	tmp = *env_list;
 	while (tmp)
@@ -27,7 +27,7 @@ void	update_exit_status(int status, t_env **env_list)
 	if (tmp)
 	{
 		free(tmp->value);
-		status_char = ft_itoa(status);
-		tmp->value = ft_strdup(status_char);
+		status_str = ft_itoa(status);
+		tmp->value = ft_strdup(status_str);
 	}
 }
