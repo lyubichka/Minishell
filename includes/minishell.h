@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/14 20:04:00 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/24 19:09:26 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_command
 	int					fd_out;
 	int					is_pipe;
 	int					is_builtin;
+	int					is_redir_error;
 	struct s_command	*next;
 }	t_command;
 
@@ -70,9 +71,8 @@ void	update_exit_status(int status, t_env **env_list);
 void	token_split(t_token **tokens);
 void	token_cleanup(t_token **tokens);
 int		tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list);
-int		tokens_to_command_ast(t_command **commands, t_token **tokens, t_env **env_list);
-
 void	var_expansion(t_token *token, t_env *env_list);
-
+int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
+int		tokens_to_command_ast(t_command **commands, t_token **tokens, t_env **env_list);
 
 #endif

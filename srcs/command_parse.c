@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:12:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/14 22:25:10 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/24 20:20:07 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,39 +21,95 @@ static int	syntax_error(char *error_token, t_env **env_list)
 	return (-1);
 }
 
+char *remove_quotes(char *str)
+{
+	int	len;
+	char	*new_str;
+
+	len = ft_strlen(str);
+	if (len >= 2 && (str[0] = '"' || str[0] == '\'') && str[len - 1] == str[0])
+	{
+		new_str = ft_strchr(str + 1, len - 2);
+		return (new_str);
+	}
+	else
+	{
+		new_str = ft_strdup(str);
+		return (new_str);
+	}
+	
+}
+
 int	add_to_argv(t_token *token, t_command *command)
 {
-	cd
+	char	*cleaned;
+	int		i;
+	int		j;
+	char	**new_argv;
+	
+	i = 0;
+	if (token->quote != 0)
+	{
+		cleaned = remove_quotes(token->value);
+		free(token->value);
+		token->value = cleaned;
+	}
+	if (command->argv == NULL)
+	{
+		command->argv = malloc(sizeof(char *) * 2);
+		if(!(command->argv))
+			return(-300);
+		command->argv[0] = ft_strdup(token->value);
+		command->argv[1] = NULL;
+		return (0);
+	}
+	while (command->argv[i] != NULL)
+		i++;
+	new_argv = (char **)malloc(sizeof (char *) * (i + 2));
+	if (!new_argv)
+		return (-300);
+	while (j < i)
+	{
+		new_argv[j] = command->argv[j];
+		j++;
+	}
+	new_argv[i] = ft_strdup(token->value);
+	new_argv[i + 1] = NULL;
+	free(command->argv);
+	command->argv = new_argv;
+	token->type = 'd';
+	return (0);
 }
 
 int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 {
-	t_token	*tmp;
-	t_token *prev_tmp;
+	t_token	*tmp_token;
+	t_token *prev_tmp_token;
 	int		tokens_processed;
 	int		status;
 	
 	tokens_processed = 0;
 	status = 0;
-	tmp = *tokens;
-	prev_tmp = tmp;
-	while (tmp)
+	tmp_token = *tokens;
+	prev_tmp_token = tmp_token;
+	while (tmp_token)
 	{
-		var_expansion(tmp, *env_list);
-		if (tmp->type != 'w' && (tokens_processed == 0 || prev_tmp->type != 'w'))
-			return (syntax_error(tmp->value, env_list));
-		else if (tmp->type == 'p')
+		var_expansion(tmp_token, *env_list);
+		if (tmp_token->type != 'w' && (tokens_processed == 0 || prev_tmp_token->type != 'w'))
+			return (syntax_error(tmp_token->value, env_list));
+		else if (tmp_token->type == 'p')
 			return (0);
-		else if (tmp->type == 'w')
-			status = add_to_argv(tmp, command);
-		else if (tmp->type == 'r')
-			status = handle_redir(&tmp, &tokens_processed, command, env_list);
-		else if (tmp->type == 'h')
-			status = handle_heredoc(&tmp, &tokens_processed, command, env_list);
+		else if (tmp_token->type == 'w')
+			status = add_to_argv(tmp_token, command);
+		else if (tmp_token->type == 'r')
+			status = handle_redir(&tmp_token, &tokens_processed, command, env_list);
+		else if (tmp_token->type == 'h')
+			status = handle_heredoc(&tmp_token, &tokens_processed, command, env_list);
+		clean_delete_token(tokens); //delete all tokens marked as 'd'
 		if (status == -1)
-			return (syntax_error(tmp->value, env_list));
-		prev_tmp = tmp;
-		tmp = tmp->next;
+			return (syntax_error(tmp_token->value, env_list));
+		prev_tmp_token = tmp_token;
+		tmp_token = tmp_token->next;
 		tokens_processed++;
 
 		//first check for errors on files, in the order that they are given, but do not exit the line. 
