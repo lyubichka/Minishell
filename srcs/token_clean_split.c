@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:22:15 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/03 19:28:06 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/26 20:21:51 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,23 @@ void	token_cleanup(t_token **tokens)
 
 	curr = *tokens;
 	prev = NULL;
-	forw = NULL;
 	while (curr)
 	{
 		forw = curr->next;
 		if (curr->type == 'd')
 		{
-			if (curr == *tokens)
+			if (prev)
+				prev->next = forw;
+			else
 				*tokens = forw;
-			lst_token_del(prev, curr, forw);
+			free(curr->value);
+			free(curr);
 			curr = forw;
-			continue ;
 		}
-		prev = curr;
-		curr = forw;
+		else
+		{
+			prev = curr;
+			curr = forw;
+		}
 	}
 }

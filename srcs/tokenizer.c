@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/09 20:54:08 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/26 21:08:55 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,3 +142,5 @@ int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
 	}
 	return (1);
 }
+
+//need to fix this to address situation like ls hello"world" so that "world" is properly expanded and not treated as a separate token

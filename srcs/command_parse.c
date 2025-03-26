@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:12:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/24 20:20:07 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/26 20:37:17 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,23 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 	{
 		var_expansion(tmp_token, *env_list);
 		if (tmp_token->type != 'w' && (tokens_processed == 0 || prev_tmp_token->type != 'w'))
-			return (syntax_error(tmp_token->value, env_list));
+			status = -1;
 		else if (tmp_token->type == 'p')
-			return (0);
+		{
+			status = 0;
+			break;
+		}
 		else if (tmp_token->type == 'w')
 			status = add_to_argv(tmp_token, command);
 		else if (tmp_token->type == 'r')
 			status = handle_redir(&tmp_token, &tokens_processed, command, env_list);
 		else if (tmp_token->type == 'h')
 			status = handle_heredoc(&tmp_token, &tokens_processed, command, env_list);
-		clean_delete_token(tokens); //delete all tokens marked as 'd'
 		if (status == -1)
-			return (syntax_error(tmp_token->value, env_list));
+		{
+			syntax_error(tmp_token->value, env_list);
+			break;
+		}
 		prev_tmp_token = tmp_token;
 		tmp_token = tmp_token->next;
 		tokens_processed++;
@@ -117,5 +122,6 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 		//if all files are ok, only then we check for the command themselves, same as above with the pipes
 		//an error of a command execution it should trigger an exit, only publish a command not found for that pipe
 	}
-	return (1);
+	token_cleanup(tokens);
+	return (status);
 }
