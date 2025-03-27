@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/27 20:02:42 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/03/27 20:16:19 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 		env_list = env_list->next;
 	if (env_list)	
 	{
-		if (token->quote == 2)
+		if (token->quote == 2) //here i have to search if it was called from within a double quote or not, so probably better 2 have 2 differente functions called directly
 			replace_var(token, env_list->value, var_name, pos_value);
 		else
 			replace_var_with_list(&token, env_list->value, var_name, pos_value); //behaviour is differnet if you have ls hello$VAR than ls "hello$VAR"
