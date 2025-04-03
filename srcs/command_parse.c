@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:12:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/26 20:37:17 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:04:01 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	add_to_argv(t_token *token, t_command *command)
 	char	**new_argv;
 	
 	i = 0;
-	if (token->quote != 0)
+	if (token->quote != 0) // not applicable anymore, will have to address all cases and remove all non escaped quotes
 	{
 		cleaned = remove_quotes(token->value);
 		free(token->value);
@@ -105,7 +105,7 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 		else if (tmp_token->type == 'w')
 			status = add_to_argv(tmp_token, command);
 		else if (tmp_token->type == 'r')
-			status = handle_redir(&tmp_token, &tokens_processed, command, env_list);
+			status = handle_redir(&tmp_token, &tokens_processed, command, env_list); //treat files, fd_in, fd_out and redirs
 		else if (tmp_token->type == 'h')
 			status = handle_heredoc(&tmp_token, &tokens_processed, command, env_list);
 		if (status == -1)

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/27 19:29:40 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:04:40 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	extract_quote(t_token **tokens, char *line, int *line_pos)
 	// if (quote == '\'')
 	// 	new_token = token_create('w', extract, 1);
 	// else
-		new_token = token_create('w', extract, 2); // need to review this "is quote" in the file of the token
+		new_token = token_create('w', extract, 2); // need to review this "is quote" in the end of the token
 	lst_token_add_back(new_token, tokens);
 	// if (line[j] != '\0')
 	// 	*line_pos = j + 1;
@@ -163,31 +163,31 @@ static int	check_operators(t_token *tokens)
 	return (1);
 }
 
-int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
-{
-	int	i;
-	int	end_token;
+// int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
+// {
+// 	int	i;
+// 	int	end_token;
 
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (is_quote(line[i]) == 1)
-			extract_quote(tokens, line, &i);
-		else if (is_operator(line[i], delimiters) == 1)
-			extract_operator(tokens, line, &i, delimiters);
-		else
-			extract_word(tokens, line, &i, delimiters);
-	}
-	token_split(tokens);
-	token_cleanup(tokens);
-	if (check_operators(*tokens) == -1 || first_or_last_is_pipe(*tokens) == -1)
-	{
-		update_exit_status(1, env_list);
-		lst_clear_tokens(tokens);
-		return (-1);
-	}
-	return (1);
-}
+// 	i = 0;
+// 	while (line[i] != '\0')
+// 	{
+// 		if (is_quote(line[i]) == 1)
+// 			extract_quote(tokens, line, &i);
+// 		else if (is_operator(line[i], delimiters) == 1)
+// 			extract_operator(tokens, line, &i, delimiters);
+// 		else
+// 			extract_word(tokens, line, &i, delimiters);
+// 	}
+// 	token_split(tokens);
+// 	token_cleanup(tokens);
+// 	if (check_operators(*tokens) == -1 || first_or_last_is_pipe(*tokens) == -1)
+// 	{
+// 		update_exit_status(1, env_list);
+// 		lst_clear_tokens(tokens);
+// 		return (-1);
+// 	}
+// 	return (1);
+// }
 
 int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
 {

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/27 20:16:19 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:48:47 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ static void	replace_var(t_token *token, char *var_value, char *var_name, int *po
 
 static void replace_var_with_list(t_token **token, char *var_vlaue, char *var_name, int *pos_value)
 {
-	
+	//here i should expand into new word tokens if not called from within a double quote.
+	//to evaluate if needed to be implemented or not.
 }
 
 static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
@@ -109,8 +110,6 @@ void	var_expansion(t_token *token, t_env *env_list)
 	int	i;
 
 	i = 0;
-	// if(token->quote == 1) this now has to be assed inside each token
-	// 	return ;
 	while(token->value[i] != '\0')
 	{
 		if (token->value[i] == '\'' && token->value[i + 1]) //ignore the single quoted sections
@@ -131,8 +130,10 @@ void	var_expansion(t_token *token, t_env *env_list)
 			if (i == 0 || token->value[i - 1] != '\\' )
 			{
 				find_and_expand(token, env_list, &i);
-				continue ;
+				continue ; //needed?
 			}
+			else
+				i++;
 		}
 		else
 			i++;
