@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:12:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/03 20:04:01 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:31:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,23 @@ int	add_to_argv(t_token *token, t_command *command)
 		command->argv[1] = NULL;
 		return (0);
 	}
-	while (command->argv[i] != NULL)
-		i++;
-	new_argv = (char **)malloc(sizeof (char *) * (i + 2));
-	if (!new_argv)
-		return (-300);
-	while (j < i)
+	else
 	{
-		new_argv[j] = command->argv[j];
-		j++;
+		while (command->argv[i] != NULL)
+			i++;
+		new_argv = (char **)malloc(sizeof (char *) * (i + 2));
+		if (!new_argv)
+			return (-300);
+		while (j < i)
+		{
+			new_argv[j] = command->argv[j];
+			j++;
+		}
+		new_argv[i] = ft_strdup(token->value);
+		new_argv[i + 1] = NULL;
+		free(command->argv);
+		command->argv = new_argv;
 	}
-	new_argv[i] = ft_strdup(token->value);
-	new_argv[i + 1] = NULL;
-	free(command->argv);
-	command->argv = new_argv;
 	token->type = 'd';
 	return (0);
 }
