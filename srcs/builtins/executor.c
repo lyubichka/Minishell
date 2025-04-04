@@ -19,7 +19,7 @@ void execute_command(t_command *command, t_env **env_list)
         if (ft_strcmp(command->argv[0], "cd") == 0)
             ft_cd(command->argv, env_list);
         else if (ft_strcmp(command->argv[0], "echo") == 0)
-            ft_echo(command->argv);
+            ft_echo(command->argv, env_list);
         else if (ft_strcmp(command->argv[0], "env") == 0)
             ft_env(*env_list);
         else if (ft_strcmp(command->argv[0], "pwd") == 0)
