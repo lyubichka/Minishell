@@ -27,7 +27,7 @@ char *remove_quotes(char *str)
 	char	*new_str;
 
 	len = ft_strlen(str);
-	if (len >= 2 && (str[0] = '"' || str[0] == '\'') && str[len - 1] == str[0])
+	if (len >= 2 && (str[0] == '"' || str[0] == '\'') && str[len - 1] == str[0])
 	{
 		new_str = ft_strchr(str + 1, len - 2);
 		return (new_str);
