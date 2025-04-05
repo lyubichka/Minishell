@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 20:49:57 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/02 21:20:55 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:53:31 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int	check_quotes(char *line)
 	double_open = 0;
 	while (line[i] != '\0')
 	{
-		if (i > 0 && line[i - 1] == '\\')
-		{
-			i++; // Skip the current char and continue
-			continue;
-		}
+		// if (i > 0 && line[i - 1] == '\\')
+		// {
+		// 	i++; // no need to treat backlashes anymore
+		// 	continue;
+		// }
 		if (line[i] == '\'' && double_open == 0) // Ignore if inside double quotes
 			single_open = !single_open;
 		else if (line[i] == '\"' && single_open == 0) // Ignore if inside single quotes

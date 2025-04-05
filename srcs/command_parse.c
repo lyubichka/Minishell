@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 19:12:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/04 17:31:54 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/05 21:24:06 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,39 @@ static int	syntax_error(char *error_token, t_env **env_list)
 	return (-1);
 }
 
-char *remove_quotes(char *str)
+char	*remove_quotes(const char *s)
 {
-	int	len;
-	char	*new_str;
+	int		i;
+	int		j;
+	char	quote;
+	char	*res;
 
-	len = ft_strlen(str);
-	if (len >= 2 && (str[0] == '"' || str[0] == '\'') && str[len - 1] == str[0])
+	i = 0;
+	j = 0;
+	quote = 0;
+	res = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!res)
+		return (NULL);
+	while (s[i])
 	{
-		new_str = ft_strchr(str + 1, len - 2);
-		return (new_str);
+		if ((s[i] == '\'' || s[i] == '"'))
+		{
+			if (!quote)
+				quote = s[i];
+			else if (quote == s[i])
+				quote = 0;
+			else
+				res[j++] = s[i];
+		}
+		else
+			res[j++] = s[i];
+		i++;
 	}
-	else
-	{
-		new_str = ft_strdup(str);
-		return (new_str);
-	}
-	
+	res[j] = '\0';
+	return (res);
 }
 
-int	add_to_argv(t_token *token, t_command *command)
+int	add_to_argv(t_token *token, t_command *command, t_env **env_list)
 {
 	char	*cleaned;
 	int		i;
@@ -48,12 +61,10 @@ int	add_to_argv(t_token *token, t_command *command)
 	char	**new_argv;
 	
 	i = 0;
-	if (token->quote != 0) // not applicable anymore, will have to address all cases and remove all non escaped quotes
-	{
-		cleaned = remove_quotes(token->value);
-		free(token->value);
-		token->value = cleaned;
-	}
+	var_expansion(token, *env_list);
+	cleaned = remove_quotes(token->value);
+	free(token->value);
+	token->value = cleaned;
 	if (command->argv == NULL)
 	{
 		command->argv = malloc(sizeof(char *) * 2);
@@ -84,20 +95,25 @@ int	add_to_argv(t_token *token, t_command *command)
 	return (0);
 }
 
+int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
+{
+	
+}
+
 int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 {
 	t_token	*tmp_token;
 	t_token *prev_tmp_token;
-	int		tokens_processed;
+	int		tokens_processed; //probably not needed
 	int		status;
 	
 	tokens_processed = 0;
 	status = 0;
 	tmp_token = *tokens;
 	prev_tmp_token = tmp_token;
-	while (tmp_token)
+	while (tmp_token) 
 	{
-		var_expansion(tmp_token, *env_list);
+		
 		if (tmp_token->type != 'w' && (tokens_processed == 0 || prev_tmp_token->type != 'w'))
 			status = -1;
 		else if (tmp_token->type == 'p')
@@ -106,9 +122,9 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 			break;
 		}
 		else if (tmp_token->type == 'w')
-			status = add_to_argv(tmp_token, command);
+			status = add_to_argv(tmp_token, command, env_list);
 		else if (tmp_token->type == 'r')
-			status = handle_redir(&tmp_token, &tokens_processed, command, env_list); //treat files, fd_in, fd_out and redirs
+			status = handle_redir(&tmp_token, command, env_list); //treat files, fd_in, fd_out and redirs
 		else if (tmp_token->type == 'h')
 			status = handle_heredoc(&tmp_token, &tokens_processed, command, env_list);
 		if (status == -1)
@@ -124,6 +140,10 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 		//for example if i have ls -l < fdd | ls  < output, the second pipe still runs although the first put up an error		
 		//if all files are ok, only then we check for the command themselves, same as above with the pipes
 		//an error of a command execution it should trigger an exit, only publish a command not found for that pipe
+		//File redirection takes precedence over the pipe for stdout.
+		//also to keep in mind that if a file fails, the rest does not apply. So for example, if ls >a <d and d does not exist
+		//it will erase everything on a but then fail and not rewrite a, if I had ls <d >a, then it would not get to erase a.
+		//if I face a syntax error (for example 2 consecutive redir), i wont execute anything and just publish a syntax error message
 	}
 	token_cleanup(tokens);
 	return (status);

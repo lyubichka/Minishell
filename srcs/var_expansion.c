@@ -6,30 +6,11 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/03 19:48:47 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/05 20:51:26 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void	replace_var(t_token *token, char *var_value, char *str, int *pos_value)
-// {
-// 	char	*old_token_value;
-// 	char	*new_token_value;
-// 	char	*tmp;
-
-// 	old_token_value = ft_strdup(token->value);
-// 	free(token->value);
-// 	tmp = ft_substr(old_token_value, 0, *pos_value);
-// 	new_token_value = ft_strjoin(tmp, var_value);
-// 	free (tmp);
-// 	tmp = ft_substr(old_token_value, *pos_value + ft_strlen(str) + 1, ft_strlen(old_token_value) - ft_strlen(str) - *pos_value - 1);
-// 	token->value = ft_strjoin(new_token_value, tmp);
-// 	free(tmp);
-// 	free(new_token_value);
-// 	free(old_token_value);
-	
-// }
 
 static void	var_not_found(t_token *token, char *var_name, int *pos_value)
 {
@@ -76,12 +57,6 @@ static void	replace_var(t_token *token, char *var_value, char *var_name, int *po
 	
 }
 
-static void replace_var_with_list(t_token **token, char *var_vlaue, char *var_name, int *pos_value)
-{
-	//here i should expand into new word tokens if not called from within a double quote.
-	//to evaluate if needed to be implemented or not.
-}
-
 static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 {
 	int j;
@@ -94,48 +69,75 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 	while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name)) != 0)
 		env_list = env_list->next;
 	if (env_list)	
-	{
-		if (token->quote == 2) //here i have to search if it was called from within a double quote or not, so probably better 2 have 2 differente functions called directly
-			replace_var(token, env_list->value, var_name, pos_value);
-		else
-			replace_var_with_list(&token, env_list->value, var_name, pos_value); //behaviour is differnet if you have ls hello$VAR than ls "hello$VAR"
-	}
+		replace_var(token, env_list->value, var_name, pos_value);
 	else
 		var_not_found(token, var_name, pos_value);
 	free(var_name);
 }
 
-void	var_expansion(t_token *token, t_env *env_list)
+void var_expansion(t_token *token, t_env *env_list)
 {
-	int	i;
+    int i;
+    int in_single_quote;
+    int in_double_quote;
 
 	i = 0;
-	while(token->value[i] != '\0')
-	{
-		if (token->value[i] == '\'' && token->value[i + 1]) //ignore the single quoted sections
-		{
-			i++; //move past opening quote
-			while (token->value[i] != '\0')
-			{
-				if(token->value[i] == '\'') //not checking for escaped quotes as bash does not interpret escape inside single quotes
-					break;
-				i++;
-			}
-			i++; //move past closing quote
-		}
-		else if (token->value[i] == '$' && \
-		token->value[i + 1] != '\0' && \
-		token->value[i + 1] != ' ')
-		{
-			if (i == 0 || token->value[i - 1] != '\\' )
-			{
-				find_and_expand(token, env_list, &i);
-				continue ; //needed?
-			}
-			else
-				i++;
-		}
-		else
-			i++;
-	}
+    in_single_quote = 0;
+    in_double_quote = 0;
+    while (token->value[i] != '\0')
+    {
+        // Handle single quotes - no expansion inside single quotes
+        if (token->value[i] == '\'' && !in_double_quote)
+        {
+            in_single_quote = !in_single_quote;  // Toggle single quote state
+        }
+        // Handle double quotes - expand inside double quotes
+        else if (token->value[i] == '"' && !in_single_quote)
+        {
+            in_double_quote = !in_double_quote; // Toggle double quote state
+        }
+        // Only expand if not inside single quotes, regardless of backslashes
+        else if (token->value[i] == '$' && !in_single_quote)
+        {
+            // Perform expansion if it's not inside single quotes
+            find_and_expand(token, env_list, &i);  // Expand variable
+            continue; // Skip the rest of the loop after expansion
+        }
+        i++;  // Continue scanning the next character
+    }
 }
+
+// void	var_expansion(t_token *token, t_env *env_list)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while(token->value[i] != '\0')
+// 	{
+// 		if (token->value[i] == '\'' && token->value[i + 1]) //ignore the single quoted sections
+// 		{
+// 			i++; //move past opening quote
+// 			while (token->value[i] != '\0')
+// 			{
+// 				if(token->value[i] == '\'') //not checking for escaped quotes as bash does not interpret escape inside single quotes
+// 					break;
+// 				i++;
+// 			}
+// 			i++; //move past closing quote
+// 		}
+// 		else if (token->value[i] == '$' && \
+// 		token->value[i + 1] != '\0' && \
+// 		token->value[i + 1] != ' ')
+// 		{
+// 			if (i == 0 || token->value[i - 1] != '\\' )
+// 			{
+// 				find_and_expand(token, env_list, &i);
+// 				continue ; //needed?
+// 			}
+// 			else
+// 				i++;
+// 		}
+// 		else
+// 			i++;
+// 	}
+// }
