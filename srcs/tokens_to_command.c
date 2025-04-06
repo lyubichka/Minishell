@@ -43,7 +43,7 @@ int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 	prior_cmd = NULL;
 	while(tmp_token)
 	{
-		current_cmd = init_command;
+		current_cmd = init_command; // init_command(&current_cmd) ?
 		if (!*commands)
 		{
 			*commands = current_cmd;
