@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/06 21:41:53 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:49:15 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 	status = 0;
 	tmp_token = *tokens;
 	found_heredoc == any_heredoc(*tokens);
-	while (tmp_token && status == 0) 
+	while (command && tmp_token && status == 0) 
 	{
 		if (tmp_token->type == 'p')
 			break;

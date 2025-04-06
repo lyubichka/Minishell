@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_to_command_ast.c                            :+:      :+:    :+:   */
+/*   tokens_to_command.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/06 21:24:34 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:50:24 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 static void	init_command(t_command **commands)
 {
 	(*commands) = (t_command *)malloc(sizeof(t_command));
+	if (!*commands)
+		return NULL;
 	(*commands)->fd_in = -300;
 	(*commands)->fd_out = -300;
 	(*commands)->pipe_in = 0;
@@ -43,7 +45,7 @@ int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 	prior_cmd = NULL;
 	while(tmp_token)
 	{
-		current_cmd = init_command; // init_command(&current_cmd) ?
+		init_command(&current_cmd); // init_command(&current_cmd) ?
 		if (!*commands)
 		{
 			*commands = current_cmd;
