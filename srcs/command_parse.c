@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 19:12:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/05 21:24:06 by saherrer         ###   ########.fr       */
+/*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
+/*   Updated: 2025/04/06 21:41:53 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,46 +95,192 @@ int	add_to_argv(t_token *token, t_command *command, t_env **env_list)
 	return (0);
 }
 
+// int open_file(const char *filename, int flags, mode_t mode)
+// {
+// 	int fd = open(filename, flags, mode);
+// 	if (fd == -1)
+// 	{
+// 		ft_putstr_fd("Error opening file", 2);
+// 	}
+// 	return fd;
+// }
+
+int handle_input_redir(const char *filename)
+{
+	int fd;
+	
+	fd = open(filename, O_RDONLY, 0);
+	if (fd == -1)
+	{
+		ft_putstr_fd("minishell> ", 2);
+		perror(filename);
+	}
+	return fd;
+}
+
+int handle_output_redir(const char *filename, int append)
+{
+	int fd;
+	
+	if (append == 1)
+	{
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (fd == -1)
+		{
+			ft_putstr_fd("minishell> ", 2);
+			perror(filename);
+		}
+	}
+	else
+	{
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd == -1)
+		{
+			ft_putstr_fd("minishell> ", 2);
+			perror(filename);
+		}
+	}
+	return fd;
+}
+
+void update_command(t_command *command, int fd_in, int fd_out)
+{
+	if (fd_in != 0)
+	{
+	    if (command->fd_in != -300 && command->fd_in != -1)
+			close(command->fd_in); // Close old fd_in
+		command->fd_in = fd_in;
+	}
+	if (fd_out != 0)
+	{
+		if (command->fd_out != -300 && command->fd_out != -1)
+			close(command->fd_out); // Close old fd_out
+		command->fd_out = fd_out;
+	}
+}
+
 int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 {
-	
+	int fd_in;
+	int fd_out;
+	int stop_parsing; // Flag to stop parsing after error
+	char *filename;
+
+	fd_in = 0;
+	fd_out = 0;
+	stop_parsing = 0;
+	if ((*tmp_token)->next == NULL || (*tmp_token)->next->type != 'w')
+		return -300; // Redirection Error --> all further parsing should stop. Need to evaluate how and when are we closing the fd
+
+	// Get the filename (next token after redirection operator)
+	filename = (*tmp_token)->next->value;
+
+	// Expand variables and remove quotes from the filename
+	var_expansion(&(*tmp_token)->next, *env_list);
+	filename = remove_quotes(filename);
+
+	// Process input redirection
+	if ((*tmp_token)->value[0] == '<') 
+	{
+		fd_in = handle_input_redir(filename);
+		update_command(command, fd_in, 0);
+		if (fd_in == -1)
+		{
+			update_exit_status(1, env_list);
+			command->is_redir_error == 1;
+			return (-1);
+		}
+		(*tmp_token)->type = 'd';
+		(*tmp_token)->next->type = 'd';
+		*tmp_token = (*tmp_token)->next; // Move to the next token after the redirection
+	}
+	// Process output redirection
+	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] != '>') // Output redirection
+	{
+		fd_out = handle_output_redir(filename, 0);
+		update_command(command, 0, fd_out);
+		if (fd_out == -1)
+		{
+			update_exit_status(1, env_list);
+			command->is_redir_error == 1;
+			return (-1);
+		}
+		(*tmp_token)->type = 'd';
+		(*tmp_token)->next->type = 'd';
+		*tmp_token = (*tmp_token)->next; // Move to the next token after the redirection
+	}
+	// Process append output redirection
+	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] == '>') // Output append redirection
+	{
+		fd_out = handle_output_redir(filename, 1);
+		update_command(command, 0, fd_out);
+		if (fd_out == -1)
+		{
+			update_exit_status(1, env_list);
+			command->is_redir_error == 1;
+			return (-1);
+		}
+		(*tmp_token)->type = 'd';
+		(*tmp_token)->next->type = 'd';
+		*tmp_token = (*tmp_token)->next; // Move to the next token after the redirection
+    }
+    return 0; // Return 0 to continue parsing
+}
+
+int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
+{
+	while (token && token->type != 'p')
+	{
+		if (token->type == 'h')
+		{
+			if (!token->next)
+				return -300; //syntax error
+			if (token->next && token->next->type != 'w')
+				return -300; //syntax error
+			
+		}
+	}
+}
+
+int	any_heredoc(t_token *tokens)
+{
+	t_token *tmp_token;
+
+	tmp_token = tokens;
+	while (tmp_token)
+	{
+		if (tmp_token->type == 'p')
+			return (0);
+		if (tmp_token->type == 'h')
+			return (1);
+		tmp_token = tmp_token->next;
+	}
+	return (0);
 }
 
 int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 {
 	t_token	*tmp_token;
-	t_token *prev_tmp_token;
-	int		tokens_processed; //probably not needed
 	int		status;
+	int 	found_heredoc;
 	
-	tokens_processed = 0;
 	status = 0;
 	tmp_token = *tokens;
-	prev_tmp_token = tmp_token;
-	while (tmp_token) 
+	found_heredoc == any_heredoc(*tokens);
+	while (tmp_token && status == 0) 
 	{
-		
-		if (tmp_token->type != 'w' && (tokens_processed == 0 || prev_tmp_token->type != 'w'))
-			status = -1;
-		else if (tmp_token->type == 'p')
-		{
-			status = 0;
+		if (tmp_token->type == 'p')
 			break;
+		if (found_heredoc == 1)
+		{
+			status = handle_heredoc(tmp_token, command, env_list);
+			found_heredoc == -1;
 		}
-		else if (tmp_token->type == 'w')
+		if (tmp_token->type == 'w')
 			status = add_to_argv(tmp_token, command, env_list);
 		else if (tmp_token->type == 'r')
 			status = handle_redir(&tmp_token, command, env_list); //treat files, fd_in, fd_out and redirs
-		else if (tmp_token->type == 'h')
-			status = handle_heredoc(&tmp_token, &tokens_processed, command, env_list);
-		if (status == -1)
-		{
-			syntax_error(tmp_token->value, env_list);
-			break;
-		}
-		prev_tmp_token = tmp_token;
 		tmp_token = tmp_token->next;
-		tokens_processed++;
 
 		//first check for errors on files, in the order that they are given, but do not exit the line. 
 		//for example if i have ls -l < fdd | ls  < output, the second pipe still runs although the first put up an error		
@@ -144,7 +290,24 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 		//also to keep in mind that if a file fails, the rest does not apply. So for example, if ls >a <d and d does not exist
 		//it will erase everything on a but then fail and not rewrite a, if I had ls <d >a, then it would not get to erase a.
 		//if I face a syntax error (for example 2 consecutive redir), i wont execute anything and just publish a syntax error message
+		// in the case of heredoc, i need to allow all heredocs to run, but i will still respect the presedence of left to right
+		// in heredoc, if the delimiter is quoted, the body is not expanded, meaning that if put a $USER while typing it wont expant
+		// the delimiter itself should be quote removed
+		/*	[n]<<[-]word
+        		here-document
+			delimiter
+		*/
+		//No parameter and variable expansion, command substitution, arithmetic expansion, or filename expansion is 
+		//performed on word. If any part of word is quoted, the delimiter is the result of quote removal on word, and the lines
+		//in the here-document are not expanded. 
+		//If word is unquoted, all lines of the here-document are subjected to parameter expansion
+		
+	}
+	if (status == -300)
+	{
+		syntax_error(tmp_token->value, env_list); // here would need to close all open fds.
+		return (-1);
 	}
 	token_cleanup(tokens);
-	return (status);
+	return (0);
 }

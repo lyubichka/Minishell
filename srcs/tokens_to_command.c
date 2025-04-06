@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/04 17:34:18 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:24:34 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,24 @@
 static void	init_command(t_command **commands)
 {
 	(*commands) = (t_command *)malloc(sizeof(t_command));
-	(*commands)->fd_in = 0;
-	(*commands)->fd_out = 1;
+	(*commands)->fd_in = -300;
+	(*commands)->fd_out = -300;
+	(*commands)->pipe_in = 0;
+	(*commands)->pipe_out = 0;
 	(*commands)->is_pipe = 0;
 	(*commands)->is_builtin = 0;
 	(*commands)->is_redir_error = 0;
+	(*commands)->last_hd_pos = 0;
+	(*commands)->last_hd_fd = -300;
+	(*commands)->last_file_pos = 0;
 	(*commands)->argv = NULL;
 	(*commands)->path = NULL;
-	(*commands)->next = NULL;	
+	(*commands)->next = NULL;
+	(*commands)->prev = NULL;
+
 }
 
-int	tokens_to_command_ast(t_command **commands, t_token **tokens, t_env **env_list)
+int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 {
 	t_token		*tmp_token;
 	t_command	*current_cmd;

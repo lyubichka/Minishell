@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:22:15 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/26 20:21:51 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/06 20:48:57 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,18 @@ void	token_cleanup(t_token **tokens)
 			prev = curr;
 			curr = forw;
 		}
+	}
+}
+
+void token_index(t_token *tokens)
+{
+	int id;
+	
+	id = 0;
+	while (tokens)
+	{
+		tokens->id = id;
+		tokens = tokens->next;
+		id++;
 	}
 }

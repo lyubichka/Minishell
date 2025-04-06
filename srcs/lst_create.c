@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:31:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/07 18:31:22 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:22:23 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_env *lst_create_envp(char *env_name, char	*env_value)
 	return(new_elem);
 }
 
-t_token *lst_token_create(char type, char *value, int quote)
+t_token *lst_token_create(char type, char *value)
 {
 	t_token		*new_elem;
 
@@ -34,6 +34,6 @@ t_token *lst_token_create(char type, char *value, int quote)
 		return (NULL);
 	new_elem->type = type;
 	new_elem->value = value;
-	new_elem->quote = quote;
+	new_elem->id = 0;
 	new_elem->next = NULL;
 }
