@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:19:11 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/11 19:29:18 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:17:27 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,13 @@ void	update_exit_status(int status, t_env **env_list)
 		status_str = ft_itoa(status);
 		tmp->value = ft_strdup(status_str);
 	}
+}
+
+int	exit_static_status(int set_status)
+{
+	static int	exit_status;
+
+	if (set_status != -1)
+		exit_status = set_status;
+	return (exit_status);
 }

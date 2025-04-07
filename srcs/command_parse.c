@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 20:38:53 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:27:27 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static int	syntax_error(char *error_token, t_env **env_list)
 	ft_putstr_fd("syntax error near unexpected token: '",2);
 	ft_putstr_fd(error_token, 2);
 	ft_putstr_fd(" ' \n", 2);
-	update_exit_status(2, env_list);
+	// update_exit_status(2, env_list);
+	exit_static_status(2);
 	return (-1);
 }
 
@@ -186,7 +187,8 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 		update_command(command, fd_in, 0);
 		if (fd_in == -1)
 		{
-			update_exit_status(1, env_list);
+			exit_static_status(1);
+			// update_exit_status(1, env_list);
 			command->is_redir_error == 1;
 			return (-1);
 		}
@@ -201,7 +203,8 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 		update_command(command, 0, fd_out);
 		if (fd_out == -1)
 		{
-			update_exit_status(1, env_list);
+			exit_static_status(1);
+			// update_exit_status(1, env_list);
 			command->is_redir_error == 1;
 			return (-1);
 		}
@@ -216,7 +219,8 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 		update_command(command, 0, fd_out);
 		if (fd_out == -1)
 		{
-			update_exit_status(1, env_list);
+			exit_static_status(1);
+			// update_exit_status(1, env_list);
 			command->is_redir_error == 1;
 			return (-1);
 		}
@@ -255,6 +259,7 @@ int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 	{
 		//child process
 		
+		signal(SIGQUIT, SIG_IGN);
 	}
 }
 

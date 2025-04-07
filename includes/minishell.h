@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 20:35:30 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:17:33 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		check_quotes(char *line);
 int		is_quote(char c);
 int		is_operator(char c, char *delimiters);
 int		first_or_last_is_pipe(t_token *tokens);
+int		exit_static_status(int set_status);
 
 //lst
 t_env	*lst_create_envp(char *env_name, char	*env_value);
@@ -84,5 +85,7 @@ int		tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
 void	var_expansion(t_token *token, t_env *env_list);
 int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
 int		tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list);
+
+void	parse_exec_line(t_env **env_list, char* new_line);
 
 #endif
