@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 21:17:33 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:51:15 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_command
 //signals
 void	init_signal(void);
 void 	ign_signals(void);
+void	handle_heredoc_sig(int sig);
 
 //others
 void	shlvl_increase (t_env **env_list);

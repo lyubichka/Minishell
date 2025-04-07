@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 21:27:27 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:17:57 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,11 +239,38 @@ int is_delimiter_quoted(const char *delimiter_raw, const char* delimiter_cut)
 		return (0);
 }
 
+void	heredoc_write_read(char *delimiter, int write_end)
+{
+	char	*write_line;
+	char	*new_line;
+
+	while (1)
+	{
+		new_line = readline("> ");
+		if (!new_line)
+			break ;
+		if (ft_strncmp(delimiter, new_line, ft_strlen(delimiter)) == 0)
+		{
+			free (new_line);
+			new_line = NULL;
+			break ;
+		}
+		write_line = ft_strjoin(new_line, "\n");
+		write(write_end, write_line, ft_strlen(write_line));
+		free(new_line);
+		new_line = NULL;
+		free(write_line);
+		write_line = NULL;
+	}
+	close(write_end);
+}
+
 int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 {
 	pid_t	pid;
 	int		pipe_fd[2];
 	int		status;
+	
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
@@ -258,8 +285,11 @@ int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 	if (pid == 0)
 	{
 		//child process
-		
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, handle_heredoc_sig);
+		close(pipe_fd[0]);
+		heredoc_write_read(delimiter, pipe_fd[1]);
+		//check the need of clearing all memory at this point
 	}
 }
 

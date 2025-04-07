@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 20:34:01 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 20:45:11 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:52:45 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	handle_heredoc_sig(int sig)
 {
 	if (sig == SIGINT)
 	{
-		
+		exit_static_status(1);
+		close(STDIN_FILENO);
 	}
 }
