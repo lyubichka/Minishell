@@ -4,7 +4,7 @@ INCLUDES_FILES	= includes/minishell.h
 
 CC				= CC
 
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -Iincludes -Ilibft
 
 RM				= rm -rf
 
@@ -14,7 +14,7 @@ RLFLAGS			= -lreadline -lhistory
 
 RLDIR			= -L/opt/vagrant/embedded/lib
 
-RLINC			= -I/opt/vagrant/embedded/include/readline/readline.h
+RLINC			= -I/opt/vagrant/embedded/include
 
 SRCS_FILES		= 	char_tools.c \
 					check_quotes.c \
@@ -43,7 +43,7 @@ OBJS			= $(SRCS:c=o)
 all: $(NAME)
 
 $(NAME) : $(OBJS) $(LIBFT)
-		$(CC) $(CFLAGS) $(OBJS) $(INCLUDES_FILES) $(LIBFT) $(RLDIR) $(RLINC) $(RLFLAGS) -o $(NAME)
+		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(RLDIR) $(RLINC) $(RLFLAGS) -o $(NAME)
 
 $(LIBFT):
 		make all -C libft

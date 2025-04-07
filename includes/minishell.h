@@ -6,15 +6,16 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/06 21:24:46 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:55:03 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft/libft.h"
+# include "libft.h"
 # include <signal.h>
+# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
