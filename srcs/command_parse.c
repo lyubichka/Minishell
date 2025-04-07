@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/06 21:49:15 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:38:53 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 
 	// Expand variables and remove quotes from the filename
 	var_expansion(&(*tmp_token)->next, *env_list);
-	filename = remove_quotes(filename);
+	filename = remove_quotes(filename); //recheck memory loss here
 
 	// Process input redirection
 	if ((*tmp_token)->value[0] == '<') 
@@ -227,18 +227,65 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
     return 0; // Return 0 to continue parsing
 }
 
+int is_delimiter_quoted(const char *delimiter_raw, const char* delimiter_cut)
+{
+	if (ft_strlen(delimiter_cut) < ft_strlen(delimiter_raw))
+		return (1);
+	else
+		return (0);
+}
+
+int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
+{
+	pid_t	pid;
+	int		pipe_fd[2];
+	int		status;
+
+	if (pipe(pipe_fd) == -1)
+		return (-1);
+	ign_signals();
+	pid = fork();
+	if (pid == -1)
+	{
+		close(pipe_fd[1]);
+		close(pipe_fd[0]);
+		return(-1);
+	}
+	if (pid == 0)
+	{
+		//child process
+		
+	}
+}
+
 int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
 {
+	char 	*delimiter;
+	int		fd;
+	
 	while (token && token->type != 'p')
 	{
 		if (token->type == 'h')
 		{
-			if (!token->next)
+			if (!token->next || token->next->type != 'w')
 				return -300; //syntax error
-			if (token->next && token->next->type != 'w')
-				return -300; //syntax error
-			
+			delimiter = remove_quotes(token->next->value);
+			if (is_delimiter_quoted(token->next->value, delimiter) == 1)
+				fd = fork_one_heredoc(delimiter, *env_list, 1);
+			else
+				fd = fork_one_heredoc(delimiter, *env_list, 0);
+			free(delimiter);
+			if (fd < 0)
+				return (-1);
+			if (command->last_hd_fd != -300 && command->last_hd_fd != -1)
+				close(command->last_file_pos);
+			command->last_hd_fd = fd;
+			command->last_hd_pos = token->id;
+			token->type = 'd';
+			token->next->type = 'd';
+			token = token->next;
 		}
+		token = token->next;
 	}
 }
 
