@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 22:17:57 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:18:47 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,7 @@ void	heredoc_write_read(char *delimiter, int write_end)
 			break ;
 		}
 		write_line = ft_strjoin(new_line, "\n");
+		//maybe expand here?
 		write(write_end, write_line, ft_strlen(write_line));
 		free(new_line);
 		new_line = NULL;
