@@ -43,6 +43,8 @@ static size_t count_words(char const *s, char c)
     size_t count = 0;
     size_t in_word = 0;
 
+    if (!s)
+        return (0);
     while (*s)
     {
         if (*s != c && !in_word) // The beginning of a new word
@@ -66,7 +68,11 @@ static size_t count_words(char const *s, char c)
  */
 static char *copy_word(char const *s, size_t start, size_t len)
 {
-    char *word = malloc(len + 1);
+    char *word;
+
+    if (!s)
+        return (NULL);
+    word = malloc(len + 1);
     if (!word)
         return (NULL);
     ft_strlcpy(word, s + start, len + 1); // Copying the word
@@ -84,9 +90,13 @@ char **ft_split(char const *s, char c)
     size_t i = 0;
     size_t j = 0;
     size_t start = 0;
-    size_t word_count = count_words(s, c);
-    char **result = malloc(sizeof(char *) * (word_count + 1));
+    size_t word_count;
+    char **result;
 
+    if (!s)
+        return (NULL);
+    word_count = count_words(s, c);
+    result = malloc(sizeof(char *) * (word_count + 1));
     if (!result)
         return (NULL);
     while (s[i])
