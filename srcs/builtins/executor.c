@@ -16,17 +16,29 @@ static void setup_input(t_command *cmd)
 {
     if (cmd->pipe_in != -1)
     {
-        dup2(cmd->pipe_in, STDIN_FILENO);
+        if (dup2(cmd->pipe_in, STDIN_FILENO) == -1)
+        {
+            ft_putstr_fd("dup2 pipe_in", 2);
+            exit(1);
+        }
         close(cmd->pipe_in);
     }
-    if (cmd->fd_in != -1)
+    if (cmd->fd_in != -1) // if there is an input redirect 
     {
-        dup2(cmd->fd_in, STDIN_FILENO);
+        if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+        {
+            ft_putstr_fd("dup2 fd_in", 2);
+            exit(1);
+        }
         close(cmd->fd_in);
     }
-    if (cmd->last_hd_fd != -1)
+    if (cmd->last_hd_fd != -1) // here-doc
     {
-        dup2(cmd->last_hd_fd, STDIN_FILENO);
+        if (dup2(cmd->last_hd_fd, STDIN_FILENO) == -1)
+        {
+            ft_putstr_fd("dup2 last_hd_fd", 2);
+            exit(1);
+        }
         close(cmd->last_hd_fd);
     }
 }
@@ -36,21 +48,76 @@ static void setup_output(t_command *cmd)
     if (cmd->is_pipe)
     {
         close(cmd->pipe_out[0]);
-        dup2(cmd->pipe_out[1], STDOUT_FILENO);
+        if (dup2(cmd->pipe_out[1], STDOUT_FILENO) == -1)
+        {
+            ft_putstr_fd("dup2 pipe_out", 2);
+            exit(1);
+        }
         close(cmd->pipe_out[1]);
     }
     if (cmd->fd_out != -1)
     {
-        dup2(cmd->fd_out, STDOUT_FILENO);
+        if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+        {
+            ft_putstr_fd("dup2 fd_out", 2);
+            exit(1);
+        }
         close(cmd->fd_out);
     }
+}
+
+char **env_list_to_array(*env_list)
+{
+    char       **array;
+    int        count;
+    t_env      *tmp;
+    char       *name_eq;
+    char       *full_str; 
+    int        i;
+    
+    i = 0;
+    count = 0;
+    tmp = env_list;
+    while(tmp)
+    {
+        count++;
+        tmp = tmp->next;
+    }
+    array = malloc(sizeof(char *)) * (count + 1);
+    if (!array)
+        return (NULL);
+    while (tmp)
+    {
+        name_eq = ft_strjoin(tmp->name, "=");
+        if (!name_eq)
+        {
+            while (i > 0)
+                free(array[--i]);
+            free(array);
+            return (NULL);
+        }
+        full_str = ft_strjoin(name_eq, tmp->value);
+        free(name_eq);
+        if (!full_str)
+        {
+            while (i > 0)
+                free(array[--i]);
+            free(array);
+            return (NULL);
+        }
+        array[i] = full_str;
+        i++;
+        tmp = tmp->next;
+    }
+    array[count] = NULL;
+    return (array);
 }
 
 static void run_external_command(t_command *cmd, t_env **env_list)
 {
     setup_input(cmd);
     setup_output(cmd);
-    execve(cmd->path, cmd->argv, env_list_to_array(*env_list));
+    execve(cmd->path, cmd->argv, env_list_to_array(*env_list)); // Executes an external program, replacing the current process
     ft_putstr_fd("minishell: execve failed\n", 2);
     exit(127);
 }
@@ -63,15 +130,15 @@ static void handle_parent_process(t_command *cmd, t_env **env_list, pid_t pid)
         close(cmd->fd_in);
     if (cmd->fd_out != -1)
         close(cmd->fd_out);
-    if (cmd->is_pipe)
+    if (cmd->is_pipe)    
     {
-        close(cmd->pipe_out[1]);
+        close(cmd->pipe_out[1]); // closing the record
         if (cmd->next)
-            cmd->next->pipe_in = cmd->pipe_out[0];
+            cmd->next->pipe_in = cmd->pipe_out[0]; // reading
         else
             close(cmd->pipe_out[0]);
     }
-    waitpid(pid, &exit_static_status(-1), 0);
+    waitpid(pid, &exit_static_status(-1), 0); // waiting for the child process to complete
     update_exit_status(WEXITSTATUS(exit_static_status(-1)), env_list);
 }
 
@@ -97,6 +164,8 @@ static void run_builtin(t_command *cmd, t_env **env_list)
 
 void execute_command(t_command *cmd, t_env **env_list)
 {
+    pid_t    pid;
+    
     while (cmd)
     {
         if (cmd->is_builtin)
@@ -104,7 +173,7 @@ void execute_command(t_command *cmd, t_env **env_list)
             run_builtin(cmd, env_list);
             return;
         }
-        if (cmd->is_pipe)
+        if (cmd->is_pipe) // if the command is in the pipeline, create a pipe
         {
             if (pipe(cmd->pipe_out) == -1)
             {
@@ -113,14 +182,14 @@ void execute_command(t_command *cmd, t_env **env_list)
                 return;
             }
         }
-        pid_t pid = fork();
+        pid = fork(); // creating a child process
         if (pid == -1)
         {
             ft_putstr_fd("minishell: fork error\n", 2);
             update_exit_status(1, env_list);
             return;
         }
-        if (pid == 0)
+        if (pid == 0) 
             run_external_command(cmd, env_list);
         else
             handle_parent_process(cmd, env_list, pid);
