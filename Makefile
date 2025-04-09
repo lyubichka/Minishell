@@ -22,6 +22,7 @@ SRCS_FILES		= 	char_tools.c \
 					envp_to_list.c \
 					first_is_pipe.c \
 					init_signal.c \
+					line_var_expansion.c \
 					lst_add.c \
 					lst_append_del.c \
 					lst_clear.c \

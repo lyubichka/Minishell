@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 21:00:19 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:02:29 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	find_and_expand_line(char **line, t_env *env_list, int *pos_value)
 	char *exit_code_str;
 	
 	j = *pos_value;
-	while((*line)[j] != '\0' && (*line)[j] != ' ' && (*line)[j] != '$')
+	while ((*line)[j] != '\0' && (*line)[j] != ' ' && (*line)[j] != '$')
 		j++;
 	var_name = ft_substr(*line, *pos_value + 1, j - *pos_value - 1);
 	if (ft_strncmp(var_name, "?", 2) == 0)
@@ -90,10 +90,10 @@ void line_var_expansion(char **line_to_expand, t_env *env_list)
 	i = 0;
     while ((*line_to_expand)[i] != '\0')
     {
-        if((*line_to_expand)[i] == '$')
+        if ((*line_to_expand)[i] == '$')
         {
             find_and_expand_line(line_to_expand, env_list, &i);
-            continue; // Skip the rest of the loop after expansion
+            continue ; // Skip the rest of the loop after expansion
         }
         i++;  // Continue scanning the next character
     }

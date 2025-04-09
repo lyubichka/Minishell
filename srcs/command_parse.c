@@ -6,18 +6,17 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 20:54:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:06:14 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	syntax_error(char *error_token, t_env **env_list)
+static int	syntax_error(char *error_token)
 {
 	ft_putstr_fd("syntax error near unexpected token: '",2);
 	ft_putstr_fd(error_token, 2);
 	ft_putstr_fd(" ' \n", 2);
-	// update_exit_status(2, env_list);
 	exit_static_status(2);
 	return (-1);
 }
@@ -62,6 +61,7 @@ int	add_to_argv(t_token *token, t_command *command, t_env **env_list)
 	char	**new_argv;
 	
 	i = 0;
+	j = 0;
 	var_expansion(token, *env_list);
 	cleaned = remove_quotes(token->value);
 	free(token->value);
@@ -177,7 +177,7 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 	filename = (*tmp_token)->next->value;
 
 	// Expand variables and remove quotes from the filename
-	var_expansion(&(*tmp_token)->next, *env_list);
+	var_expansion((*tmp_token)->next, *env_list);
 	filename = remove_quotes(filename); //recheck memory loss here
 
 	// Process input redirection
@@ -189,7 +189,7 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 		{
 			exit_static_status(1);
 			// update_exit_status(1, env_list);
-			command->is_redir_error == 1;
+			command->is_redir_error = 1;
 			return (-1);
 		}
 		(*tmp_token)->type = 'd';
@@ -205,7 +205,7 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 		{
 			exit_static_status(1);
 			// update_exit_status(1, env_list);
-			command->is_redir_error == 1;
+			command->is_redir_error = 1;
 			return (-1);
 		}
 		(*tmp_token)->type = 'd';
@@ -221,7 +221,7 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
 		{
 			exit_static_status(1);
 			// update_exit_status(1, env_list);
-			command->is_redir_error == 1;
+			command->is_redir_error = 1;
 			return (-1);
 		}
 		(*tmp_token)->type = 'd';
@@ -401,7 +401,7 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 	}
 	if (status == -300)
 	{
-		syntax_error(tmp_token->value, env_list); // here would need to close all open fds.
+		syntax_error(tmp_token->value); // here would need to close all open fds.
 		return (-1);
 	}
 	token_cleanup(tokens);

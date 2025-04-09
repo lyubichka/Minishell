@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 20:45:54 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:05:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	var_expansion(t_token *token, t_env *env_list);
 int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
 int		tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list);
 
-void	line_var_expansion(char *line_to_expand, t_env *env_list);
+void	line_var_expansion(char **line_to_expand, t_env *env_list);
 void	parse_exec_line(t_env **env_list, char* new_line);
 
 #endif

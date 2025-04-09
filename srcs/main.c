@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/04 20:22:58 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:07:34 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ static int boot_shell(int ac, char **envp, t_env **env_list)
 	return(0);
 }
 
-int main(char **av, int ac, char **envp)
+int main(int ac, char **av, char **envp)
 {
 	t_env	*env_list;
 	char	*new_line;
 	int		status;
 	
+	(void)av;
+	status = 0;
 	if (boot_shell(ac, envp, &env_list) == 1)
 		return (0);
 	while (1)
