@@ -20,14 +20,15 @@ SRCS_FILES		= 	char_tools.c \
 					check_quotes.c \
 					command_parse.c \
 					envp_to_list.c \
-					first_is_pipe.c \
 					init_signal.c \
 					line_var_expansion.c \
 					lst_add.c \
 					lst_append_del.c \
 					lst_clear.c \
 					main.c \
+					memory_free.c \
 					parse_exec_line.c \
+					pipe_syntax_check.c \
 					shlvl_increase.c \
 					token_clean_split.c \
 					tokenizer.c \

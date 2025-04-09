@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 21:05:54 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 22:49:55 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,11 @@ void	shlvl_increase (t_env **env_list);
 int		check_quotes(char *line);
 int		is_quote(char c);
 int		is_operator(char c, char *delimiters);
-int		first_or_last_is_pipe(t_token *tokens);
+char	*join_path(const char *dir, const char *cmd);
+int		pipe_syntax_check(t_token *tokens);
 int		exit_static_status(int set_status);
+int		syntax_error(char *error_token);
+void	free_split(char **array);
 
 //lst
 t_env	*lst_create_envp(char *env_name, char	*env_value);

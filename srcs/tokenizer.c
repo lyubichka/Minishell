@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 21:18:18 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:54:00 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ static int	check_operators(t_token *tokens)
 				ft_putstr_fd("Error: Unidentified operator ", 2);
 				ft_putstr_fd(tokens->value, 2);
 				ft_putstr_fd(" found \n", 2);
+				exit_static_status(1);
 				return (-1);
 			}
 		}
@@ -156,10 +157,8 @@ int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
 	token_split(tokens);
 	token_cleanup(tokens);
 	token_index(*tokens);
-	if (check_operators(*tokens) == -1 || first_or_last_is_pipe(*tokens) == -1)
+	if (check_operators(*tokens) == -1 || pipe_syntax_check(*tokens) == -1)
 	{
-		// update_exit_status(1, env_list);
-		exit_static_status(1);
 		lst_clear_tokens(tokens);
 		return (-1);
 	}

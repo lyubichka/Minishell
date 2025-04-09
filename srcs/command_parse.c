@@ -6,13 +6,13 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 21:06:14 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 23:12:08 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	syntax_error(char *error_token)
+int	syntax_error(char *error_token)
 {
 	ft_putstr_fd("syntax error near unexpected token: '",2);
 	ft_putstr_fd(error_token, 2);
@@ -326,7 +326,7 @@ int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
 			if (fd < 0)
 				return (-1);
 			if (command->last_hd_fd != -300 && command->last_hd_fd != -1)
-				close(command->last_file_pos);
+				close(command->last_hd_fd);
 			command->last_hd_fd = fd;
 			command->last_hd_pos = token->id;
 			token->type = 'd';
@@ -354,7 +354,113 @@ int	any_heredoc(t_token *tokens)
 	return (0);
 }
 
-int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
+void	path_error_setting(t_command *command, char *cmd_name, char *last_path)
+{
+	command->is_redir_error = 1;
+	if (!last_path)
+	{
+		ft_putstr_fd("minishell> ", 2);
+		ft_putstr_fd(cmd_name, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		exit_static_status(127);
+	}
+	else
+	{
+		ft_putstr_fd("minishell> ", 2);
+		ft_putstr_fd(cmd_name, 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		exit_static_status(126);
+	}
+}
+
+int	find_exec_path(char *cmd_name, t_env *env_list, t_command *command)
+{
+	char	**paths;
+	char	*joined;
+	char	*path_env;
+	int		i;
+
+	if (is_builtin(cmd_name) == 1)
+		return(command->is_builtin == 1, 0);
+	path_env = get_env_value(env_list, "PATH");// your env lookup helper
+	if (!path_env || !cmd_name ) 
+		return (-1);
+	if (ft_strchr(cmd_name, '/')) // absolute or relative
+	{
+		if (access(cmd_name, X_OK) == 0)
+		{
+			command->path = ft_strdup(cmd_name);
+			return(0);
+		}
+		else if (access(cmd_name, F_OK) == 0 && access(cmd_name, X_OK) != 0)
+			path_error_setting(command, cmd_name, "DENIED");
+		else
+			path_error_setting(command, cmd_name, NULL);
+		return (-1);
+	}
+	paths = ft_split(path_env, ':');
+	i = 0;
+	while (paths[i])
+	{
+		joined = join_path(paths[i], cmd_name); // adds slash
+		if (access(joined, F_OK) == 0)
+		{
+			if(accces(joined, X_OK) == 0)
+			{
+				free_split(paths);
+				command->path = joined;
+				return(0);
+			}
+			else
+			{
+				free(joined);
+				break;
+			}
+		}
+		free(joined);
+		i++;
+	}
+	path_error_setting(command, cmd_name, paths[i]);
+	free_split(paths);
+	return (-1); // not found
+}
+
+void decide_fd_in(t_command *command)
+{
+	if (command->last_hd_fd != -1 && command->last_file_pos != 0)
+	{
+		if (command->last_hd_pos > command->last_file_pos)
+		{
+			// Use heredoc, close input file fd if open
+			if (command->fd_in != -1 && command->fd_in != STDIN_FILENO)
+				close(command->fd_in);
+			command->fd_in = command->last_hd_fd;
+		}
+		else
+		{
+			// Use input file redir, close heredoc fd
+			if (command->last_hd_fd != -1)
+				close(command->last_hd_fd);
+			// fd_in should already be set by handle_redir
+		}
+	}
+	else if (command->last_hd_fd != -1 )
+		command->fd_in = command->last_hd_fd;
+	else if (command->fd_in != -1)
+	{
+		return ;
+	}
+	else if (command->pipe_in == 1)
+	{
+		command->fd_in = -1; // Signal to use pipe in exec phase
+	}
+	else
+	{
+		command->fd_in = STDIN_FILENO;
+	}
+}
+
+int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list)
 {
 	t_token	*tmp_token;
 	int		status;
@@ -363,20 +469,37 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 	status = 0;
 	tmp_token = *tokens;
 	found_heredoc = any_heredoc(*tokens);
-	while (command && tmp_token && status == 0) 
+	while (cmd && tmp_token && status == 0) 
 	{
 		if (tmp_token->type == 'p')
+		{
+			cmd->is_pipe == 1;
 			break;
+		}
 		if (found_heredoc == 1)
 		{
-			status = handle_heredoc(tmp_token, command, env_list);
+			status = handle_heredoc(tmp_token, cmd, env_list);
 			found_heredoc = -1;
 		}
 		if (tmp_token->type == 'w')
-			status = add_to_argv(tmp_token, command, env_list);
+			status = add_to_argv(tmp_token, cmd, env_list);
 		else if (tmp_token->type == 'r')
-			status = handle_redir(&tmp_token, command, env_list); //treat files, fd_in, fd_out and redirs
+			status = handle_redir(&tmp_token, cmd, env_list); //treat files, fd_in, fd_out and redirs
 		tmp_token = tmp_token->next;
+	}
+	if (status == -300)
+	{
+		syntax_error(tmp_token->value); // here would need to close all open fds in this cmd and -1 should signal to close in prior cmds as well.
+		return (-1);
+	}
+	if (cmd->argv && cmd->argv[0] && cmd->is_redir_error == 0)
+		status = find_exec_path(cmd->argv[0], *env_list, cmd);
+	if (status == -1)
+		//clear everything ? but do not return -1 as execution would continue;
+	decide_fd_in(cmd);
+	token_cleanup(tokens);
+	return (0);
+}
 
 		//first check for errors on files, in the order that they are given, but do not exit the line. 
 		//for example if i have ls -l < fdd | ls  < output, the second pipe still runs although the first put up an error		
@@ -397,13 +520,3 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 		//performed on word. If any part of word is quoted, the delimiter is the result of quote removal on word, and the lines
 		//in the here-document are not expanded. 
 		//If word is unquoted, all lines of the here-document are subjected to parameter expansion
-		
-	}
-	if (status == -300)
-	{
-		syntax_error(tmp_token->value); // here would need to close all open fds.
-		return (-1);
-	}
-	token_cleanup(tokens);
-	return (0);
-}
