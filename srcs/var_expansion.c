@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 20:46:30 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 21:00:58 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,18 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 {
 	int j;
 	char *var_name;
+	char *exit_code_str;
 	
 	j = *pos_value;
 	while(token->value[j] != '\0' && token->value[j] != ' ' && token->value[j] != '$')
 		j++;
 	var_name = ft_substr(token->value, *pos_value + 1, j - *pos_value - 1);
 	if (ft_strncmp(var_name, "?", 2) == 0)
-		replace_var(token, ft_itoa(exit_static_status(-1)), var_name, pos_value);
+	{
+		exit_code_str = ft_itoa(exit_static_status(-1));
+		replace_var(token, exit_code_str, var_name, pos_value);
+		free(exit_code_str);		
+	}	
 	else
 	{
 		while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name)) != 0)

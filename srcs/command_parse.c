@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 20:47:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:54:24 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ void	heredoc_write_read(char *delimiter, int write_end, int is_quoted, t_env *en
 		}
 		write_line = ft_strjoin(new_line, "\n");
 		if (is_quoted == 0)
-			line_var_expansion(write_line, env);
+			line_var_expansion(&write_line, env);
 		write(write_end, write_line, ft_strlen(write_line));
 		free(new_line);
 		new_line = NULL;
@@ -320,10 +320,8 @@ int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
 			if (!token->next || token->next->type != 'w')
 				return -300; //syntax error
 			delimiter = remove_quotes(token->next->value);
-			if (is_delimiter_quoted(token->next->value, delimiter) == 1)
-				fd = fork_one_heredoc(delimiter, *env_list, 1);
-			else
-				fd = fork_one_heredoc(delimiter, *env_list, 0);
+			fd = fork_one_heredoc(delimiter, *env_list, \
+				is_delimiter_quoted(token->next->value, delimiter));
 			free(delimiter);
 			if (fd < 0)
 				return (-1);
@@ -337,6 +335,7 @@ int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
 		}
 		token = token->next;
 	}
+	return (0);
 }
 
 int	any_heredoc(t_token *tokens)
@@ -363,7 +362,7 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 	
 	status = 0;
 	tmp_token = *tokens;
-	found_heredoc == any_heredoc(*tokens);
+	found_heredoc = any_heredoc(*tokens);
 	while (command && tmp_token && status == 0) 
 	{
 		if (tmp_token->type == 'p')
@@ -371,7 +370,7 @@ int	command_parse(t_command *command, t_token **tokens, t_env **env_list)
 		if (found_heredoc == 1)
 		{
 			status = handle_heredoc(tmp_token, command, env_list);
-			found_heredoc == -1;
+			found_heredoc = -1;
 		}
 		if (tmp_token->type == 'w')
 			status = add_to_argv(tmp_token, command, env_list);
