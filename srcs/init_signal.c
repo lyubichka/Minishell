@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 22:13:28 by saherrer          #+#    #+#             */
-/*   Updated: 2025/02/15 23:11:19 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:23:28 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	sigint_handle(int sig)
 	rl_on_new_line();   // Tell Readline we are at a new line
 	rl_replace_line("", 0);  // Clear the current input
 	rl_redisplay();      // Redisplay the prompt
+	exit_static_status(1);
 }
 
 static void sigquit_handle(int sig)

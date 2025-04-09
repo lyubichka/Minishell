@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 21:33:11 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:46:30 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,38 +111,3 @@ void var_expansion(t_token *token, t_env *env_list)
         i++;  // Continue scanning the next character
     }
 }
-
-// void	var_expansion(t_token *token, t_env *env_list)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while(token->value[i] != '\0')
-// 	{
-// 		if (token->value[i] == '\'' && token->value[i + 1]) //ignore the single quoted sections
-// 		{
-// 			i++; //move past opening quote
-// 			while (token->value[i] != '\0')
-// 			{
-// 				if(token->value[i] == '\'') //not checking for escaped quotes as bash does not interpret escape inside single quotes
-// 					break;
-// 				i++;
-// 			}
-// 			i++; //move past closing quote
-// 		}
-// 		else if (token->value[i] == '$' && \
-// 		token->value[i + 1] != '\0' && \
-// 		token->value[i + 1] != ' ')
-// 		{
-// 			if (i == 0 || token->value[i - 1] != '\\' )
-// 			{
-// 				find_and_expand(token, env_list, &i);
-// 				continue ; //needed?
-// 			}
-// 			else
-// 				i++;
-// 		}
-// 		else
-// 			i++;
-// 	}
-// }
