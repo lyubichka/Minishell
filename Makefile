@@ -19,17 +19,22 @@ RLINC			= -I/opt/vagrant/embedded/include
 SRCS_FILES		= 	char_tools.c \
 					check_quotes.c \
 					command_parse.c \
+					custom_signals.c \
 					envp_to_list.c \
+					find_exec_path.c \
+					handle_redir.c \
+					here_doc.c \
 					init_signal.c \
 					line_var_expansion.c \
 					lst_add.c \
 					lst_append_del.c \
 					lst_clear.c \
+					lst_create.c \
 					main.c \
 					memory_free.c \
 					parse_exec_line.c \
-					pipe_syntax_check.c \
 					shlvl_increase.c \
+					syntax_check.c \
 					token_clean_split.c \
 					tokenizer.c \
 					tokens_to_command.c \

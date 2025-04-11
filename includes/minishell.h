@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:16:53 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 21:47:28 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ int		check_quotes(char *line);
 
 // find_exec_path.c
 int		find_exec_path(char *cmd_name, t_env *env_list, t_command *cmd);
+
+// handle_redir.c
+int		handle_redir(t_token **tmp_token,t_command *cmd, t_env **env_list);
 
 //signals
 void	init_signal(void);
