@@ -135,15 +135,6 @@ void execute_command(t_command *cmd, t_env **env_list)
             run_builtin(cmd, env_list);
             return;
         }
-        if (cmd->is_pipe) // if the command is in the pipeline, create a pipe
-        {
-            if (pipe(cmd->pipe_out) == -1)
-            {
-                ft_putstr_fd("minishell: pipe error\n", 2);
-                update_exit_status(1, env_list);
-                return;
-            }
-        }
         pid = fork(); // creating a child process
         if (pid == -1)
         {
