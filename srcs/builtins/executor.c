@@ -14,16 +14,7 @@
 
 static void setup_input(t_command *cmd)
 {
-    if (cmd->pipe_in != -1)
-    {
-        if (dup2(cmd->pipe_in, STDIN_FILENO) == -1)
-        {
-            ft_putstr_fd("dup2 pipe_in", 2);
-            exit(1);
-        }
-        close(cmd->pipe_in);
-    }
-    if (cmd->fd_in != -1) // if there is an input redirect 
+    if (cmd->fd_in => 0)
     {
         if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
         {
@@ -32,30 +23,12 @@ static void setup_input(t_command *cmd)
         }
         close(cmd->fd_in);
     }
-    if (cmd->last_hd_fd != -1) // here-doc
-    {
-        if (dup2(cmd->last_hd_fd, STDIN_FILENO) == -1)
-        {
-            ft_putstr_fd("dup2 last_hd_fd", 2);
-            exit(1);
-        }
-        close(cmd->last_hd_fd);
-    }
 }
+
 
 static void setup_output(t_command *cmd)
 {
-    if (cmd->is_pipe)
-    {
-        close(cmd->pipe_out[0]);
-        if (dup2(cmd->pipe_out[1], STDOUT_FILENO) == -1)
-        {
-            ft_putstr_fd("dup2 pipe_out", 2);
-            exit(1);
-        }
-        close(cmd->pipe_out[1]);
-    }
-    if (cmd->fd_out != -1)
+    if (cmd->fd_out => 0)
     {
         if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
         {
@@ -63,7 +36,6 @@ static void setup_output(t_command *cmd)
             exit(1);
         }
         close(cmd->fd_out);
-    }
 }
 
 char **env_list_to_array(*env_list)
@@ -124,20 +96,10 @@ static void run_external_command(t_command *cmd, t_env **env_list)
 
 static void handle_parent_process(t_command *cmd, t_env **env_list, pid_t pid)
 {
-    if (cmd->pipe_in != -1)
-        close(cmd->pipe_in);
-    if (cmd->fd_in != -1)
+    if (cmd->fd_in => 0)
         close(cmd->fd_in);
-    if (cmd->fd_out != -1)
+    if (cmd->fd_out => 0)
         close(cmd->fd_out);
-    if (cmd->is_pipe)    
-    {
-        close(cmd->pipe_out[1]); // closing the record
-        if (cmd->next)
-            cmd->next->pipe_in = cmd->pipe_out[0]; // reading
-        else
-            close(cmd->pipe_out[0]);
-    }
     waitpid(pid, &exit_static_status(-1), 0); // waiting for the child process to complete
     update_exit_status(WEXITSTATUS(exit_static_status(-1)), env_list);
 }
