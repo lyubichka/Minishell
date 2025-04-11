@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 22:49:55 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:47:03 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ int		check_quotes(char *line);
 int		is_quote(char c);
 int		is_operator(char c, char *delimiters);
 char	*join_path(const char *dir, const char *cmd);
-int		pipe_syntax_check(t_token *tokens);
 int		exit_static_status(int set_status);
 int		syntax_error(char *error_token);
+int		syntax_check(t_token *tokens);
 void	free_split(char **array);
 
 //lst

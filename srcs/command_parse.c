@@ -6,20 +6,11 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 23:12:08 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:46:30 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	syntax_error(char *error_token)
-{
-	ft_putstr_fd("syntax error near unexpected token: '",2);
-	ft_putstr_fd(error_token, 2);
-	ft_putstr_fd(" ' \n", 2);
-	exit_static_status(2);
-	return (-1);
-}
 
 char	*remove_quotes(const char *s)
 {
