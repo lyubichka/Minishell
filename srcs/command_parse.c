@@ -6,43 +6,11 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 20:46:30 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 21:07:13 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*remove_quotes(const char *s)
-{
-	int		i;
-	int		j;
-	char	quote;
-	char	*res;
-
-	i = 0;
-	j = 0;
-	quote = 0;
-	res = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (!res)
-		return (NULL);
-	while (s[i])
-	{
-		if ((s[i] == '\'' || s[i] == '"'))
-		{
-			if (!quote)
-				quote = s[i];
-			else if (quote == s[i])
-				quote = 0;
-			else
-				res[j++] = s[i];
-		}
-		else
-			res[j++] = s[i];
-		i++;
-	}
-	res[j] = '\0';
-	return (res);
-}
 
 int	add_to_argv(t_token *token, t_command *command, t_env **env_list)
 {
@@ -222,113 +190,6 @@ int	handle_redir(t_token **tmp_token,t_command *command, t_env **env_list)
     return 0; // Return 0 to continue parsing
 }
 
-int is_delimiter_quoted(const char *delimiter_raw, const char* delimiter_cut)
-{
-	if (ft_strlen(delimiter_cut) < ft_strlen(delimiter_raw))
-		return (1);
-	else
-		return (0);
-}
-
-void	heredoc_write_read(char *delimiter, int write_end, int is_quoted, t_env *env)
-{
-	char	*write_line;
-	char	*new_line;
-
-	while (1)
-	{
-		new_line = readline("> ");
-		if (!new_line)
-			break ;
-		if (ft_strncmp(delimiter, new_line, ft_strlen(delimiter)) == 0)
-		{
-			free (new_line);
-			new_line = NULL;
-			break ;
-		}
-		write_line = ft_strjoin(new_line, "\n");
-		if (is_quoted == 0)
-			line_var_expansion(&write_line, env);
-		write(write_end, write_line, ft_strlen(write_line));
-		free(new_line);
-		new_line = NULL;
-		free(write_line);
-		write_line = NULL;
-	}
-	close(write_end);
-}
-
-int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
-{
-	pid_t	pid;
-	int		pipe_fd[2];
-	int		status;
-	
-
-	if (pipe(pipe_fd) == -1)
-		return (-1);
-	ign_signals();
-	pid = fork();
-	if (pid == -1)
-	{
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
-		return(-1);
-	}
-	if (pid == 0)
-	{
-		//child process
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, handle_heredoc_sig);
-		close(pipe_fd[0]);
-		heredoc_write_read(delimiter, pipe_fd[1], is_quoted, env);
-		//check the need of clearing all memory at this point
-		exit(0);
-	}
-	close(pipe_fd[1]);
-	waitpid(pid, &status, 0);
-	init_signal();
-	if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
-	{
-		exit_static_status(1);
-		close(pipe_fd[0]);
-		return (-1);
-	}
-	else
-		return (pipe_fd[0]);
-	
-}
-
-int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
-{
-	char 	*delimiter;
-	int		fd;
-	
-	while (token && token->type != 'p')
-	{
-		if (token->type == 'h')
-		{
-			if (!token->next || token->next->type != 'w')
-				return -300; //syntax error
-			delimiter = remove_quotes(token->next->value);
-			fd = fork_one_heredoc(delimiter, *env_list, \
-				is_delimiter_quoted(token->next->value, delimiter));
-			free(delimiter);
-			if (fd < 0)
-				return (-1);
-			if (command->last_hd_fd != -300 && command->last_hd_fd != -1)
-				close(command->last_hd_fd);
-			command->last_hd_fd = fd;
-			command->last_hd_pos = token->id;
-			token->type = 'd';
-			token->next->type = 'd';
-			token = token->next;
-		}
-		token = token->next;
-	}
-	return (0);
-}
-
 int	any_heredoc(t_token *tokens)
 {
 	t_token *tmp_token;
@@ -343,77 +204,6 @@ int	any_heredoc(t_token *tokens)
 		tmp_token = tmp_token->next;
 	}
 	return (0);
-}
-
-void	path_error_setting(t_command *command, char *cmd_name, char *last_path)
-{
-	command->is_redir_error = 1;
-	if (!last_path)
-	{
-		ft_putstr_fd("minishell> ", 2);
-		ft_putstr_fd(cmd_name, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		exit_static_status(127);
-	}
-	else
-	{
-		ft_putstr_fd("minishell> ", 2);
-		ft_putstr_fd(cmd_name, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
-		exit_static_status(126);
-	}
-}
-
-int	find_exec_path(char *cmd_name, t_env *env_list, t_command *command)
-{
-	char	**paths;
-	char	*joined;
-	char	*path_env;
-	int		i;
-
-	if (is_builtin(cmd_name) == 1)
-		return(command->is_builtin == 1, 0);
-	path_env = get_env_value(env_list, "PATH");// your env lookup helper
-	if (!path_env || !cmd_name ) 
-		return (-1);
-	if (ft_strchr(cmd_name, '/')) // absolute or relative
-	{
-		if (access(cmd_name, X_OK) == 0)
-		{
-			command->path = ft_strdup(cmd_name);
-			return(0);
-		}
-		else if (access(cmd_name, F_OK) == 0 && access(cmd_name, X_OK) != 0)
-			path_error_setting(command, cmd_name, "DENIED");
-		else
-			path_error_setting(command, cmd_name, NULL);
-		return (-1);
-	}
-	paths = ft_split(path_env, ':');
-	i = 0;
-	while (paths[i])
-	{
-		joined = join_path(paths[i], cmd_name); // adds slash
-		if (access(joined, F_OK) == 0)
-		{
-			if(accces(joined, X_OK) == 0)
-			{
-				free_split(paths);
-				command->path = joined;
-				return(0);
-			}
-			else
-			{
-				free(joined);
-				break;
-			}
-		}
-		free(joined);
-		i++;
-	}
-	path_error_setting(command, cmd_name, paths[i]);
-	free_split(paths);
-	return (-1); // not found
 }
 
 void decide_fd_in(t_command *command)

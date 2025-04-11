@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 20:41:55 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 20:48:28 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int	tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list)
 	token_split(tokens);
 	token_cleanup(tokens);
 	token_index(*tokens);
-	if (check_operators(*tokens) == -1 || pipe_syntax_check(*tokens) == -1)
+	if (check_operators(*tokens) == -1 || syntax_check(*tokens) == -1)
 	{
 		lst_clear_tokens(tokens);
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 20:47:03 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 21:16:53 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,20 @@ typedef struct s_command
 	struct s_command	*prev;
 }	t_command;
 
+// char_tools.c
+int		is_quote(char c);
+int		is_operator(char c, char *delimiters);
+int		is_delimiter_quoted(const char *delimiter_raw, \
+	const char* delimiter_cut);
+char	*join_path(const char *dir, const char *cmd);
+char	*remove_quotes(const char *s);
+
+//check_quotes.c
+int		check_quotes(char *line);
+
+// find_exec_path.c
+int		find_exec_path(char *cmd_name, t_env *env_list, t_command *cmd);
+
 //signals
 void	init_signal(void);
 void 	ign_signals(void);
@@ -60,10 +74,10 @@ void	handle_heredoc_sig(int sig);
 
 //others
 void	shlvl_increase (t_env **env_list);
-int		check_quotes(char *line);
-int		is_quote(char c);
-int		is_operator(char c, char *delimiters);
-char	*join_path(const char *dir, const char *cmd);
+
+
+
+
 int		exit_static_status(int set_status);
 int		syntax_error(char *error_token);
 int		syntax_check(t_token *tokens);

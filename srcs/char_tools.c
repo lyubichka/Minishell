@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 21:43:53 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 22:49:38 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 21:01:59 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ int	is_operator(char c, char *delimiters)
 	if (ft_strchr(delimiters, (int)c) != NULL)
 		return (1);
 	return (0);
+}
+
+int is_delimiter_quoted(const char *delimiter_raw, const char* delimiter_cut)
+{
+	if (ft_strlen(delimiter_cut) < ft_strlen(delimiter_raw))
+		return (1);
+	else
+		return (0);
 }
 
 char	*join_path(const char *dir, const char *cmd)
@@ -47,4 +55,36 @@ char	*join_path(const char *dir, const char *cmd)
 		ft_strcat(full_path, "/");
 	ft_strcat(full_path, cmd);
 	return (full_path);
+}
+
+char	*remove_quotes(const char *s)
+{
+	int		i;
+	int		j;
+	char	quote;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	quote = 0;
+	res = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!res)
+		return (NULL);
+	while (s[i])
+	{
+		if ((s[i] == '\'' || s[i] == '"'))
+		{
+			if (!quote)
+				quote = s[i];
+			else if (quote == s[i])
+				quote = 0;
+			else
+				res[j++] = s[i];
+		}
+		else
+			res[j++] = s[i];
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
 }
