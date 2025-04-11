@@ -91,17 +91,22 @@ static void run_external_command(t_command *cmd, t_env **env_list)
     setup_output(cmd);
     execve(cmd->path, cmd->argv, env_list_to_array(*env_list)); // Executes an external program, replacing the current process
     ft_putstr_fd("minishell: execve failed\n", 2);
+    exit_static_status(127);
     exit(127);
 }
 
-static void handle_parent_process(t_command *cmd, t_env **env_list, pid_t pid)
+static void handle_parent_process(t_command *cmd, pid_t pid)
 {
+    int status;
+
+    status = 0;
     if (cmd->fd_in => 0)
         close(cmd->fd_in);
     if (cmd->fd_out => 0)
         close(cmd->fd_out);
-    waitpid(pid, &exit_static_status(-1), 0); // waiting for the child process to complete
-    update_exit_status(WEXITSTATUS(exit_static_status(-1)), env_list);
+    waitpid(pid, &status, 0); // waiting for the child process to complete
+    if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
+		exit_static_status(1);
 }
 
 static void run_builtin(t_command *cmd, t_env **env_list)
@@ -145,7 +150,7 @@ void execute_command(t_command *cmd, t_env **env_list)
         if (pid == 0) 
             run_external_command(cmd, env_list);
         else
-            handle_parent_process(cmd, env_list, pid);
+            handle_parent_process(cmd, pid);
         cmd = cmd->next;
     }
 }
