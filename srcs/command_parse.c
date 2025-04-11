@@ -6,68 +6,13 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:28:32 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 21:55:07 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	add_to_argv(t_token *token, t_command *command, t_env **env_list)
-{
-	char	*cleaned;
-	int		i;
-	int		j;
-	char	**new_argv;
-	
-	i = 0;
-	j = 0;
-	var_expansion(token, *env_list);
-	cleaned = remove_quotes(token->value);
-	free(token->value);
-	token->value = cleaned;
-	if (command->argv == NULL)
-	{
-		command->argv = malloc(sizeof(char *) * 2);
-		if(!(command->argv))
-			return(-300);
-		command->argv[0] = ft_strdup(token->value);
-		command->argv[1] = NULL;
-		return (0);
-	}
-	else
-	{
-		while (command->argv[i] != NULL)
-			i++;
-		new_argv = (char **)malloc(sizeof (char *) * (i + 2));
-		if (!new_argv)
-			return (-300);
-		while (j < i)
-		{
-			new_argv[j] = command->argv[j];
-			j++;
-		}
-		new_argv[i] = ft_strdup(token->value);
-		new_argv[i + 1] = NULL;
-		free(command->argv);
-		command->argv = new_argv;
-	}
-	token->type = 'd';
-	return (0);
-}
-
-// int open_file(const char *filename, int flags, mode_t mode)
-// {
-// 	int fd = open(filename, flags, mode);
-// 	if (fd == -1)
-// 	{
-// 		ft_putstr_fd("Error opening file", 2);
-// 	}
-// 	return fd;
-// }
-
-
-
-int	any_heredoc(t_token *tokens)
+static int	any_heredoc(t_token *tokens)
 {
 	t_token *tmp_token;
 
@@ -83,7 +28,7 @@ int	any_heredoc(t_token *tokens)
 	return (0);
 }
 
-void decide_fd_in(t_command *command)
+static void decide_fd_in(t_command *command)
 {
 	if (command->last_hd_fd != -1 && command->last_file_pos != 0)
 	{
@@ -112,6 +57,33 @@ void decide_fd_in(t_command *command)
 		command->fd_in = STDIN_FILENO;
 }
 
+static int	handle_token_loop(t_token **tmp_token, t_command *cmd, \
+	t_env **env_list, int found_heredoc)
+{
+	int		status;
+
+	status = 0;
+	while (cmd && *tmp_token && status == 0) 
+	{
+		if ((*tmp_token)->type == 'p')
+		{
+			cmd->is_pipe == 1;
+			break;
+		}
+		if (found_heredoc == 1)
+		{
+			status = handle_heredoc(*tmp_token, cmd, env_list);
+			found_heredoc = -1;
+		}
+		if ((*tmp_token)->type == 'w')
+			status = add_to_argv(*tmp_token, cmd, env_list);
+		else if ((*tmp_token)->type == 'r')
+			status = handle_redir(tmp_token, cmd, env_list); //treat files, fd_in, fd_out and redirs
+		*tmp_token = (*tmp_token)->next;
+	}
+	return (status);
+}
+
 int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list)
 {
 	t_token	*tmp_token;
@@ -121,24 +93,7 @@ int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list)
 	status = 0;
 	tmp_token = *tokens;
 	found_heredoc = any_heredoc(*tokens);
-	while (cmd && tmp_token && status == 0) 
-	{
-		if (tmp_token->type == 'p')
-		{
-			cmd->is_pipe == 1;
-			break;
-		}
-		if (found_heredoc == 1)
-		{
-			status = handle_heredoc(tmp_token, cmd, env_list);
-			found_heredoc = -1;
-		}
-		if (tmp_token->type == 'w')
-			status = add_to_argv(tmp_token, cmd, env_list);
-		else if (tmp_token->type == 'r')
-			status = handle_redir(&tmp_token, cmd, env_list); //treat files, fd_in, fd_out and redirs
-		tmp_token = tmp_token->next;
-	}
+	status = handle_token_loop(&tmp_token, cmd, env_list, found_heredoc);
 	if (status == -300)
 		return (syntax_error(tmp_token->value));  // here would need to close all open fds in this cmd and -1 should signal to close in prior cmds as well.
 	if (cmd->argv && cmd->argv[0] && cmd->is_redir_error == 0)

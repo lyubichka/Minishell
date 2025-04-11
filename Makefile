@@ -16,7 +16,8 @@ RLDIR			= -L/opt/vagrant/embedded/lib
 
 RLINC			= -I/opt/vagrant/embedded/include
 
-SRCS_FILES		= 	char_tools.c \
+SRCS_FILES		= 	add_to_argv.c \
+					char_tools.c \
 					check_quotes.c \
 					command_parse.c \
 					custom_signals.c \

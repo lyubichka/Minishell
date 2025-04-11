@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:47:28 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 22:01:32 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ typedef struct s_command
 	struct s_command	*prev;
 }	t_command;
 
+// add_to_argv.c
+int		add_to_argv(t_token *token, t_command *cmd, t_env **env_list);
+
 // char_tools.c
 int		is_quote(char c);
 int		is_operator(char c, char *delimiters);
@@ -69,6 +72,8 @@ int		find_exec_path(char *cmd_name, t_env *env_list, t_command *cmd);
 
 // handle_redir.c
 int		handle_redir(t_token **tmp_token,t_command *cmd, t_env **env_list);
+
+
 
 //signals
 void	init_signal(void);
