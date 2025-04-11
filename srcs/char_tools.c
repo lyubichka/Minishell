@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 21:43:53 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:01:59 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 22:08:08 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*join_path(const char *dir, const char *cmd)
 	int		len_dir;
 	int		len_cmd;
 	int		needs_slash;
+	size_t	total_len;
 
 	len_dir = ft_strlen(dir);
 	len_cmd = ft_strlen(cmd);
@@ -47,13 +48,14 @@ char	*join_path(const char *dir, const char *cmd)
 		needs_slash = 1;
 	else
 		needs_slash = 0;
+	total_len = len_dir + needs_slash + len_cmd + 1;
 	full_path = malloc(len_dir + needs_slash + len_cmd + 1);
 	if (!full_path)
 		return (NULL);
-	ft_strcpy(full_path, dir);
+	ft_strlcpy(full_path, dir, total_len);
 	if (needs_slash)
-		ft_strcat(full_path, "/");
-	ft_strcat(full_path, cmd);
+		ft_strlcat(full_path, "/", total_len);
+	ft_strlcat(full_path, cmd, total_len);
 	return (full_path);
 }
 

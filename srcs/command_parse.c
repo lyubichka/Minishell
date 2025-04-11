@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:55:07 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/11 22:08:38 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	handle_token_loop(t_token **tmp_token, t_command *cmd, \
 	{
 		if ((*tmp_token)->type == 'p')
 		{
-			cmd->is_pipe == 1;
+			cmd->is_pipe = 1;
 			break;
 		}
 		if (found_heredoc == 1)
