@@ -110,7 +110,7 @@ int ft_export(char **args, t_env **env)
     status = 0;
     if (!args[1]) // If there are no arguments, just exit (bash does not output env)
     {
-        set_exit_status(env, 0);
+        exit_static_status(0);
         return (0);
     }
     i = 1;
@@ -137,7 +137,7 @@ int ft_export(char **args, t_env **env)
         }
         i++;
     }
-    set_exit_status(env, status);
+    exit_static_status(status);
     return (status);
 }
 
