@@ -55,7 +55,7 @@ int ft_echo(char **args, t_env **env)
         return (set_exit_status(env, 0), 0); // Only -n with no arguments
     if (!n_flag) // Adding a newline, if not -n
         ft_putchar_fd('\n', 1);
-    set_exit_status(env, 0);
+    exit_static_status(0);
     return (0);
 }
 
