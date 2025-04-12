@@ -52,7 +52,7 @@ int ft_echo(char **args, t_env **env)
     else if (!n_flag) // If there are no arguments and there is no -n, output \n
         ft_putchar_fd('\n', 1);
     else
-        return (set_exit_status(env, 0), 0); // Only -n with no arguments
+        return (exit_static_status(0), 0); // Only -n with no arguments
     if (!n_flag) // Adding a newline, if not -n
         ft_putchar_fd('\n', 1);
     exit_static_status(0);
