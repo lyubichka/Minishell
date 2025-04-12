@@ -51,6 +51,6 @@ int main(int ac, char **av, char **envp)
 		free(new_line);
 		//break in case of signal and update status
 	}
-	//clear env list
+	lst_clear_env(&env_list);
 	return(status);
 }
