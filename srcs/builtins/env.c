@@ -40,7 +40,7 @@ int ft_env(t_env **env)
             print_env_var(tmp);
         tmp = tmp->next;
     }
-    set_exit_status(env, 0);
+    exit_static_status(0);
     return (0);
 }
 
