@@ -72,7 +72,7 @@ int ft_unset(char **args, t_env **env)
     status = 0;
     if (!args[1])
     {
-        set_exit_status(env, 0);
+        exit_static_status(0);
         return (0);
     }
     i = 1;
@@ -89,7 +89,7 @@ int ft_unset(char **args, t_env **env)
             remove_var(args[i], env);
         i++;
     }
-    set_exit_status(env, status);
+    exit_static_status(status);
     return (status);
 }
 
