@@ -77,19 +77,3 @@ void	lst_clear_env(t_env **env_list)
     }
     *env_list = NULL;
 }
-
-void	lst_clear_tokens(t_token **tokens)
-{
-    t_token *tmp;
-    t_token *next;
-
-    tmp = *tokens;
-    while (tmp)
-    {
-        next = tmp->next;
-        free(tmp->value);
-        free(tmp);
-        tmp = next;
-    }
-    *tokens = NULL;
-}
