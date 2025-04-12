@@ -28,7 +28,6 @@ void parse_exec_line(t_env **env_list, char* new_line)
 			execute_command(&commands, env_list);
 			lst_clear_commands(&commands); // tokens as well? other memory?
 		}
-		else
-			lst_clear_tokens(&tokens);
+		lst_clear_tokens(&tokens);
 	}
 }
