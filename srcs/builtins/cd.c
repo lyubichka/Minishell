@@ -31,7 +31,7 @@ static char *get_target_dir(char **args, t_env **env)
         if (!home)
         {
             ft_putstr_fd("cd: HOME not set\n", 2);
-            set_exit_status(env, 1);
+            exit_static_status(1);
             return (NULL);
         }
         return (home);
@@ -42,7 +42,7 @@ static char *get_target_dir(char **args, t_env **env)
         if (!oldpwd)
         {
             ft_putstr_fd("cd: OLDPWD not set\n", 2);
-            set_exit_status(env, 1);
+            exit_static_status(1);
             return (NULL);
         }
         return (oldpwd);
@@ -104,7 +104,7 @@ static int handle_cd_error(char *target_dir, t_env **env)
     ft_putstr_fd(": ", 2);
     ft_putstr_fd(strerror(errno), 2);
     ft_putstr_fd("\n", 2);
-    set_exit_status(env, 1);
+    exit_static_status(1);
     return (1);
 }
 
@@ -125,7 +125,7 @@ int ft_cd(char **args, t_env **env)
     if (args[1] && args[2])
     {
         ft_putstr_fd("cd: too many arguments\n", 2);
-        set_exit_status(env, 1);
+        exit_static_status(1);
         return (1);
     }
     target_dir = get_target_dir(args, env); // Defining the target directory
@@ -137,7 +137,7 @@ int ft_cd(char **args, t_env **env)
     if (!getcwd(pwd, PATH_MAX)) // We get a new current catalog and update the PWD
     {
         ft_putstr_fd("cd: getcwd error\n", 2);
-        set_exit_status(env, 1);
+        exit_static_status(1);
         return (1);
     }
     update_env_var("PWD", pwd, env);
@@ -146,7 +146,7 @@ int ft_cd(char **args, t_env **env)
         ft_putstr_fd(pwd, 1);
         ft_putstr_fd("\n", 1);
     }
-    set_exit_status(env, 0);
+    exit_static_status(0);
     return (0);
 }
 
