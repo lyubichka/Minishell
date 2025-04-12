@@ -48,7 +48,7 @@ void ft_exit(char **args, t_env **env)
     ft_putstr_fd("exit\n", 1); // Notification of withdrawal
     if (!args[1])
     {
-        set_exit_status(env, 0);
+        exit_static_status(0);
         exit(0);
     }
     if (!is_numeric_arg(args[1]))
@@ -56,17 +56,17 @@ void ft_exit(char **args, t_env **env)
         ft_putstr_fd("minishell: exit: ", 2);
         ft_putstr_fd(args[1], 2);
         ft_putstr_fd(": numeric argument required\n", 2);
-        set_exit_status(env, 2);
+        exit_static_status(2);
         exit(2);
     }
     if (args[2])
     {
         ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-        set_exit_status(env, 1);
+        exit_static_status(1);
         return; // We do not exit, the shell continues to work
     }
     exit_code = ft_atoi(args[1]);
-    set_exit_status(env, exit_code % 256); // Updating the exit status
+    exit_static_status(exit_code);
     exit(exit_code % 256); // Output with a modulo 256 code
 }
 
