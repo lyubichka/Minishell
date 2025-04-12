@@ -58,3 +58,38 @@ void	lst_clear_commands(t_command **commands)
     }
     *commands = NULL;
 }
+
+void	lst_clear_env(t_env **env_list)
+{
+    t_env *tmp;
+    t_env *next;
+
+    tmp = *env_list;
+    while (tmp)
+    {
+        next = tmp->next;
+        if (tmp->name)
+            free(tmp->name);
+        if (tmp->value)
+            free(tmp->value);
+        free(tmp);
+        tmp = next;
+    }
+    *env_list = NULL;
+}
+
+void	lst_clear_tokens(t_token **tokens)
+{
+    t_token *tmp;
+    t_token *next;
+
+    tmp = *tokens;
+    while (tmp)
+    {
+        next = tmp->next;
+        free(tmp->value);
+        free(tmp);
+        tmp = next;
+    }
+    *tokens = NULL;
+}
