@@ -25,12 +25,12 @@ int ft_pwd(t_env **env)
     if (getcwd(cwd, PATH_MAX) == NULL)
     {
         ft_putstr_fd("pwd: error retrieving current directory\n", 2);
-        set_exit_status(env, 1);
+        exit_static_status(1);
         return (1);
     }
     ft_putstr_fd(cwd, 1);
     ft_putchar_fd('\n', 1);
-    set_exit_status(env, 0);
+    exit_static_status(0);
     return (0);
 }
 
