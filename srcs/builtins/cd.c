@@ -121,7 +121,7 @@ int ft_cd(char **args, t_env **env)
     char *target_dir;
 
     if (!getcwd(oldpwd, PATH_MAX)) // Saving the current directory in OLDPWD
-        return (ft_putstr_fd("cd: getcwd error\n", 2), set_exit_status(env, 1), 1);
+        return (ft_putstr_fd("cd: getcwd error\n", 2), exit_static_status(1), 1);
     if (args[1] && args[2])
     {
         ft_putstr_fd("cd: too many arguments\n", 2);
