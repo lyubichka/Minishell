@@ -31,3 +31,30 @@ void	free_split(char **array)
 		array = NULL;
 	}
 }
+
+void	free_command(t_command *cmd)
+{
+    if (cmd)
+    {
+        if (cmd->argv)
+            free_split(cmd->argv);
+        if (cmd->path)
+            free(cmd->path);
+        free(cmd);
+    }
+}
+
+void	lst_clear_commands(t_command **commands)
+{
+    t_command *tmp;
+    t_command *next;
+
+    tmp = *commands;
+    while (tmp)
+    {
+        next = tmp->next;
+        free_command(tmp);
+        tmp = next;
+    }
+    *commands = NULL;
+}
