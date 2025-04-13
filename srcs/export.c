@@ -69,7 +69,7 @@ static void update_or_add_var(char *name, char *value, t_env **env)
     tmp = *env;
     while (tmp)
     {
-        if (ft_strcmp(tmp->name, name) == 0)
+        if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
         {
             free(name); // Releasing the duplicate name
             if (value) // If there is a new value, it is updated

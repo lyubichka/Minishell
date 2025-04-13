@@ -27,3 +27,25 @@ void	lst_clear_tokens(t_token **tokens)
 	}
 	*tokens = NULL;
 }
+
+void	lst_clear_env(t_env **env)
+{
+	t_env *tmp1;
+	t_env *tmp2;
+
+	tmp1 = *env;
+	while (tmp1)
+	{
+		tmp2 = tmp1->next;
+		free(tmp1->name);
+		free(tmp1->value);
+		free(tmp1);
+		tmp1 = tmp2;
+	}
+	*env = NULL;
+}
+
+void lst_clear_commands(t_command **commands)
+{
+	
+}

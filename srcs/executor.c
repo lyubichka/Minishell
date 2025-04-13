@@ -14,7 +14,7 @@
 
 static void setup_input(t_command *cmd)
 {
-    if (cmd->fd_in => 0)
+    if (cmd->fd_in >= 0)
     {
         if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
         {
@@ -28,7 +28,7 @@ static void setup_input(t_command *cmd)
 
 static void setup_output(t_command *cmd)
 {
-    if (cmd->fd_out => 0)
+    if (cmd->fd_out >= 0)
     {
         if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
         {
@@ -36,9 +36,10 @@ static void setup_output(t_command *cmd)
             exit(1);
         }
         close(cmd->fd_out);
+    }
 }
 
-char **env_list_to_array(*env_list)
+char **env_list_to_array(t_env *env_list)
 {
     char       **array;
     int        count;
@@ -55,7 +56,7 @@ char **env_list_to_array(*env_list)
         count++;
         tmp = tmp->next;
     }
-    array = malloc(sizeof(char *)) * (count + 1);
+    array = malloc((sizeof(char *)) * (count + 1));
     if (!array)
         return (NULL);
     while (tmp)
@@ -100,9 +101,9 @@ static void handle_parent_process(t_command *cmd, pid_t pid)
     int status;
 
     status = 0;
-    if (cmd->fd_in => 0)
+    if (cmd->fd_in >= 0)
         close(cmd->fd_in);
-    if (cmd->fd_out => 0)
+    if (cmd->fd_out >= 0)
         close(cmd->fd_out);
     waitpid(pid, &status, 0); // waiting for the child process to complete
     if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
@@ -111,19 +112,19 @@ static void handle_parent_process(t_command *cmd, pid_t pid)
 
 static void run_builtin(t_command *cmd, t_env **env_list)
 {
-    if (ft_strcmp(cmd->argv[0], "echo") == 0)
-        ft_echo(cmd->argv, env_list);
-    else if (ft_strcmp(cmd->argv[0], "cd") == 0)
+    if (ft_strncmp(cmd->argv[0], "echo", 5) == 0)
+        ft_echo(cmd->argv);
+    else if (ft_strncmp(cmd->argv[0], "cd", 3) == 0)
         ft_cd(cmd->argv, env_list);
-    else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
+    else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
         ft_pwd(env_list);
-    else if (ft_strcmp(cmd->argv[0], "env") == 0)
+    else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
         ft_env(env_list);
-    else if (ft_strcmp(cmd->argv[0], "export") == 0)
+    else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)
         ft_export(cmd->argv, env_list);
-    else if (ft_strcmp(cmd->argv[0], "unset") == 0)
+    else if (ft_strncmp(cmd->argv[0], "unset", 6) == 0)
         ft_unset(cmd->argv, env_list);
-    else if (ft_strcmp(cmd->argv[0], "exit") == 0)
+    else if (ft_strncmp(cmd->argv[0], "exit", 5) == 0)
         ft_exit(cmd->argv, env_list);
     else
         ft_putstr_fd("minishell: unknown builtin\n", 2);

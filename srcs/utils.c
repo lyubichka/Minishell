@@ -16,13 +16,13 @@ int is_builtin(char *cmd)
 {
     if (!cmd)
         return (0);
-    if (ft_strcmp(cmd, "cd") == 0 ||
-        ft_strcmp(cmd, "echo") == 0 ||
-        ft_strcmp(cmd, "env") == 0 ||
-        ft_strcmp(cmd, "pwd") == 0 ||
-        ft_strcmp(cmd, "export") == 0 ||
-        ft_strcmp(cmd, "unset") == 0 ||
-        ft_strcmp(cmd, "exit") == 0)
+    if (ft_strncmp(cmd, "cd", 3) == 0 ||
+        ft_strncmp(cmd, "echo", 5) == 0 ||
+        ft_strncmp(cmd, "env", 4) == 0 ||
+        ft_strncmp(cmd, "pwd", 4) == 0 ||
+        ft_strncmp(cmd, "export", 7) == 0 ||
+        ft_strncmp(cmd, "unset", 6) == 0 ||
+        ft_strncmp(cmd, "exit", 5) == 0)
         return (1);
     return (0);
 }
@@ -38,26 +38,26 @@ int is_builtin(char *cmd)
  * c Separator character.
  * ret The number of words per line.
  */
-static size_t count_words(char const *s, char c)
-{
-    size_t count = 0;
-    size_t in_word = 0;
+// static size_t count_words(char const *s, char c)
+// {
+//     size_t count = 0;
+//     size_t in_word = 0;
 
-    if (!s)
-        return (0);
-    while (*s)
-    {
-        if (*s != c && !in_word) // The beginning of a new word
-        {
-            in_word = 1;
-            count++;
-        }
-        else if (*s == c) // End of a word when encountering a separator
-            in_word = 0;
-        s++;
-    }
-    return (count);
-}
+//     if (!s)
+//         return (0);
+//     while (*s)
+//     {
+//         if (*s != c && !in_word) // The beginning of a new word
+//         {
+//             in_word = 1;
+//             count++;
+//         }
+//         else if (*s == c) // End of a word when encountering a separator
+//             in_word = 0;
+//         s++;
+//     }
+//     return (count);
+// }
 
 /**
 * Copies one word from the string, starting from the specified position.
@@ -66,18 +66,18 @@ static size_t count_words(char const *s, char c)
  * len is the length of the word.
  * ret Pointer to the selected line with a word or NULL in case of an error.
  */
-static char *copy_word(char const *s, size_t start, size_t len)
-{
-    char *word;
+// static char *copy_word(char const *s, size_t start, size_t len)
+// {
+//     char *word;
 
-    if (!s)
-        return (NULL);
-    word = malloc(len + 1);
-    if (!word)
-        return (NULL);
-    ft_strlcpy(word, s + start, len + 1); // Copying the word
-    return (word);
-}
+//     if (!s)
+//         return (NULL);
+//     word = malloc(len + 1);
+//     if (!word)
+//         return (NULL);
+//     ft_strlcpy(word, s + start, len + 1); // Copying the word
+//     return (word);
+// }
 
 /**
 * Splits a string into an array of strings using a specified separator.
@@ -85,41 +85,41 @@ static char *copy_word(char const *s, size_t start, size_t len)
  * c Separator character.
  * ret An array of strings ending in NULL, or NULL in case of a memory allocation error.
  */
-char **ft_split(char const *s, char c)
-{
-    size_t i = 0;
-    size_t j = 0;
-    size_t start = 0;
-    size_t word_count;
-    char **result;
+// char **ft_split(char const *s, char c)
+// {
+//     size_t i = 0;
+//     size_t j = 0;
+//     size_t start = 0;
+//     size_t word_count;
+//     char **result;
 
-    if (!s)
-        return (NULL);
-    word_count = count_words(s, c);
-    result = malloc(sizeof(char *) * (word_count + 1));
-    if (!result)
-        return (NULL);
-    while (s[i])
-    {
-        if (s[i] != c && (i == 0 || s[i - 1] == c)) // The beginning of a word
-            start = i;
-        if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0')) // End of the word
-        {
-            result[j] = copy_word(s, start, i - start + 1);
-            if (!result[j]) // Memory allocation error
-            {
-                while (j-- > 0) // Freeing up the already allocated memory
-                    free(result[j]);
-                free(result);
-                return (NULL);
-            }
-            j++;
-        }
-        i++;
-    }
-    result[j] = NULL;
-    return (result);
-}
+//     if (!s)
+//         return (NULL);
+//     word_count = count_words(s, c);
+//     result = malloc(sizeof(char *) * (word_count + 1));
+//     if (!result)
+//         return (NULL);
+//     while (s[i])
+//     {
+//         if (s[i] != c && (i == 0 || s[i - 1] == c)) // The beginning of a word
+//             start = i;
+//         if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0')) // End of the word
+//         {
+//             result[j] = copy_word(s, start, i - start + 1);
+//             if (!result[j]) // Memory allocation error
+//             {
+//                 while (j-- > 0) // Freeing up the already allocated memory
+//                     free(result[j]);
+//                 free(result);
+//                 return (NULL);
+//             }
+//             j++;
+//         }
+//         i++;
+//     }
+//     result[j] = NULL;
+//     return (result);
+// }
 
 // Testing
 // Input: "echo hello world", delimiter ' '.

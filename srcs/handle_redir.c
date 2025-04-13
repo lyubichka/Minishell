@@ -112,7 +112,7 @@ int	handle_redir(t_token **tmp_token,t_command *cmd, t_env **env_list)
 	stop_parsing = 0;
 	if ((*tmp_token)->next == NULL || (*tmp_token)->next->type != 'w')
 		return -300; // Redirection Error --> all further parsing should stop. Need to evaluate how and when are we closing the fd
-	var_expansion((*tmp_token)->next, env_list);
+	var_expansion((*tmp_token)->next, *env_list);
 	filename = remove_quotes((*tmp_token)->next->value);
 	if (!filename)
 		return (-1);

@@ -41,7 +41,7 @@ static int is_numeric_arg(char *str)
 * env Pointer to the environment list to update $?.
 * ret Does not return a value, terminates the program.
  */
-void ft_exit(char **args, t_env **env)
+void ft_exit(char **args)
 {
     int exit_code;
 

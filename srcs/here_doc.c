@@ -85,6 +85,7 @@ static int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 	if (pid == 0)
 	{
 		handle_heredoc_child(pipe_fd, delimiter, is_quoted, env);
+		return (0);
 	}
 	else
 		return (handle_heredoc_parent(pipe_fd, pid, &status));

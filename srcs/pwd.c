@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <limits.h> 
 
 /**
 * Displays the current working directory.

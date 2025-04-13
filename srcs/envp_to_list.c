@@ -24,6 +24,17 @@
 // 	lst_add_front(new_exit_node, env_list);
 // }
 
+char *get_env_value(char *name, t_env *env)
+{
+    while (env && name)
+    {
+        if (ft_strncmp(env->name, name, ft_strlen(name)) == 0)
+            return (env->value);
+        env = env->next;
+    }
+    return (NULL);
+}
+
 int envp_to_list(char **envp, t_env **env_list)
 {
 	int i;

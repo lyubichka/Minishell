@@ -35,14 +35,14 @@ static void print_args(char **args, int i)
 * env is a pointer to the environment list for status updates.
  * ret 0 on success, 1 on error.
  */
-int ft_echo(char **args, t_env **env)
+int ft_echo(char **args)
 {
     int n_flag;
     int i;
 
     n_flag = 0;
     i = 1;
-    if (args[1] && ft_strcmp(args[1], "-n") == 0)
+    if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
     {
         n_flag = 1;
         i++;

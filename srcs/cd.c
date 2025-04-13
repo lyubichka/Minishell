@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <limits.h>
 
 /**
 * Defines the target directory for the cd command.
@@ -24,10 +23,10 @@ static char *get_target_dir(char **args, t_env **env)
     char    *home;
     char    *oldpwd;
     
-    
-    if (!args[1] || ft_strcmp(args[1], "~") == 0)
+	home = get_env_value("HOME", *env);
+	oldpwd = get_env_value("OLDPWD", *env);
+    if (!args[1] || ft_strncmp(args[1], "~", 2) == 0)
     {
-        char *home = get_env_value("HOME", *env);
         if (!home)
         {
             ft_putstr_fd("cd: HOME not set\n", 2);
@@ -36,9 +35,8 @@ static char *get_target_dir(char **args, t_env **env)
         }
         return (home);
     }
-    if (ft_strcmp(args[1], "-") == 0)
+    if (ft_strncmp(args[1], "-", 2) == 0)
     {
-        char *oldpwd = get_env_value("OLDPWD", *env);
         if (!oldpwd)
         {
             ft_putstr_fd("cd: OLDPWD not set\n", 2);
@@ -56,16 +54,16 @@ static char *get_target_dir(char **args, t_env **env)
  * env Environment list.
  * ret A pointer to a value or NULL if the variable is not found.
  */
-static char *get_env_value(char *name, t_env *env)
-{
-    while (env)
-    {
-        if (ft_strcmp(env->name, name) == 0)
-            return (env->value);
-        env = env->next;
-    }
-    return (NULL);
-}
+// static char *get_env_value(char *name, t_env *env)
+// {
+//     while (env)
+//     {
+//         if (ft_strcmp(env->name, name) == 0)
+//             return (env->value);
+//         env = env->next;
+//     }
+//     return (NULL);
+// }
 
 /**
 * Updates or adds an environment variable.
@@ -80,7 +78,7 @@ static void update_env_var(char *name, char *value, t_env **env)
     tmp = *env;
     while (tmp)
     {
-        if (ft_strcmp(tmp->name, name) == 0)
+        if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
         {
             free(tmp->value);
             tmp->value = ft_strdup(value);
@@ -97,7 +95,7 @@ static void update_env_var(char *name, char *value, t_env **env)
         ft_putstr_fd("minishell: cd: memory allocation failed\n", 2);
 }
 
-static int handle_cd_error(char *target_dir, t_env **env)
+static int handle_cd_error(char *target_dir)
 {
     ft_putstr_fd("cd: ", 2);
     ft_putstr_fd(target_dir, 2);
@@ -132,7 +130,7 @@ int ft_cd(char **args, t_env **env)
     if (!target_dir)
         return (1);
     if (chdir(target_dir) != 0)
-        return (handle_cd_error(target_dir, env));
+        return (handle_cd_error(target_dir));
     update_env_var("OLDPWD", oldpwd, env);
     if (!getcwd(pwd, PATH_MAX)) // We get a new current catalog and update the PWD
     {
@@ -141,7 +139,7 @@ int ft_cd(char **args, t_env **env)
         return (1);
     }
     update_env_var("PWD", pwd, env);
-    if (args[1] && ft_strcmp(args[1], "-") == 0) // We output a new path when using "-"
+    if (args[1] && ft_strncmp(args[1], "-", 2) == 0) // We output a new path when using "-"
     {
         ft_putstr_fd(pwd, 1);
         ft_putstr_fd("\n", 1);

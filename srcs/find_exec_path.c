@@ -65,7 +65,7 @@ static int	search_in_paths(char **paths, char *cmd_name, t_command *cmd)
 		joined = join_path(paths[i], cmd_name); // adds slash
 		if (access(joined, F_OK) == 0)
 		{
-			if(accces(joined, X_OK) == 0)
+			if(access(joined, X_OK) == 0)
 			{
 				free_split(paths);
 				cmd->path = joined;
@@ -89,8 +89,8 @@ int	find_exec_path(char *cmd_name, t_env *env_list, t_command *cmd)
 	char	*path_env;
 
 	if (is_builtin(cmd_name) == 1)
-		return(cmd->is_builtin == 1, 0);
-	path_env = get_env_value(env_list, "PATH");// your env lookup helper
+		return(cmd->is_builtin = 1, 0);
+	path_env = get_env_value("PATH", env_list);// your env lookup helper
 	if (!path_env || !cmd_name ) 
 		return (-1);
 	if (ft_strchr(cmd_name, '/')) // absolute or relative
