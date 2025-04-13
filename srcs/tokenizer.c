@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/13 23:45:23 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/14 00:04:52 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,16 @@ static void	extract_quote(t_token **tokens, char *line, int *line_pos)
 	t_token	*new_token;
 
 	j = *line_pos;
-	quote = line[*line_pos];
+	quote = line[j];
 	j++;
-	while (line[j] != '\0')
-	{
-		if (line[j] == '\\' && (line[j + 1] == '\'' || line[j + 1] == '\"'))
-			j++;  // Skip escaped quote
-		else if (line[j] == quote)  // Found closing quote
-		{
-			j++;  // Move past closing quote
-			if (is_quote(line[j])) // Check if a new quote starts immediately
-			{
-				quote = line[j]; // Set new quote type
-				continue;  // Restart the loop without breaking
-			}
-			else
-				break;  // Stop scanning if no more consecutive quotes
-		}
+	while (line[j] != '\0' && line[j] != quote)
 		j++;
-	}
-	extract = ft_substr(line, *line_pos, j - *line_pos + 1);
-	// if (quote == '\'')
-	// 	new_token = lst_token_create('w', extract, 1);
-	// else
-		new_token = lst_token_create('w', extract); // need to review this "is quote" in the end of the token
+	if (line[j] == quote)
+		j++;  // Move past closing quote
+	extract = ft_substr(line, *line_pos, j - *line_pos);
+	new_token = lst_token_create('w', extract); // need to review this "is quote" in the end of the token
 	lst_token_add_back(new_token, tokens);
-	// if (line[j] != '\0')
-	// 	*line_pos = j + 1;
-	// else
-		*line_pos = j;
+	*line_pos = j;
 }
 
 static void	extract_operator(t_token **tokens, char *line, int *line_pos, char *delimiters)
@@ -90,24 +71,16 @@ static void	extract_word(t_token **tokens, char *line, int *line_pos, char *deli
 			j++;  // Move past opening quote
 			while (line[j] != '\0')
 			{
-				if (line[j] == '\\' && (line[j + 1] == quote))
-					j++;  // Skip escaped quote
-				else if (line[j] == quote)  // Found closing quote
-				{
-					j++;  // Move past closing quote
-					break;
-				}
-				j++;
+				if (line[j++] == quote)  // Found closing quote
+					break;// Move past closing quote
 			}
 			continue;  // Continue scanning after handling the quote
 		}
 		j++;
 	}
-	// Extract the full word, including quoted sections
 	extract = ft_substr(line, *line_pos, j - *line_pos);
 	new_token = lst_token_create('w', extract);
 	lst_token_add_back(new_token, tokens);
-	// Move position forward
 	*line_pos = j;
 }
 
