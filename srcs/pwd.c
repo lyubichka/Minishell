@@ -17,7 +17,7 @@
 * env is a pointer to the environment list for updating the exit status.
  * ret 0 on success, 1 on error receiving the directory.
  */
-int ft_pwd(t_env **env)
+int ft_pwd(void)
 {
     char cwd[PATH_MAX];
 

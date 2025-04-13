@@ -42,7 +42,7 @@ static void remove_var(char *name, t_env **env)
     prev = NULL;
     while (tmp)
     {
-        if (ft_strcmp(tmp->name, name) == 0)
+        if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
         {
             if (prev)
                 prev->next = tmp->next;

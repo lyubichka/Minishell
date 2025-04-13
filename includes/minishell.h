@@ -103,17 +103,21 @@ int		handle_heredoc(t_token *token, t_command *command, t_env **env_list);
 // lst_clear.c
 void	lst_clear_tokens(t_token **tokens);
 void	lst_clear_env(t_env **env);
+void	lst_clear_commands(t_command **commands);
 
 // lst_create.c
 t_env	*lst_create_envp(char *env_name, char	*env_value);
 t_token *lst_token_create(char type, char *value);
 
 // pwd.c
-int		ft_pwd(t_env **env);
+int		ft_pwd(void);
 
 // syntax_check.c
 int		syntax_error(char *error_token);
 int		syntax_check(t_token *tokens);
+
+// tokenizer.c
+int		tokenizer(t_token **tokens, char *line, char *delimiters);
 
 // unset.c
 int		ft_unset(char **args, t_env **env);
@@ -152,7 +156,7 @@ void	update_exit_status(int status, t_env **env_list);
 void	token_split(t_token **tokens);
 void	token_cleanup(t_token **tokens);
 void	token_index(t_token *tokens);
-int		tokenizer(t_token **tokens, char *line, char *delimiters, t_env **env_list);
+
 void	var_expansion(t_token *token, t_env *env_list);
 int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
 int		tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list);

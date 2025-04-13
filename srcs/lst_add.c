@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:15:41 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/08 21:05:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/13 23:44:28 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void lst_token_add_back(t_token *new, t_token **lst)
 {
 	t_token *tmp;
 	
-	if (!new || !lst)	
+	if (!new || !lst)
 		return ;
 	if (*lst == NULL)
 	{

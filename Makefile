@@ -2,7 +2,7 @@ NAME			= minishell
 
 INCLUDES_FILES	= includes/minishell.h
 
-CC				= CC
+CC				= CC -g
 
 CFLAGS			= -Wall -Wextra -Werror -Iincludes -Ilibft
 
@@ -40,6 +40,8 @@ SRCS_FILES		= 	add_to_argv.c \
 					main.c \
 					memory_free.c \
 					parse_exec_line.c \
+					pwd.c \
+					set_exit.c \
 					shlvl_increase.c \
 					syntax_check.c \
 					token_clean_split.c \

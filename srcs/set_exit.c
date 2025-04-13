@@ -27,7 +27,7 @@ void    set_exit_status(t_env **env, int status)
     tmp = *env; //  Looking for the variable "?" in the environment list
     while (tmp)
     {
-        if (ft_strcmp(tmp->name, "?") == 0)
+        if (ft_strncmp(tmp->name, "?", 2) == 0)
         {
             free(tmp->value); // Releasing the old value
             tmp->value = status_str; // Assign a new value

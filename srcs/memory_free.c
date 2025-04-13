@@ -44,36 +44,36 @@ void	free_command(t_command *cmd)
     }
 }
 
-void	lst_clear_commands(t_command **commands)
-{
-    t_command *tmp;
-    t_command *next;
+// void	lst_clear_commands(t_command **commands)
+// {
+//     t_command *tmp;
+//     t_command *next;
 
-    tmp = *commands;
-    while (tmp)
-    {
-        next = tmp->next;
-        free_command(tmp);
-        tmp = next;
-    }
-    *commands = NULL;
-}
+//     tmp = *commands;
+//     while (tmp)
+//     {
+//         next = tmp->next;
+//         free_command(tmp);
+//         tmp = next;
+//     }
+//     *commands = NULL;
+// }
 
-void	lst_clear_env(t_env **env_list)
-{
-    t_env *tmp;
-    t_env *next;
+// void	lst_clear_env(t_env **env_list)
+// {
+//     t_env *tmp;
+//     t_env *next;
 
-    tmp = *env_list;
-    while (tmp)
-    {
-        next = tmp->next;
-        if (tmp->name)
-            free(tmp->name);
-        if (tmp->value)
-            free(tmp->value);
-        free(tmp);
-        tmp = next;
-    }
-    *env_list = NULL;
-}
+//     tmp = *env_list;
+//     while (tmp)
+//     {
+//         next = tmp->next;
+//         if (tmp->name)
+//             free(tmp->name);
+//         if (tmp->value)
+//             free(tmp->value);
+//         free(tmp);
+//         tmp = next;
+//     }
+//     *env_list = NULL;
+// }

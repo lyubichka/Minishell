@@ -16,7 +16,7 @@ static void	init_command(t_command **commands)
 {
 	(*commands) = (t_command *)malloc(sizeof(t_command));
 	if (!*commands)
-		return NULL;
+		*commands = NULL;
 	(*commands)->fd_in = -1;
 	(*commands)->fd_out = -1;
 	(*commands)->pipe_in = 0;

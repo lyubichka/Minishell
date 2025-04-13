@@ -117,7 +117,7 @@ static void run_builtin(t_command *cmd, t_env **env_list)
     else if (ft_strncmp(cmd->argv[0], "cd", 3) == 0)
         ft_cd(cmd->argv, env_list);
     else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
-        ft_pwd(env_list);
+        ft_pwd();
     else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
         ft_env(env_list);
     else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)
@@ -125,7 +125,7 @@ static void run_builtin(t_command *cmd, t_env **env_list)
     else if (ft_strncmp(cmd->argv[0], "unset", 6) == 0)
         ft_unset(cmd->argv, env_list);
     else if (ft_strncmp(cmd->argv[0], "exit", 5) == 0)
-        ft_exit(cmd->argv, env_list);
+        ft_exit(cmd->argv);
     else
         ft_putstr_fd("minishell: unknown builtin\n", 2);
 }
@@ -145,7 +145,7 @@ void execute_command(t_command *cmd, t_env **env_list)
         if (pid == -1)
         {
             ft_putstr_fd("minishell: fork error\n", 2);
-            update_exit_status(1, env_list);
+            exit_static_status(1);
             return;
         }
         if (pid == 0) 

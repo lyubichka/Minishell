@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_syntax_check.c                                :+:      :+:    :+:   */
+/*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:32:30 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 20:46:41 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/13 23:48:46 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,16 @@ int	syntax_check(t_token *tokens)
 		if (tokens->type == 'p')
 		{
 			if (tokens->next->type == 'p')
-				return (syntax_error(tokens->next));
+				return (syntax_error(tokens->next->value));
 		}
 		if (tokens->type == 'r' || tokens->type == 'h')
 		{
 			if (tokens->next->type == 'p' || tokens->next->type == 'r' || tokens->next->type == 'h')
-				return (syntax_error(tokens->next));
+				return (syntax_error(tokens->next->value));
 		}
 		tokens = tokens->next;
 	}
-	if (tokens->type == 'p' || tokens->next->type == 'r' || tokens->next->type == 'h')
-		return (syntax_error(tokens));
+	if (tokens->type == 'p' || tokens->type == 'r' || tokens->type == 'h')
+		return (syntax_error(tokens->value));
 	return (1);
 }
