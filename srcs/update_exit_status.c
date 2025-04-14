@@ -32,6 +32,22 @@
 // 	}
 // }
 
+void update_exit_status(t_env **env_list, int status)
+{
+	t_env *tmp;
+	
+	tmp = *env_list;
+    while (tmp && ft_strncmp(tmp->name, "?") != 0)
+        tmp = tmp->next;
+    if (tmp)
+    {
+        tmp->exit_status = status;
+        if (tmp->value)
+            free(tmp->value);
+        tmp->value = ft_itoa(status);
+    }
+}
+
 int	exit_static_status(int set_status)
 {
 	static int	exit_status;
