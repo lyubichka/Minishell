@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+static int correct_exit_status(long res)
+{
+    if (res >= 0 && res <= 255)
+        return (res);
+    res = res % 256;
+    if (res < 0)
+        res += 256;
+    return (res);
+}
+
 /**
 * Checks whether the string is a valid numeric argument.
  * str is the string to check.
@@ -41,33 +51,38 @@ static int is_numeric_arg(char *str)
 * env Pointer to the environment list to update $?.
 * ret Does not return a value, terminates the program.
  */
-void ft_exit(char **args)
+void ft_exit(char **args, t_env **env_list)
 {
     int exit_code;
+    int error_flag = 0;
 
-    ft_putstr_fd("exit\n", 1); // Notification of withdrawal
     if (!args[1])
     {
-        exit_static_status(0);
+        ft_putstr_fd("exit\n", 1);
+        update_exit_status(env_list, 0);
         exit(0);
     }
     if (!is_numeric_arg(args[1]))
     {
-        ft_putstr_fd("minishell: exit: ", 2);
+        ft_putstr_fd("exit\n", 2);
+        ft_putstr_fd("minishell: ", 2);
         ft_putstr_fd(args[1], 2);
         ft_putstr_fd(": numeric argument required\n", 2);
-        exit_static_status(2);
+        update_exit_status(env_list, 2);
         exit(2);
     }
     if (args[2])
     {
-        ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-        exit_static_status(1);
-        return; // We do not exit, the shell continues to work
+        ft_putstr_fd("exit\n", 2);
+        ft_putstr_fd("minishell: too many arguments\n", 2);
+        update_exit_status(env_list, 1);
+        return;
     }
+    ft_putstr_fd("exit\n", 1);
     exit_code = ft_atoi(args[1]);
-    exit_static_status(exit_code);
-    exit(exit_code % 256); // Output with a modulo 256 code
+    exit_code = correct_exit_status(exit_code);
+    update_exit_status(env_list, exit_code);
+    exit(exit_code);
 }
 
 /*
