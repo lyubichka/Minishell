@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 22:08:38 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:21:40 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,14 @@ int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list)
 	found_heredoc = any_heredoc(*tokens);
 	status = handle_token_loop(&tmp_token, cmd, env_list, found_heredoc);
 	if (status == -300)
-		return (syntax_error(tmp_token->value));  // here would need to close all open fds in this cmd and -1 should signal to close in prior cmds as well.
+		return (syntax_error(tmp_token->value)); // here would need to close all open fds in this cmd and -1 should signal to close in prior cmds as well.
 	if (cmd->argv && cmd->argv[0] && cmd->is_redir_error == 0)
 		status = find_exec_path(cmd->argv[0], *env_list, cmd);
-	if (status == -1)
+	// if (status == -1)
 		//clear everything ? but do not return -1 as execution would continue;
 	decide_fd_in(cmd);
-	token_cleanup(tokens);
+	*tokens = tmp_token;
+	// token_cleanup(tokens);
 	return (0);
 }
 

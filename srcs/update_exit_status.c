@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:19:11 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 22:02:18 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:59:51 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,21 @@
 // 	}
 // }
 
-void update_exit_status(t_env **env_list, int status)
-{
-	t_env *tmp;
+// void update_exit_status(t_env **env_list, int status)
+// {
+// 	t_env *tmp;
 	
-	tmp = *env_list;
-    while (tmp && ft_strncmp(tmp->name, "?") != 0)
-        tmp = tmp->next;
-    if (tmp)
-    {
-        tmp->exit_status = status;
-        if (tmp->value)
-            free(tmp->value);
-        tmp->value = ft_itoa(status);
-    }
-}
+// 	tmp = *env_list;
+//     while (tmp && ft_strncmp(tmp->name, "?") != 0)
+//         tmp = tmp->next;
+//     if (tmp)
+//     {
+//         tmp->exit_status = status;
+//         if (tmp->value)
+//             free(tmp->value);
+//         tmp->value = ft_itoa(status);
+//     }
+// }
 
 int	exit_static_status(int set_status)
 {

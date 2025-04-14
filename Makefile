@@ -41,7 +41,6 @@ SRCS_FILES		= 	add_to_argv.c \
 					memory_free.c \
 					parse_exec_line.c \
 					pwd.c \
-					set_exit.c \
 					shlvl_increase.c \
 					syntax_check.c \
 					token_clean_split.c \

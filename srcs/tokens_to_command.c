@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 23:00:33 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/14 22:56:59 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	init_command(t_command **commands)
 	(*commands)->path = NULL;
 	(*commands)->next = NULL;
 	(*commands)->prev = NULL;
-
 }
 
 int link_commands(t_command *cmd1, t_command *cmd2)
@@ -73,7 +72,7 @@ int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 	prior_cmd = NULL;
 	while(tmp_token)
 	{
-		init_command(&current_cmd); // init_command(&current_cmd) ?
+		init_command(&current_cmd);
 		if (!current_cmd)
 			return (-1);
 		if (!*commands)
@@ -83,16 +82,20 @@ int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 			prior_cmd->next = current_cmd;
 			current_cmd->prev = prior_cmd;
 		}
-		if (command_parse(current_cmd, tokens, env_list) == -1)
+		if (command_parse(current_cmd, &tmp_token, env_list) == -1)
 			return(-1);
 		if (prior_cmd && prior_cmd->is_redir_error != 1)
 		{
 			if (link_commands(prior_cmd, current_cmd) == -1)
 				return(-1);
 		}
+		if (tmp_token)
+		{
+			tmp_token->type = 'd';
+			tmp_token = tmp_token->next;
+		}
 		prior_cmd = current_cmd;
-		tmp_token->type = 'd';
-		tmp_token = tmp_token->next;
 	}
+	token_cleanup(tokens);
 	return (0);
 }

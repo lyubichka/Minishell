@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 22:09:16 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/14 22:50:43 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <unistd.h>
+
+typedef struct s_shell
+{
+	int				std_in;
+	int				std_out;
+} 					t_shell;
 
 typedef struct s_env
 {

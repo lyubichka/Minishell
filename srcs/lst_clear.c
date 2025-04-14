@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:03:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/03 20:06:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/14 21:29:39 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void lst_clear_commands(t_command **commands)
 			free_split(tmp1->argv);
 		if (tmp1->path)
 			free(tmp1->path);
+		tmp1->argv = NULL;
+		tmp1->path = NULL;
 		free(tmp1);
 		tmp1 = tmp2;
 	}

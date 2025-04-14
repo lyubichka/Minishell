@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 21:07:34 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/14 22:52:45 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(int ac, char **av, char **envp)
 		return (0);
 	while (1)
 	{
-		new_line = readline("minishell>");
+		new_line = readline("minishell> ");
 		if(!new_line)
 		{
 			ft_putstr_fd("minishell: error: readline failed\n", 2);
