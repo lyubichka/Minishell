@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <unistd.h>
+# include <string.h>
 
 typedef struct s_shell
 {
