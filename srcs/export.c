@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:25:13 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/04 04:25:15 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/15 20:27:48 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void update_or_add_var(char *name, char *value, t_env **env)
     tmp = *env;
     while (tmp)
     {
-        if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
+        if (ft_strncmp(tmp->name, name, ft_strlen(name) + 1) == 0)
         {
             free(name); // Releasing the duplicate name
             if (value) // If there is a new value, it is updated

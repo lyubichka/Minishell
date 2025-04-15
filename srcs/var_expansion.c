@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 21:00:58 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:32:03 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	var_not_found(t_token *token, char *var_name, int *pos_value)
 	token->value = new_token_value;
 	if (token->value[0] == '\0')
 		token->type = 'd';
+	*pos_value = prefix_len;
 }
 
 static void	replace_var(t_token *token, char *var_value, char *var_name, int *pos_value)
@@ -75,7 +76,7 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 	}	
 	else
 	{
-		while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name)) != 0)
+		while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name) + 1) != 0)
 			env_list = env_list->next;
 		if (env_list)	
 			replace_var(token, env_list->value, var_name, pos_value);

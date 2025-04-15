@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:30:57 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/04 04:31:00 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/15 20:28:15 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void remove_var(char *name, t_env **env)
     prev = NULL;
     while (tmp)
     {
-        if (ft_strncmp(tmp->name, name, ft_strlen(name)) == 0)
+        if (ft_strncmp(tmp->name, name, ft_strlen(name) + 1) == 0)
         {
             if (prev)
                 prev->next = tmp->next;

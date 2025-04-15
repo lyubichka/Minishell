@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 20:50:36 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:05:47 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:57:04 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,17 @@ static void	heredoc_write_read(char *delimiter, int write_end, int is_quoted, t_
 		new_line = readline("> ");
 		if (!new_line)
 			break ;
-		if (ft_strncmp(delimiter, new_line, ft_strlen(delimiter)) == 0)
+		if (ft_strncmp(delimiter, new_line, ft_strlen(delimiter) + 1) == 0)
 		{
 			free (new_line);
 			new_line = NULL;
 			break ;
 		}
 		write_line = ft_strjoin(new_line, "\n");
+		fprintf(stderr, "DEBUG: before to write: [%s]\n", write_line);
 		if (is_quoted == 0)
 			line_var_expansion(&write_line, env);
+		fprintf(stderr, "DEBUG: About to write: [%s]\n", write_line);
 		write(write_end, write_line, ft_strlen(write_line));
 		free(new_line);
 		new_line = NULL;

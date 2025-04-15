@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:15:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/03/06 18:37:07 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:28:04 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	shlvl_increase(t_env **env_list)
 	lvl = 0;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->name, "SHLVL", ft_strlen(tmp->name)) == 0)
+		if (ft_strncmp(tmp->name, "SHLVL", ft_strlen(tmp->name) + 1) == 0)
 		{
 			lvl_change(&lvl, tmp->value);
 			break ;

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 19:36:26 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:09:20 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int main(int ac, char **av, char **envp)
 		}
 		if(*new_line)
 		{
+			// line_var_expansion(&new_line, env_list);
 			add_history(new_line);
 			parse_exec_line(&env_list, new_line, &shell_info); //we can execute from here as well
 		}
