@@ -6,25 +6,27 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:27:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:46:42 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:19:00 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void update_command(t_command *command, int fd_in, int fd_out)
+static void update_command(t_command *command, int fd_in, int fd_out, int id)
 {
 	if (fd_in != 0)
 	{
 	    if (command->fd_in != -300 && command->fd_in != -1)
 			close(command->fd_in); // Close old fd_in
 		command->fd_in = fd_in;
+		command->last_file_pos = id;
 	}
 	if (fd_out != 0)
 	{
 		if (command->fd_out != -300 && command->fd_out != -1)
 			close(command->fd_out); // Close old fd_out
 		command->fd_out = fd_out;
+		command->last_file_pos = id;
 	}
 }
 
@@ -38,7 +40,7 @@ static int handle_input_redir(const char *filename, t_command *cmd, t_token **tm
 		ft_putstr_fd("minishell> ", 2);
 		perror(filename);
 	}
-	update_command(cmd, fd_in, 0);
+	update_command(cmd, fd_in, 0, (*tmp_token)->id);
 	if (fd_in == -1)
 	{
 		exit_static_status(1);
@@ -62,7 +64,7 @@ static int	handle_append_redir(const char *filename, t_command *cmd, t_token **t
 		ft_putstr_fd("minishell> ", 2);
 		perror(filename);
 	}
-	update_command(cmd, 0, fd_out);
+	update_command(cmd, 0, fd_out, (*tmp_token)->id);
 	if (fd_out == -1)
 	{
 		exit_static_status(1);
@@ -86,7 +88,7 @@ static int	handle_trunc_redir(const char *filename, t_command *cmd, t_token **tm
 		ft_putstr_fd("minishell> ", 2);
 		perror(filename);
 	}
-	update_command(cmd, 0, fd_out);
+	update_command(cmd, 0, fd_out, (*tmp_token)->id);
 	if (fd_out == -1)
 	{
 		exit_static_status(1);

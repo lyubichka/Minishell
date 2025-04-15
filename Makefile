@@ -55,7 +55,10 @@ SRCS_DIR		= ./srcs/
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRCS_FILES))
 
-OBJS			= $(SRCS:c=o)
+OBJS_DIR		= ./objs/
+
+OBJS			= $(addprefix $(OBJS_DIR), $(SRCS_FILES:.c=.o))
+
 
 all: $(NAME)
 
@@ -65,11 +68,14 @@ $(NAME) : $(OBJS) $(LIBFT)
 $(LIBFT):
 		make all -C libft
 
-%.o: %.c
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR)
 		$(CC) $(CFLAGS) $(RLINC) -c $< -o $@
 
+$(OBJS_DIR):
+		mkdir -p $(OBJS_DIR)
+
 clean:
-		rm -f $(OBJS)
+		$(RM) $(OBJS_DIR)
 		make clean -C libft
 
 fclean: clean
