@@ -1,0 +1,7 @@
+Makefile
+README.md
+b.txt
+includes
+libft
+minishell
+srcs

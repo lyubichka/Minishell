@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:32:30 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/13 23:48:46 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:46:23 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@
 
 int	syntax_error(char *error_token)
 {
-	ft_putstr_fd("syntax error near unexpected token: '",2);
+	ft_putstr_fd("minishell: syntax error near unexpected token: '",2);
 	ft_putstr_fd(error_token, 2);
-	ft_putstr_fd(" ' \n", 2);
+	ft_putstr_fd("'\n", 2);
 	exit_static_status(2);
 	return (-1);
 }

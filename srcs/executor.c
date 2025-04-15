@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/14 23:06:40 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:26:39 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void execute_command(t_command *cmd, t_env **env_list)
 				close(shell_std.std_in);
 				close(shell_std.std_out);
 			}
-			else
+			else if (cmd->path)
 				run_external_command(cmd, env_list);
             return;
         }
@@ -173,8 +173,10 @@ void execute_command(t_command *cmd, t_env **env_list)
 			{
 				if (cmd->is_builtin)
 					run_builtin(cmd, env_list);
-				else
+				else if (cmd->path)
 					run_external_command(cmd, env_list);
+                else
+                    return ;
 			}
 			else
 				handle_parent_process(cmd, pid);

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 20:49:57 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/07 21:17:46 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:40:02 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_quotes(char *line)
 	}
 	if (single_open || double_open)
 	{
-		ft_putstr_fd("Error: found not closed quote\n", 2);
+		ft_putstr_fd("minishell: found not closed quote\n", 2);
 		exit_static_status(1);
 	}
 	return (single_open || double_open);

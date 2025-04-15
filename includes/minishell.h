@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/14 22:50:43 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:42:20 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@
 
 typedef struct s_shell
 {
-	int				std_in;
-	int				std_out;
-} 					t_shell;
+	int					std_in;
+	int					std_out;
+	struct s_env		**env_list;
+	struct s_token		**tokens;
+	struct s_command	**commands;
+} 						t_shell;
 
 typedef struct s_env
 {
@@ -116,6 +119,9 @@ void	lst_clear_commands(t_command **commands);
 t_env	*lst_create_envp(char *env_name, char	*env_value);
 t_token *lst_token_create(char type, char *value);
 
+//parse_exec_line.c
+void	parse_exec_line(t_env **env_list, char* new_line, t_shell *shell_info);
+
 // pwd.c
 int		ft_pwd(void);
 
@@ -129,6 +135,10 @@ int		tokenizer(t_token **tokens, char *line, char *delimiters);
 // unset.c
 int		ft_unset(char **args, t_env **env);
 
+// update_exit_status
+
+int		exit_static_status(int set_status);
+
 // utils.c
 int		is_builtin(char *cmd);
 
@@ -139,11 +149,6 @@ void	handle_heredoc_sig(int sig);
 
 //others
 void	shlvl_increase (t_env **env_list);
-
-
-
-
-int		exit_static_status(int set_status);
 
 void	free_split(char **array);
 
@@ -158,7 +163,7 @@ void	lst_token_del(t_token *prev, t_token *curr, t_token *forw);
 
 
 
-void	update_exit_status(int status, t_env **env_list);
+// void	update_exit_status(int status, t_env **env_list);
 
 void	token_split(t_token **tokens);
 void	token_cleanup(t_token **tokens);
@@ -169,6 +174,6 @@ int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
 int		tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list);
 
 void	line_var_expansion(char **line_to_expand, t_env *env_list);
-void	parse_exec_line(t_env **env_list, char* new_line);
+
 
 #endif
