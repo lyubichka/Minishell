@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 19:26:39 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 21:08:17 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,35 +53,35 @@ char **env_list_to_array(t_env *env_list)
     tmp = env_list;
     while(tmp)
     {
-        count++;
-        tmp = tmp->next;
+		count++;
+		tmp = tmp->next;
     }
     array = malloc((sizeof(char *)) * (count + 1));
     if (!array)
-        return (NULL);
+		return (NULL);
 	tmp = env_list; // has to be reset, otherwise it wont run the second while loop.
     while (tmp)
     {
-        name_eq = ft_strjoin(tmp->name, "=");
-        if (!name_eq)
-        {
-            while (i > 0)
-                free(array[--i]);
+		name_eq = ft_strjoin(tmp->name, "=");
+		if (!name_eq)
+		{
+		    while (i > 0)
+				free(array[--i]);
             free(array);
-            return (NULL);
+			return (NULL);
         }
         full_str = ft_strjoin(name_eq, tmp->value);
         free(name_eq);
         if (!full_str)
         {
-            while (i > 0)
-                free(array[--i]);
-            free(array);
-            return (NULL);
-        }
-        array[i] = full_str;
-        i++;
-        tmp = tmp->next;
+			while (i > 0)
+				free(array[--i]);
+			free(array);
+			return (NULL);
+	    }
+		array[i] = full_str;
+		i++;
+		tmp = tmp->next;
     }
     array[count] = NULL;
     return (array);
@@ -101,21 +101,21 @@ static void run_external_command(t_command *cmd, t_env **env_list)
     exit(127);
 }
 
-static void handle_parent_process(t_command *cmd, pid_t pid)
+static void	handle_parent_process(t_command *cmd, pid_t pid)
 {
     int status;
 
     status = 0;
     if (cmd->fd_in >= 0)
-        close(cmd->fd_in);
+		close(cmd->fd_in);
     if (cmd->fd_out >= 0)
-        close(cmd->fd_out);
+		close(cmd->fd_out);
     waitpid(pid, &status, 0); // waiting for the child process to complete
     if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
 		exit_static_status(1);
 }
 
-static void run_builtin(t_command *cmd, t_env **env_list)
+static void	run_builtin(t_command *cmd, t_env **env_list)
 {
 	setup_input(cmd);
     setup_output(cmd);
@@ -144,8 +144,8 @@ void execute_command(t_command *cmd, t_env **env_list)
     
     while (cmd)
     {
-        if (!cmd->is_pipe)
-        {
+		if (!cmd->is_pipe)
+		{
             if (cmd->is_builtin)
 			{	
 				shell_std.std_in = dup(STDIN_FILENO);
@@ -158,7 +158,7 @@ void execute_command(t_command *cmd, t_env **env_list)
 			}
 			else if (cmd->path)
 				run_external_command(cmd, env_list);
-            return;
+            // return;
         }
 		else
 		{
@@ -175,13 +175,13 @@ void execute_command(t_command *cmd, t_env **env_list)
 					run_builtin(cmd, env_list);
 				else if (cmd->path)
 					run_external_command(cmd, env_list);
-                else
-                    return ;
+				else
+					return ;
 			}
 			else
 				handle_parent_process(cmd, pid);
-			cmd = cmd->next;
 		}
+		cmd = cmd->next;
     }
 }
 

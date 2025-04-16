@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/14 22:56:59 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:16:48 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static void	init_command(t_command **commands)
 	(*commands)->is_pipe = 0;
 	(*commands)->is_builtin = 0;
 	(*commands)->is_redir_error = 0;
-	(*commands)->last_hd_pos = 0;
+	(*commands)->last_hd_pos = -1;
 	(*commands)->last_hd_fd = -300;
-	(*commands)->last_file_pos = 0;
+	(*commands)->last_file_pos = -1;
 	(*commands)->argv = NULL;
 	(*commands)->path = NULL;
 	(*commands)->next = NULL;
@@ -42,7 +42,7 @@ int link_commands(t_command *cmd1, t_command *cmd2)
 	if (pipe(pipe_fd) == -1)
 		return (-1);
 	// Only assign if no redirection has already been set
-	if (cmd1->fd_out == -300)
+	if (cmd1->fd_out == -1 && cmd1->is_redir_error == 0)
 	{
 		cmd1->fd_out = pipe_fd[1];
 		cmd1->pipe_out = 1;
@@ -50,7 +50,7 @@ int link_commands(t_command *cmd1, t_command *cmd2)
 	else
 		close(pipe_fd[1]);
 
-	if (cmd2->fd_in == -300)
+	if (cmd2->fd_in == -1 && cmd2->is_redir_error == 0)
 	{
 		cmd2->fd_in = pipe_fd[0];
 		cmd2->pipe_in = 1;

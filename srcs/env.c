@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:18:34 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/04 04:18:36 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/16 19:57:16 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 * Outputs one environment variable in the name=value format.
  * env Pointer to an environment list node.
  */
-static void print_env_var(t_env *env)
+static void	print_env_var(t_env *env)
 {
-    ft_putstr_fd(env->name, 1);
-    ft_putchar_fd('=', 1);
-    ft_putstr_fd(env->value, 1);
-    ft_putchar_fd('\n', 1);
+	ft_putstr_fd(env->name, 1);
+	ft_putchar_fd('=', 1);
+	ft_putstr_fd(env->value, 1);
+	ft_putchar_fd('\n', 1);
 }
 
 /**
@@ -29,19 +29,19 @@ static void print_env_var(t_env *env)
  * env Pointer to the environment list.
  * ret is always 0, as output errors are not checked.
  */
-int ft_env(t_env **env)
+int	ft_env(t_env **env)
 {
-    t_env *tmp;
+	t_env *tmp;
 
-    tmp = *env;
-    while (tmp)
-    {
-        if (tmp->value)
-            print_env_var(tmp);
-        tmp = tmp->next;
-    }
-    exit_static_status(0);
-    return (0);
+	tmp = *env;
+	while (tmp)
+	{
+		if (tmp->value)
+			print_env_var(tmp);
+		tmp = tmp->next;
+	}
+	exit_static_status(0);
+	return (0);
 }
 
 /*

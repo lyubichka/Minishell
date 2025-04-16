@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:27:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 20:19:00 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:59:23 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,13 @@ static int handle_input_redir(const char *filename, t_command *cmd, t_token **tm
 	fd_in = open(filename, O_RDONLY, 0);
 	if (fd_in == -1)
 	{
-		ft_putstr_fd("minishell> ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		perror(filename);
 	}
 	update_command(cmd, fd_in, 0, (*tmp_token)->id);
+	(*tmp_token)->type = 'd';
+	(*tmp_token)->next->type = 'd';
+	*tmp_token = (*tmp_token)->next;
 	if (fd_in == -1)
 	{
 		exit_static_status(1);
@@ -48,9 +51,6 @@ static int handle_input_redir(const char *filename, t_command *cmd, t_token **tm
 		cmd->is_redir_error = 1;
 		return (-1);
 	}
-	(*tmp_token)->type = 'd';
-	(*tmp_token)->next->type = 'd';
-	*tmp_token = (*tmp_token)->next;
 	return (0);
 }
 
@@ -61,10 +61,13 @@ static int	handle_append_redir(const char *filename, t_command *cmd, t_token **t
 	fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd_out == -1)
 	{
-		ft_putstr_fd("minishell> ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		perror(filename);
 	}
 	update_command(cmd, 0, fd_out, (*tmp_token)->id);
+	(*tmp_token)->type = 'd';
+	(*tmp_token)->next->type = 'd';
+	*tmp_token = (*tmp_token)->next;
 	if (fd_out == -1)
 	{
 		exit_static_status(1);
@@ -72,9 +75,6 @@ static int	handle_append_redir(const char *filename, t_command *cmd, t_token **t
 		cmd->is_redir_error = 1;
 		return (-1);
 	}
-	(*tmp_token)->type = 'd';
-	(*tmp_token)->next->type = 'd';
-	*tmp_token = (*tmp_token)->next;
 	return (0);
 }
 
@@ -85,10 +85,13 @@ static int	handle_trunc_redir(const char *filename, t_command *cmd, t_token **tm
 	fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_out == -1)
 	{
-		ft_putstr_fd("minishell> ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		perror(filename);
 	}
 	update_command(cmd, 0, fd_out, (*tmp_token)->id);
+	(*tmp_token)->type = 'd';
+	(*tmp_token)->next->type = 'd';
+	*tmp_token = (*tmp_token)->next;
 	if (fd_out == -1)
 	{
 		exit_static_status(1);
@@ -96,9 +99,6 @@ static int	handle_trunc_redir(const char *filename, t_command *cmd, t_token **tm
 		cmd->is_redir_error = 1;
 		return (-1);
 	}
-	(*tmp_token)->type = 'd';
-	(*tmp_token)->next->type = 'd';
-	*tmp_token = (*tmp_token)->next;
 	return (0);
 }
 

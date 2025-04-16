@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:18:14 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/04 04:37:50 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/16 19:56:31 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@
  */
 static void print_args(char **args, int i)
 {
-    while (args[i])
-    {
-        ft_putstr_fd(args[i], 1);
-        if (args[i + 1]) // Adding a space between the arguments
-            ft_putchar_fd(' ', 1);
-        i++;
-    }
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], 1);
+		if (args[i + 1]) // Adding a space between the arguments
+			ft_putchar_fd(' ', 1);
+		i++;
+	}
 }
 
 /**
@@ -37,26 +37,27 @@ static void print_args(char **args, int i)
  */
 int ft_echo(char **args)
 {
-    int n_flag;
-    int i;
+	int n_flag;
+	int i;
 
-    n_flag = 0;
-    i = 1;
-    if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
-    {
-        n_flag = 1;
-        i++;
-    }
-    if (args[i])
-        print_args(args, i);
-    else if (!n_flag) // If there are no arguments and there is no -n, output \n
-        ft_putchar_fd('\n', 1);
-    else
-        return (exit_static_status(0), 0); // Only -n with no arguments
-    if (!n_flag) // Adding a newline, if not -n
-        ft_putchar_fd('\n', 1);
-    exit_static_status(0);
-    return (0);
+	n_flag = 0;
+	i = 1;
+	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
+	{
+		n_flag = 1;
+		i++;
+	}
+	if (args[i])
+	{
+		print_args(args, i);
+		ft_putchar_fd('\n', 1);
+	}
+	else if (!n_flag) // If there are no arguments and there is no -n, output \n
+		ft_putchar_fd('\n', 1);
+	// else
+	//	 return (exit_static_status(0), 0); // Only -n with no arguments ---- same as below, duplicated
+	exit_static_status(0);
+	return (0);
 }
 
 /*

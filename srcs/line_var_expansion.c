@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 21:19:19 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:27:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,15 @@ static void	find_and_expand_line(char **line, t_env *env_list, int *pos_value)
 	}	
 	else
 	{
-		fprintf(stderr, "Comparing var_name=[%s] with env_name=[%s]\n", var_name, env_list->name);
 		while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name) + 1) != 0)
 			env_list = env_list->next;
 		if (env_list)	
 		{
-			fprintf(stderr, "found var\n");
 			replace_var_line(line, env_list->value, var_name, pos_value);
 		}
 		else
 		{
 			var_not_found_line(line, var_name, pos_value);
-			fprintf(stderr, "not found var\n");
 		}
 	}
 	free(var_name);
@@ -95,9 +92,6 @@ void line_var_expansion(char **line_to_expand, t_env *env_list)
     int i;
 
 	i = 0;
-	t_env *tmp = env_list;
-	fprintf(stderr, "DEBUG: Current env list:\n");
-	fprintf(stderr, "  name=[%s] value=[%s]\n", tmp->name, tmp->value);
     while ((*line_to_expand)[i] != '\0')
     {
 		if ((*line_to_expand)[i] == '$')

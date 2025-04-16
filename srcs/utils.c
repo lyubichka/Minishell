@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:31:12 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/04 04:31:45 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/16 19:58:30 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 int is_builtin(char *cmd)
 {
-    if (!cmd)
-        return (0);
-    if (ft_strncmp(cmd, "cd", 3) == 0 ||
-        ft_strncmp(cmd, "echo", 5) == 0 ||
-        ft_strncmp(cmd, "env", 4) == 0 ||
-        ft_strncmp(cmd, "pwd", 4) == 0 ||
-        ft_strncmp(cmd, "export", 7) == 0 ||
-        ft_strncmp(cmd, "unset", 6) == 0 ||
-        ft_strncmp(cmd, "exit", 5) == 0)
-        return (1);
-    return (0);
+	if (!cmd)
+		return (0);
+	if (ft_strncmp(cmd, "cd", 3) == 0 ||
+		ft_strncmp(cmd, "echo", 5) == 0 ||
+		ft_strncmp(cmd, "env", 4) == 0 ||
+		ft_strncmp(cmd, "pwd", 4) == 0 ||
+		ft_strncmp(cmd, "export", 7) == 0 ||
+		ft_strncmp(cmd, "unset", 6) == 0 ||
+		ft_strncmp(cmd, "exit", 5) == 0)
+		return (1);
+	return (0);
 }
 
 // In command_parse.c, when filling in t_command
@@ -129,16 +129,16 @@ int is_builtin(char *cmd)
 * Frees up the memory allocated for the array of strings.
  * tokens Array of strings ending in NULL.
  */
-void free_tokens(char **tokens)
-{
-    size_t i = 0;
+// void free_tokens(char **tokens)
+// {
+//     size_t i = 0;
 
-    if (!tokens)
-        return;
-    while (tokens[i])
-    {
-        free(tokens[i]);
-        i++;
-    }
-    free(tokens);
-}
+//     if (!tokens)
+//         return;
+//     while (tokens[i])
+//     {
+//         free(tokens[i]);
+//         i++;
+//     }
+//     free(tokens);
+// }

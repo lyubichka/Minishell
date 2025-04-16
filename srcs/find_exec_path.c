@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:06:49 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 21:18:59 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:26:09 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static void	path_error_setting(t_command *command, char *cmd_name, \
 	command->is_redir_error = 1;
 	if (!last_path)
 	{
-		ft_putstr_fd("minishell> ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd_name, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		exit_static_status(127);
 	}
 	else
 	{
-		ft_putstr_fd("minishell> ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd_name, 2);
 		ft_putstr_fd(": Permission denied\n", 2);
 		exit_static_status(126);

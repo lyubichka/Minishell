@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:31:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 20:27:27 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:57:38 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@
 
 char *get_env_value(char *name, t_env *env)
 {
-    while (env && name)
-    {
-        if (ft_strncmp(env->name, name, ft_strlen(name) + 1) == 0)
-            return (env->value);
-        env = env->next;
-    }
-    return (NULL);
+	while (env && name)
+	{
+		if (ft_strncmp(env->name, name, ft_strlen(name) + 1) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
 }
 
 int envp_to_list(char **envp, t_env **env_list)
