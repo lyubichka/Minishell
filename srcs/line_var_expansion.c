@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 20:27:54 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:51:01 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	find_and_expand_line(char **line, t_env *env_list, int *pos_value)
 	char *exit_code_str;
 	
 	j = *pos_value + 1;
-	while ((*line)[j] != '\0' && (*line)[j] != ' ' && (*line)[j] != '$' && (*line)[j] != '\n')
+	while ((*line)[j] && (ft_isalnum((*line)[j]) || (*line)[j] == '_'))
 		j++;
 	var_name = ft_substr(*line, *pos_value + 1, j - *pos_value - 1);
 	if (ft_strncmp(var_name, "?", 2) == 0)

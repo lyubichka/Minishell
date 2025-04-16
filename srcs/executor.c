@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 21:08:17 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:14:15 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,176 +14,252 @@
 
 static void setup_input(t_command *cmd)
 {
-    if (cmd->fd_in >= 0)
-    {
-        if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-        {
-            ft_putstr_fd("dup2 fd_in", 2);
-            exit(1);
-        }
-        close(cmd->fd_in);
-    }
+	if (cmd->fd_in >= 0)
+	{
+		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+		{
+			ft_putstr_fd("dup2 fd_in", 2);
+			exit(1);
+		}
+		close(cmd->fd_in);
+	}
 }
 
 
 static void setup_output(t_command *cmd)
 {
-    if (cmd->fd_out >= 0)
-    {
-        if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-        {
-            ft_putstr_fd("dup2 fd_out", 2);
-            exit(1);
-        }
-        close(cmd->fd_out);
-    }
+	if (cmd->fd_out >= 0)
+	{
+		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+		{
+			ft_putstr_fd("dup2 fd_out", 2);
+			exit(1);
+		}
+		close(cmd->fd_out);
+	}
 }
 
 char **env_list_to_array(t_env *env_list)
 {
-    char       **array;
-    int        count;
-    t_env      *tmp;
-    char       *name_eq;
-    char       *full_str; 
-    int        i;
-    
-    i = 0;
-    count = 0;
-    tmp = env_list;
-    while(tmp)
-    {
+	char		**array;
+	int			count;
+	t_env		*tmp;
+	char 		*name_eq;
+	char 		*full_str; 
+	int  		i;
+
+	i = 0;
+	count = 0;
+	tmp = env_list;
+	while(tmp)
+	{
 		count++;
 		tmp = tmp->next;
-    }
-    array = malloc((sizeof(char *)) * (count + 1));
-    if (!array)
+	}
+	array = malloc((sizeof(char *)) * (count + 1));
+	if (!array)
 		return (NULL);
 	tmp = env_list; // has to be reset, otherwise it wont run the second while loop.
-    while (tmp)
-    {
+	while (tmp)
+	{
 		name_eq = ft_strjoin(tmp->name, "=");
 		if (!name_eq)
 		{
-		    while (i > 0)
-				free(array[--i]);
-            free(array);
-			return (NULL);
-        }
-        full_str = ft_strjoin(name_eq, tmp->value);
-        free(name_eq);
-        if (!full_str)
-        {
 			while (i > 0)
 				free(array[--i]);
 			free(array);
 			return (NULL);
-	    }
+		}
+		full_str = ft_strjoin(name_eq, tmp->value);
+		free(name_eq);
+		if (!full_str)
+		{
+			while (i > 0)
+				free(array[--i]);
+			free(array);
+			return (NULL);
+		}
 		array[i] = full_str;
 		i++;
 		tmp = tmp->next;
-    }
-    array[count] = NULL;
-    return (array);
+	}
+	array[count] = NULL;
+	return (array);
 }
 
 static void run_external_command(t_command *cmd, t_env **env_list)
 {
-    char	**env_array;
+	char	**env_array;
 	
 	env_array = env_list_to_array(*env_list);
 	setup_input(cmd);
-    setup_output(cmd);
-    execve(cmd->path, cmd->argv, env_array); // Executes an external program, replacing the current process
-    ft_putstr_fd("minishell: execve failed\n", 2);
+	setup_output(cmd);
+	execve(cmd->path, cmd->argv, env_array); // Executes an external program, replacing the current process
+	ft_putstr_fd("minishell: execve failed\n", 2);
 	free_split(env_array);
-    exit_static_status(127);
-    exit(127);
+	exit_static_status(127);
+	exit(127);
 }
 
 static void	handle_parent_process(t_command *cmd, pid_t pid)
 {
-    int status;
+	int	status;
 
-    status = 0;
-    if (cmd->fd_in >= 0)
+	status = 0;
+	if (cmd->fd_in >= 0)
 		close(cmd->fd_in);
-    if (cmd->fd_out >= 0)
+	if (cmd->fd_out >= 0)
 		close(cmd->fd_out);
-    waitpid(pid, &status, 0); // waiting for the child process to complete
-    if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
+	waitpid(pid, &status, 0); // waiting for the child process to complete
+	if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
 		exit_static_status(1);
 }
 
 static void	run_builtin(t_command *cmd, t_env **env_list)
 {
 	setup_input(cmd);
-    setup_output(cmd);
+	setup_output(cmd);
 	if (ft_strncmp(cmd->argv[0], "echo", 5) == 0)
-        ft_echo(cmd->argv);
-    else if (ft_strncmp(cmd->argv[0], "cd", 3) == 0)
-        ft_cd(cmd->argv, env_list);
-    else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
-        ft_pwd();
-    else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
-        ft_env(env_list);
-    else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)
-        ft_export(cmd->argv, env_list);
-    else if (ft_strncmp(cmd->argv[0], "unset", 6) == 0)
-        ft_unset(cmd->argv, env_list);
-    else if (ft_strncmp(cmd->argv[0], "exit", 5) == 0)
-        ft_exit(cmd->argv);
-    else
-        ft_putstr_fd("minishell: unknown builtin\n", 2);
+		ft_echo(cmd->argv);
+	else if (ft_strncmp(cmd->argv[0], "cd", 3) == 0)
+		ft_cd(cmd->argv, env_list);
+	else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
+		ft_pwd();
+	else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
+		ft_env(env_list);
+	else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)
+		ft_export(cmd->argv, env_list);
+	else if (ft_strncmp(cmd->argv[0], "unset", 6) == 0)
+		ft_unset(cmd->argv, env_list);
+	else if (ft_strncmp(cmd->argv[0], "exit", 5) == 0)
+		ft_exit(cmd->argv);
+	else
+		ft_putstr_fd("minishell: unknown builtin\n", 2);
 }
 
-void execute_command(t_command *cmd, t_env **env_list)
+
+
+static void run_builtin_in_parent(t_command *cmd, t_env **env_list)
 {
-    pid_t    pid;
-	t_shell		shell_std;
-    
-    while (cmd)
-    {
-		if (!cmd->is_pipe)
+	t_shell shell_std;
+
+	shell_std.std_in = dup(STDIN_FILENO);
+	shell_std.std_out = dup(STDOUT_FILENO);
+	run_builtin(cmd, env_list);
+	dup2(shell_std.std_in, STDIN_FILENO);
+	dup2(shell_std.std_out, STDOUT_FILENO);
+	close(shell_std.std_in);
+	close(shell_std.std_out);
+}
+
+static void fork_and_run_builtin(t_command *cmd, t_env **env_list)
+{
+	pid_t pid;
+	
+	pid = fork();
+	if (pid == -1)
+	{
+		ft_putstr_fd("minishell: fork error\n", 2);
+		exit_static_status(1);
+		return;
+	}
+	if (pid == 0)
+	{
+		run_builtin(cmd, env_list);
+		exit(0);
+	}
+	else
+		handle_parent_process(cmd, pid);
+}
+
+static void	fork_and_execve(t_command *cmd, t_env **env_list)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		ft_putstr_fd("minishell: fork error\n", 2);
+		exit_static_status(1);
+		return;
+	}
+	if (pid == 0)
+	{
+		run_external_command(cmd, env_list);
+	}
+	else
+		handle_parent_process(cmd, pid);
+}
+
+void	execute_command(t_command *cmd, t_env **env_list)
+{
+	int needs_fork;
+
+	while (cmd)
+	{
+		needs_fork = (cmd->fd_in >= 0 || cmd->fd_out >= 0 || cmd->pipe_in || cmd->pipe_out);
+		if (cmd->path) // external command
 		{
-            if (cmd->is_builtin)
-			{	
-				shell_std.std_in = dup(STDIN_FILENO);
-				shell_std.std_out = dup(STDOUT_FILENO);
-				run_builtin(cmd, env_list);
-				dup2(shell_std.std_in, STDIN_FILENO);
-				dup2(shell_std.std_out, STDOUT_FILENO);
-				close(shell_std.std_in);
-				close(shell_std.std_out);
-			}
-			else if (cmd->path)
-				run_external_command(cmd, env_list);
-            // return;
-        }
-		else
+			fork_and_execve(cmd, env_list);
+		}
+		else if (cmd->is_builtin)
 		{
-			pid = fork(); // creating a child process
-			if (pid == -1)
-			{
-				ft_putstr_fd("minishell: fork error\n", 2);
-				exit_static_status(1);
-				return;
-			}
-			if (pid == 0)
-			{
-				if (cmd->is_builtin)
-					run_builtin(cmd, env_list);
-				else if (cmd->path)
-					run_external_command(cmd, env_list);
-				else
-					return ;
-			}
+			if (needs_fork)
+				fork_and_run_builtin(cmd, env_list);
 			else
-				handle_parent_process(cmd, pid);
+				run_builtin_in_parent(cmd, env_list);
 		}
 		cmd = cmd->next;
-    }
+	}
 }
+
+// void execute_command(t_command *cmd, t_env **env_list)
+// {
+// 	pid_t		pid;
+// 	t_shell		shell_std;
+
+// 	while (cmd)
+// 	{
+// 		if (!cmd->is_pipe)
+// 		{
+// 			if (cmd->is_builtin)
+// 			{	
+// 				shell_std.std_in = dup(STDIN_FILENO);
+// 				shell_std.std_out = dup(STDOUT_FILENO);
+// 				run_builtin(cmd, env_list);
+// 				dup2(shell_std.std_in, STDIN_FILENO);
+// 				dup2(shell_std.std_out, STDOUT_FILENO);
+// 				close(shell_std.std_in);
+// 				close(shell_std.std_out);
+// 			}
+// 			else if (cmd->path)
+// 				run_external_command(cmd, env_list);
+// 			// return;
+// 		}
+// 		else
+// 		{
+// 			pid = fork(); // creating a child process
+// 			if (pid == -1)
+// 			{
+// 				ft_putstr_fd("minishell: fork error\n", 2);
+// 				exit_static_status(1);
+// 				return;
+// 			}
+// 			if (pid == 0)
+// 			{
+// 				if (cmd->is_builtin)
+// 					run_builtin(cmd, env_list);
+// 				else if (cmd->path)
+// 					run_external_command(cmd, env_list);
+// 				else
+// 					return ;
+// 			}
+// 			else
+// 				handle_parent_process(cmd, pid);
+// 		}
+// 		cmd = cmd->next;
+// 	}
+// }
 
 // void execute_command(t_command *cmd, t_env **env_list)
 // {

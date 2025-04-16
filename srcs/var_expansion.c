@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 20:32:03 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:48:49 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 	char *var_name;
 	char *exit_code_str;
 	
-	j = *pos_value;
-	while(token->value[j] != '\0' && token->value[j] != ' ' && token->value[j] != '$')
+	j = *pos_value + 1;
+	while(token->value[j] && (ft_isalnum(token->value[j]) || token->value[j] == '_'))
 		j++;
 	var_name = ft_substr(token->value, *pos_value + 1, j - *pos_value - 1);
 	if (ft_strncmp(var_name, "?", 2) == 0)
@@ -88,32 +88,32 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 
 void var_expansion(t_token *token, t_env *env_list)
 {
-    int i;
-    int in_single_quote;
-    int in_double_quote;
+	int i;
+	int in_single_quote;
+	int in_double_quote;
 
 	i = 0;
-    in_single_quote = 0;
-    in_double_quote = 0;
-    while (token->value[i] != '\0')
-    {
-        // Handle single quotes - no expansion inside single quotes
-        if (token->value[i] == '\'' && !in_double_quote)
-        {
-            in_single_quote = !in_single_quote;  // Toggle single quote state
-        }
-        // Handle double quotes - expand inside double quotes
-        else if (token->value[i] == '"' && !in_single_quote)
-        {
-            in_double_quote = !in_double_quote; // Toggle double quote state
-        }
-        // Only expand if not inside single quotes, regardless of backslashes
-        else if (token->value[i] == '$' && !in_single_quote)
-        {
-            // Perform expansion if it's not inside single quotes
-            find_and_expand(token, env_list, &i);  // Expand variable
-            continue; // Skip the rest of the loop after expansion
-        }
-        i++;  // Continue scanning the next character
-    }
+	in_single_quote = 0;
+	in_double_quote = 0;
+	while (token->value[i] != '\0')
+	{
+		// Handle single quotes - no expansion inside single quotes
+		if (token->value[i] == '\'' && !in_double_quote)
+		{
+			in_single_quote = !in_single_quote;  // Toggle single quote state
+		}
+		// Handle double quotes - expand inside double quotes
+		else if (token->value[i] == '"' && !in_single_quote)
+		{
+			in_double_quote = !in_double_quote; // Toggle double quote state
+		}
+		// Only expand if not inside single quotes, regardless of backslashes
+		else if (token->value[i] == '$' && !in_single_quote)
+		{
+			// Perform expansion if it's not inside single quotes
+			find_and_expand(token, env_list, &i);  // Expand variable
+			continue; // Skip the rest of the loop after expansion
+		}
+		i++;  // Continue scanning the next character
+	}
 }

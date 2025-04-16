@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:26:32 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/04 04:30:35 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/16 21:13:38 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@
 * env is a pointer to the environment list for updating the exit status.
  * ret 0 on success, 1 on error receiving the directory.
  */
-int ft_pwd(void)
+int	ft_pwd(void)
 {
-    char cwd[PATH_MAX];
+	char	cwd[PATH_MAX];
 
-    if (getcwd(cwd, PATH_MAX) == NULL)
-    {
-        ft_putstr_fd("pwd: error retrieving current directory\n", 2);
-        exit_static_status(1);
-        return (1);
-    }
-    ft_putstr_fd(cwd, 1);
-    ft_putchar_fd('\n', 1);
-    exit_static_status(0);
-    return (0);
+	if (getcwd(cwd, PATH_MAX) == NULL)
+	{
+		ft_putstr_fd("pwd: error retrieving current directory\n", 2);
+		exit_static_status(1);
+		return (1);
+	}
+	ft_putstr_fd(cwd, 1);
+	ft_putchar_fd('\n', 1);
+	exit_static_status(0);
+	return (0);
 }
 
 /*
