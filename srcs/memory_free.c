@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:26:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/09 22:27:34 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:51:55 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	free_split(char **array)
 
 void	free_command(t_command *cmd)
 {
-    if (cmd)
-    {
-        if (cmd->argv)
-            free_split(cmd->argv);
-        if (cmd->path)
-            free(cmd->path);
-        free(cmd);
-    }
+	if (cmd)
+	{
+		if (cmd->argv)
+			free_split(cmd->argv);
+		if (cmd->path)
+			free(cmd->path);
+		free(cmd);
+	}
 }
 
 // void	lst_clear_commands(t_command **commands)

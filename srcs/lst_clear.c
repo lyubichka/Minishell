@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:03:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/14 21:29:39 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:50:21 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	lst_clear_env(t_env **env)
 	*env = NULL;
 }
 
-void lst_clear_commands(t_command **commands)
+void	lst_clear_commands(t_command **commands)
 {
 	t_command *tmp1;
 	t_command *tmp2;

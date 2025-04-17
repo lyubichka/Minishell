@@ -6,13 +6,13 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:31:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/06 21:22:23 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:50:27 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env *lst_create_envp(char *env_name, char	*env_value)
+t_env	*lst_create_envp(char *env_name, char	*env_value)
 {
 	t_env	*new_elem;
 
@@ -25,7 +25,7 @@ t_env *lst_create_envp(char *env_name, char	*env_value)
 	return (new_elem);
 }
 
-t_token *lst_token_create(char type, char *value)
+t_token	*lst_token_create(char type, char *value)
 {
 	t_token		*new_elem;
 

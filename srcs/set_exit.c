@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:30:46 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/16 21:14:27 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:52:18 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_exit_status(t_env **env, int status)
 	}
 	tmp = *env; //  Looking for the variable "?" in the environment list
 	while (tmp)
-    {
+	{
 		if (ft_strncmp(tmp->name, "?", 2) == 0)
 		{
 			free(tmp->value); // Releasing the old value

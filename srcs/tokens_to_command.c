@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 20:16:48 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:56:10 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static void	init_command(t_command **commands)
 	(*commands)->prev = NULL;
 }
 
-int link_commands(t_command *cmd1, t_command *cmd2)
+static int	link_commands(t_command *cmd1, t_command *cmd2)
 {
-	int pipe_fd[2];
+	int	pipe_fd[2];
 
 	if (!cmd1 || !cmd2)
 		return (-1);

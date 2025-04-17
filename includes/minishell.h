@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 19:42:20 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:05:02 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,13 @@ char	*remove_quotes(const char *s);
 // check_quotes.c
 int		check_quotes(char *line);
 
+// command_parse.c
+int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
+
+// custom_signals.c
+void 	ign_signals(void);
+void	handle_heredoc_sig(int sig);
+
 // echo.c
 int 	ft_echo(char **args);
 
@@ -110,6 +117,24 @@ int		handle_redir(t_token **tmp_token,t_command *cmd, t_env **env_list);
 // here_doc.c
 int		handle_heredoc(t_token *token, t_command *command, t_env **env_list);
 
+// init_signal.c
+void	init_signal(void);
+
+// is_builtin.c
+int		is_builtin(char *cmd);
+
+// line_var_expansion.c
+void	line_var_expansion(char **line_to_expand, t_env *env_list);
+
+// lst_add.c
+void	lst_add_front(t_env *new, t_env **lst);
+void	lst_add_back(t_env *new, t_env **lst);
+void	lst_token_add_back(t_token *new, t_token **lst);
+
+// lst_append_del.c
+void	lst_token_append(t_token *new_elem, t_token *tmp1, t_token *tmp2);
+void	lst_token_del(t_token *prev, t_token *curr, t_token *forw);
+
 // lst_clear.c
 void	lst_clear_tokens(t_token **tokens);
 void	lst_clear_env(t_env **env);
@@ -119,61 +144,41 @@ void	lst_clear_commands(t_command **commands);
 t_env	*lst_create_envp(char *env_name, char	*env_value);
 t_token *lst_token_create(char type, char *value);
 
+//memory_free.c
+void	free_split(char **array);
+
 //parse_exec_line.c
 void	parse_exec_line(t_env **env_list, char* new_line, t_shell *shell_info);
 
 // pwd.c
 int		ft_pwd(void);
 
+// shlvl_increase.c
+void	shlvl_increase (t_env **env_list);
+
 // syntax_check.c
 int		syntax_error(char *error_token);
 int		syntax_check(t_token *tokens);
 
-// tokenizer.c
-int		tokenizer(t_token **tokens, char *line, char *delimiters);
-
-// unset.c
-int		ft_unset(char **args, t_env **env);
-
-// update_exit_status
-
-int		exit_static_status(int set_status);
-
-// utils.c
-int		is_builtin(char *cmd);
-
-//signals
-void	init_signal(void);
-void 	ign_signals(void);
-void	handle_heredoc_sig(int sig);
-
-//others
-void	shlvl_increase (t_env **env_list);
-
-void	free_split(char **array);
-
-//lst
-
-void	lst_add_back(t_env *new, t_env **lst);
-void	lst_add_front(t_env *new, t_env **lst);
-
-void	lst_token_add_back(t_token *new, t_token **lst);
-void	lst_token_append(t_token *new_elem, t_token *tmp1, t_token *tmp2);
-void	lst_token_del(t_token *prev, t_token *curr, t_token *forw);
-
-
-
-// void	update_exit_status(int status, t_env **env_list);
-
+// token_clean_split.c
 void	token_split(t_token **tokens);
 void	token_cleanup(t_token **tokens);
 void	token_index(t_token *tokens);
 
+// tokenizer.c
+int		tokenizer(t_token **tokens, char *line, char *delimiters);
+
+// tokens_to_command.c
+int		tokens_to_command(t_command **commands, t_token **tokens, \
+								t_env **env_list);
+								
+// unset.c
+int		ft_unset(char **args, t_env **env);
+
+// update_exit_status.c
+int		exit_static_status(int set_status);
+
+// var_expansion.c
 void	var_expansion(t_token *token, t_env *env_list);
-int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
-int		tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list);
-
-void	line_var_expansion(char **line_to_expand, t_env *env_list);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 22:51:01 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:05:16 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,51 +55,53 @@ static void	replace_var_line(char **line, char *var_value, char *var_name, int *
 	
 }
 
-static void	find_and_expand_line(char **line, t_env *env_list, int *pos_value)
+static void	found_exit_var_line(char **line, int *pos_value)
 {
 	int j;
 	char *var_name;
 	char *exit_code_str;
+
+	j = *pos_value + 2;
+	var_name = ft_substr(*line, *pos_value + 1, j - *pos_value - 1);
+	exit_code_str = ft_itoa(exit_static_status(-1));
+	replace_var_line(line, exit_code_str, var_name, pos_value);
+	free(exit_code_str);		
+	free(var_name);
+}
+
+static void	find_and_expand_line(char **line, t_env *env_list, int *pos_value)
+{
+	int j;
+	char *var_name;
 	
 	j = *pos_value + 1;
 	while ((*line)[j] && (ft_isalnum((*line)[j]) || (*line)[j] == '_'))
 		j++;
 	var_name = ft_substr(*line, *pos_value + 1, j - *pos_value - 1);
-	if (ft_strncmp(var_name, "?", 2) == 0)
-	{
-		exit_code_str = ft_itoa(exit_static_status(-1));
-		replace_var_line(line, exit_code_str, var_name, pos_value);
-		free(exit_code_str);		
-	}	
+	while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name) + 1) != 0)
+		env_list = env_list->next;
+	if (env_list)	
+		replace_var_line(line, env_list->value, var_name, pos_value);
 	else
-	{
-		while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name) + 1) != 0)
-			env_list = env_list->next;
-		if (env_list)	
-		{
-			replace_var_line(line, env_list->value, var_name, pos_value);
-		}
-		else
-		{
-			var_not_found_line(line, var_name, pos_value);
-		}
-	}
+		var_not_found_line(line, var_name, pos_value);
 	free(var_name);
 }
 
-void line_var_expansion(char **line_to_expand, t_env *env_list)
+void	line_var_expansion(char **line_to_expand, t_env *env_list)
 {
-    int i;
+	int i;
 
 	i = 0;
-    while ((*line_to_expand)[i] != '\0')
-    {
+	while ((*line_to_expand)[i] != '\0')
+	{
 		if ((*line_to_expand)[i] == '$')
-        {
-            find_and_expand_line(line_to_expand, env_list, &i);
-            continue ; // Skip the rest of the loop after expansion
-			//option to reset to i to -1 so that i rescan everything, but this might be "expensive"
-        }
-        i++;  // Continue scanning the next character
-    }
+		{
+			if (*line_to_expand[i + 1] == '?')
+				found_exit_var_line(line_to_expand, &i);
+			else
+				find_and_expand_line(line_to_expand, env_list, &i);
+			continue ; // Skip the rest of the loop after expansion
+		}
+		i++;  // Continue scanning the next character
+	}
 }

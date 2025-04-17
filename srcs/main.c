@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 21:09:20 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:51:22 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int boot_shell(int ac, char **envp, t_env **env_list, t_shell *shell_info
 	return(0);
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	t_env	*env_list;
 	char	*new_line;
@@ -45,12 +45,8 @@ int main(int ac, char **av, char **envp)
 			ft_putstr_fd("minishell: error: readline failed\n", 2);
 			break; //clean exit here? or break and at the end?
 		}
-		if(*new_line)
-		{
-			// line_var_expansion(&new_line, env_list);
-			add_history(new_line);
-			parse_exec_line(&env_list, new_line, &shell_info); //we can execute from here as well
-		}
+		add_history(new_line);
+		parse_exec_line(&env_list, new_line, &shell_info); //we can execute from here as well
 		free(new_line);
 		//break in case of signal and update status
 	}

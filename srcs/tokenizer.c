@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 19:47:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:02:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int	check_operators(t_token *tokens)
 				ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 				ft_putchar_fd(tokens->value[0], 2);
 				ft_putstr_fd("'\n", 2);
-				exit_static_status(1);
+				exit_static_status(2);
 				return (-1);
 			}
 		}
