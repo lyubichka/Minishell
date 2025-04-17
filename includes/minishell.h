@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 22:05:02 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:41:22 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,13 @@ int		is_operator(char c, char *delimiters);
 int		is_delimiter_quoted(const char *delimiter_raw, \
 			const char* delimiter_cut);
 char	*join_path(const char *dir, const char *cmd);
-char	*remove_quotes(const char *s);
 
 // check_quotes.c
 int		check_quotes(char *line);
+
+// child_processes.c
+void	run_builtin(t_command *cmd, t_env **env_list);
+void	run_external_command(t_command *cmd, t_env **env_list);
 
 // command_parse.c
 int		command_parse(t_command *command, t_token **tokens, t_env **env_list);
@@ -91,6 +94,9 @@ void	handle_heredoc_sig(int sig);
 
 // echo.c
 int 	ft_echo(char **args);
+
+// env_list_to_array.c
+char	**env_list_to_array(t_env *env_list);
 
 // env.c
 int		ft_env(t_env **env);
@@ -113,6 +119,10 @@ int		find_exec_path(char *cmd_name, t_env *env_list, t_command *cmd);
 
 // handle_redir.c
 int		handle_redir(t_token **tmp_token,t_command *cmd, t_env **env_list);
+
+// here_doc_child.c
+void	handle_heredoc_child(int *pipe_fd, char *delimiter, \
+			int is_quoted, t_env *env);
 
 // here_doc.c
 int		handle_heredoc(t_token *token, t_command *command, t_env **env_list);
@@ -153,6 +163,9 @@ void	parse_exec_line(t_env **env_list, char* new_line, t_shell *shell_info);
 // pwd.c
 int		ft_pwd(void);
 
+// remove_quotes.c
+char	*remove_quotes(const char *s);
+
 // shlvl_increase.c
 void	shlvl_increase (t_env **env_list);
 
@@ -177,6 +190,7 @@ int		ft_unset(char **args, t_env **env);
 
 // update_exit_status.c
 int		exit_static_status(int set_status);
+int		handle_cd_error(char *target_dir);
 
 // var_expansion.c
 void	var_expansion(t_token *token, t_env *env_list);

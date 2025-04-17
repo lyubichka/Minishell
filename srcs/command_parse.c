@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/14 21:21:40 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:09:20 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	any_heredoc(t_token *tokens)
 {
-	t_token *tmp_token;
+	t_token	*tmp_token;
 
 	tmp_token = tokens;
 	while (tmp_token)
@@ -34,17 +34,14 @@ static void decide_fd_in(t_command *command)
 	{
 		if (command->last_hd_pos > command->last_file_pos)
 		{
-			// Use heredoc, close input file fd if open
 			if (command->fd_in != -1 && command->fd_in != STDIN_FILENO)
 				close(command->fd_in);
 			command->fd_in = command->last_hd_fd;
 		}
 		else
 		{
-			// Use input file redir, close heredoc fd
 			if (command->last_hd_fd != -1)
 				close(command->last_hd_fd);
-			// fd_in should already be set by handle_redir
 		}
 	}
 	else if (command->last_hd_fd != -1 )
@@ -52,7 +49,7 @@ static void decide_fd_in(t_command *command)
 	else if (command->fd_in != -1)
 		return ;
 	else if (command->pipe_in == 1)
-		command->fd_in = -1; // Signal to use pipe in exec phase
+		command->fd_in = -1;
 	else
 		command->fd_in = STDIN_FILENO;
 }
@@ -102,7 +99,6 @@ int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list)
 		//clear everything ? but do not return -1 as execution would continue;
 	decide_fd_in(cmd);
 	*tokens = tmp_token;
-	// token_cleanup(tokens);
 	return (0);
 }
 

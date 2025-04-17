@@ -20,9 +20,11 @@ SRCS_FILES		= 	add_to_argv.c \
 					cd.c \
 					char_tools.c \
 					check_quotes.c \
+					child_processes.c \
 					command_parse.c \
 					custom_signals.c \
 					echo.c \
+					env_list_to_array.c \
 					env.c \
 					envp_to_list.c \
 					executor.c \
@@ -30,8 +32,10 @@ SRCS_FILES		= 	add_to_argv.c \
 					export.c \
 					find_exec_path.c \
 					handle_redir.c \
+					here_doc_child.c \
 					here_doc.c \
 					init_signal.c \
+					is_builtin.c \
 					line_var_expansion.c \
 					lst_add.c \
 					lst_append_del.c \
@@ -41,6 +45,7 @@ SRCS_FILES		= 	add_to_argv.c \
 					memory_free.c \
 					parse_exec_line.c \
 					pwd.c \
+					remove_quotes.c \
 					shlvl_increase.c \
 					syntax_check.c \
 					token_clean_split.c \
@@ -48,7 +53,6 @@ SRCS_FILES		= 	add_to_argv.c \
 					tokens_to_command.c \
 					unset.c \
 					update_exit_status.c \
-					utils.c \
 					var_expansion.c
 
 SRCS_DIR		= ./srcs/

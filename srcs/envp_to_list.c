@@ -6,25 +6,13 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:31:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 19:57:38 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:46:56 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void exit_status_node(t_env **env_list)
-// {
-// 	char	*value;
-// 	char	*name;
-// 	t_env	*new_exit_node;
-
-// 	value = ft_strdup("0");
-// 	name = ft_strdup("?");
-// 	new_exit_node = lst_create_envp(name, value);
-// 	lst_add_front(new_exit_node, env_list);
-// }
-
-char *get_env_value(char *name, t_env *env)
+char	*get_env_value(char *name, t_env *env)
 {
 	while (env && name)
 	{
@@ -35,16 +23,16 @@ char *get_env_value(char *name, t_env *env)
 	return (NULL);
 }
 
-int envp_to_list(char **envp, t_env **env_list)
+int	envp_to_list(char **envp, t_env **env_list)
 {
-	int i;
-	char *env_name;
-	char *env_value;
-	int eq_pos;
-	t_env *node;
+	int		i;
+	char	*env_name;
+	char	*env_value;
+	int		eq_pos;
+	t_env	*node;
 
 	i = 0;	
-	while(envp[i])
+	while (envp[i])
 	{
 		if (ft_strchr(envp[i], '='))
 		{
@@ -56,8 +44,5 @@ int envp_to_list(char **envp, t_env **env_list)
 		}
 		i++;
 	}
-	// exit_status_node(env_list);
 	return (0);
 }
-
-// should add the ? here to update it between runs? ---> NO, will handle with a static INT instead.

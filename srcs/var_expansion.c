@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 21:30:40 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:54:42 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ static void	replace_var(t_token *token, char *var_value, char *var_name,\
 
 static void found_exit_var(t_token *token, int *pos_value)
 {
-	int j;
-	char *var_name;
-	char *exit_code_str;
+	int		j;
+	char	*var_name;
+	char	*exit_code_str;
 	
 	j = *pos_value + 2;
 	var_name = ft_substr(token->value, *pos_value + 1, j - *pos_value - 1);
@@ -75,8 +75,8 @@ static void found_exit_var(t_token *token, int *pos_value)
 
 static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 {
-	int j;
-	char *var_name;
+	int		j;
+	char	*var_name;
 	
 	j = *pos_value + 1;
 	while (token->value[j] && (ft_isalnum(token->value[j]) || token->value[j] == '_'))
@@ -91,11 +91,11 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 	free(var_name);
 }
 
-void var_expansion(t_token *token, t_env *env_list)
+void	var_expansion(t_token *token, t_env *env_list)
 {
-	int i;
-	int in_single_quote;
-	int in_double_quote;
+	int	i;
+	int	in_single_quote;
+	int	in_double_quote;
 
 	i = 0;
 	in_single_quote = 0;
@@ -103,17 +103,17 @@ void var_expansion(t_token *token, t_env *env_list)
 	while (token->value[i] != '\0')
 	{
 		if (token->value[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;  // Toggle single quote state
+			in_single_quote = !in_single_quote;
 		else if (token->value[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote; // Toggle double quote state
+			in_double_quote = !in_double_quote;
 		else if (token->value[i] == '$' && !in_single_quote)
 		{
 			if (token->value[i + 1] == '?')
 				found_exit_var(token, &i);
 			else
-				find_and_expand(token, env_list, &i);  // Expand variable
-			continue; // Skip the rest of the loop after expansion
+				find_and_expand(token, env_list, &i);
+			continue;
 		}
-		i++;  // Continue scanning the next character
+		i++;
 	}
 }

@@ -6,25 +6,11 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:32:30 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 19:46:23 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:44:13 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	first_or_last_is_pipe(t_token *tokens)
-// {
-// 	if (tokens->type == 'p')
-// 		return (-1);
-// 	else
-// 	{
-// 		while (tokens->next)
-// 			tokens = tokens->next;
-// 		if (tokens->type == 'p')
-// 			return (-1);
-// 	}
-// 	return (1);
-// }
 
 int	syntax_error(char *error_token)
 {
@@ -48,7 +34,8 @@ int	syntax_check(t_token *tokens)
 		}
 		if (tokens->type == 'r' || tokens->type == 'h')
 		{
-			if (tokens->next->type == 'p' || tokens->next->type == 'r' || tokens->next->type == 'h')
+			if (tokens->next->type == 'p' || tokens->next->type == 'r' \
+				|| tokens->next->type == 'h')
 				return (syntax_error(tokens->next->value));
 		}
 		tokens = tokens->next;

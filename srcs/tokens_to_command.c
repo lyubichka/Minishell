@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 21:56:10 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:48:37 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int	link_commands(t_command *cmd1, t_command *cmd2)
 		return (-1);
 	if (pipe(pipe_fd) == -1)
 		return (-1);
-	// Only assign if no redirection has already been set
 	if (cmd1->fd_out == -1 && cmd1->is_redir_error == 0)
 	{
 		cmd1->fd_out = pipe_fd[1];
@@ -60,41 +59,52 @@ static int	link_commands(t_command *cmd1, t_command *cmd2)
 	return (0);
 }
 
+static int	create_and_link_command(t_command **curr, t_command **prior, t_command **head)
+{
+	init_command(curr);
+	if (!*curr)
+		return (-1);
+	if (!*head)
+		*head = *curr;
+	else
+	{
+		(*prior)->next = *curr;
+		(*curr)->prev = *prior;
+	}
+	return (0);
+}
+
+static int	handle_pipe_between_commands(t_command *prev, t_command *curr)
+{
+	if (prev && prev->is_redir_error != 1)
+		if (link_commands(prev, curr) == -1)
+			return (-1);
+	return (0);
+}
 
 int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 {
 	t_token		*tmp_token;
-	t_command	*current_cmd;
-	t_command	*prior_cmd;
+	t_command	*curr_cmd;
+	t_command	*prev_cmd;
 	
 	tmp_token = *tokens;
-	current_cmd = NULL;
-	prior_cmd = NULL;
+	curr_cmd = NULL;
+	prev_cmd = NULL;
 	while(tmp_token)
 	{
-		init_command(&current_cmd);
-		if (!current_cmd)
+		if (create_and_link_command(&curr_cmd, &prev_cmd, commands) == -1)
 			return (-1);
-		if (!*commands)
-			*commands = current_cmd;
-		else
-		{
-			prior_cmd->next = current_cmd;
-			current_cmd->prev = prior_cmd;
-		}
-		if (command_parse(current_cmd, &tmp_token, env_list) == -1)
-			return(-1);
-		if (prior_cmd && prior_cmd->is_redir_error != 1)
-		{
-			if (link_commands(prior_cmd, current_cmd) == -1)
-				return(-1);
-		}
+		if (command_parse(curr_cmd, &tmp_token, env_list) == -1)
+			return (-1);
+		if (handle_pipe_between_commands(prev_cmd, curr_cmd) == -1)
+			return (-1);
 		if (tmp_token)
 		{
 			tmp_token->type = 'd';
 			tmp_token = tmp_token->next;
 		}
-		prior_cmd = current_cmd;
+		prev_cmd = curr_cmd;
 	}
 	token_cleanup(tokens);
 	return (0);

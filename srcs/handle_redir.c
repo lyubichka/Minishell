@@ -6,31 +6,32 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:27:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 20:59:23 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:37:05 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void update_command(t_command *command, int fd_in, int fd_out, int id)
+static void	update_command(t_command *command, int fd_in, int fd_out, int id)
 {
 	if (fd_in != 0)
 	{
-	    if (command->fd_in != -300 && command->fd_in != -1)
-			close(command->fd_in); // Close old fd_in
+		if (command->fd_in != -300 && command->fd_in != -1)
+			close(command->fd_in);
 		command->fd_in = fd_in;
 		command->last_file_pos = id;
 	}
 	if (fd_out != 0)
 	{
 		if (command->fd_out != -300 && command->fd_out != -1)
-			close(command->fd_out); // Close old fd_out
+			close(command->fd_out);
 		command->fd_out = fd_out;
 		command->last_file_pos = id;
 	}
 }
 
-static int handle_input_redir(const char *filename, t_command *cmd, t_token **tmp_token)
+static int	handle_input_redir(const char *filename, t_command *cmd, \
+	t_token **tmp_token)
 {
 	int fd_in;
 	
@@ -47,14 +48,14 @@ static int handle_input_redir(const char *filename, t_command *cmd, t_token **tm
 	if (fd_in == -1)
 	{
 		exit_static_status(1);
-		// update_exit_status(1, env_list);
 		cmd->is_redir_error = 1;
 		return (-1);
 	}
 	return (0);
 }
 
-static int	handle_append_redir(const char *filename, t_command *cmd, t_token **tmp_token)
+static int	handle_append_redir(const char *filename, t_command *cmd, \
+	t_token **tmp_token)
 {
 	int		fd_out;
 
@@ -71,14 +72,14 @@ static int	handle_append_redir(const char *filename, t_command *cmd, t_token **t
 	if (fd_out == -1)
 	{
 		exit_static_status(1);
-		// update_exit_status(1, env_list);
 		cmd->is_redir_error = 1;
 		return (-1);
 	}
 	return (0);
 }
 
-static int	handle_trunc_redir(const char *filename, t_command *cmd, t_token **tmp_token)
+static int	handle_trunc_redir(const char *filename, t_command *cmd, \
+	t_token **tmp_token)
 {
 	int		fd_out;
 
@@ -95,7 +96,6 @@ static int	handle_trunc_redir(const char *filename, t_command *cmd, t_token **tm
 	if (fd_out == -1)
 	{
 		exit_static_status(1);
-		// update_exit_status(1, env_list);
 		cmd->is_redir_error = 1;
 		return (-1);
 	}
@@ -120,9 +120,9 @@ int	handle_redir(t_token **tmp_token,t_command *cmd, t_env **env_list)
 		return (-1);
 	if ((*tmp_token)->value[0] == '<') 
 		return(handle_input_redir(filename, cmd, tmp_token));
-	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] != '>') // Output trunc redirection
+	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] != '>')
 		return (handle_trunc_redir(filename, cmd, tmp_token));
-	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] == '>') // Output append redirection
+	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] == '>')
 		return (handle_append_redir(filename, cmd, tmp_token));
-    return 0; // Return 0 to continue parsing
+	return 0; // Return 0 to continue parsing
 }

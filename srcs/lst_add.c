@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:15:41 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 21:54:05 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:42:07 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,3 @@ void	lst_token_add_back(t_token *new, t_token **lst)
 	}
 	tmp->next = new;
 }
-
-// void	lst_token_add_front(t_token *new, t_token **lst) //maybe will not be used
-// {
-// 	if (new && lst)
-// 	{
-// 		new->next = *lst;
-// 		*lst = new;
-// 	}
-// }

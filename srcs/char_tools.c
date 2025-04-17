@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 21:43:53 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 22:08:08 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:43:34 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,36 +57,4 @@ char	*join_path(const char *dir, const char *cmd)
 		ft_strlcat(full_path, "/", total_len);
 	ft_strlcat(full_path, cmd, total_len);
 	return (full_path);
-}
-
-char	*remove_quotes(const char *s)
-{
-	int		i;
-	int		j;
-	char	quote;
-	char	*res;
-
-	i = 0;
-	j = 0;
-	quote = 0;
-	res = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (!res)
-		return (NULL);
-	while (s[i])
-	{
-		if ((s[i] == '\'' || s[i] == '"'))
-		{
-			if (!quote)
-				quote = s[i];
-			else if (quote == s[i])
-				quote = 0;
-			else
-				res[j++] = s[i];
-		}
-		else
-			res[j++] = s[i];
-		i++;
-	}
-	res[j] = '\0';
-	return (res);
 }

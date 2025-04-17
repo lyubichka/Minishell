@@ -6,49 +6,11 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 20:50:36 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 20:24:55 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:41:53 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	heredoc_write_read(char *delimiter, int write_end, int is_quoted, t_env *env)
-{
-	char	*write_line;
-	char	*new_line;
-
-	while (1)
-	{
-		new_line = readline("> ");
-		if (!new_line)
-			break ;
-		if (ft_strncmp(delimiter, new_line, ft_strlen(delimiter) + 1) == 0)
-		{
-			free (new_line);
-			new_line = NULL;
-			break ;
-		}
-		write_line = ft_strjoin(new_line, "\n");
-		if (is_quoted == 0)
-			line_var_expansion(&write_line, env);
-		write(write_end, write_line, ft_strlen(write_line));
-		free(new_line);
-		new_line = NULL;
-		free(write_line);
-		write_line = NULL;
-	}
-	close(write_end);
-}
-
-static void	handle_heredoc_child(int *pipe_fd, char *delimiter, int is_quoted, t_env *env)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_heredoc_sig);
-	close(pipe_fd[0]);
-	heredoc_write_read(delimiter, pipe_fd[1], is_quoted, env);
-	//check the need of clearing all memory at this point
-	exit(0);
-}
 
 static int	handle_heredoc_parent(int *pipe_fd, pid_t pid, int *status)
 {
@@ -91,6 +53,14 @@ static int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 		return (handle_heredoc_parent(pipe_fd, pid, &status));
 }
 
+static void	update_token_heredoc(t_token* token, t_command* command, int fd)
+{
+	command->last_hd_fd = fd;
+	command->last_hd_pos = token->id;
+	token->type = 'd';
+	token->next->type = 'd';
+}
+
 int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
 {
 	char 	*delimiter;
@@ -110,10 +80,7 @@ int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
 				return (-1);
 			if (command->last_hd_fd != -300 && command->last_hd_fd != -1)
 				close(command->last_hd_fd);
-			command->last_hd_fd = fd;
-			command->last_hd_pos = token->id;
-			token->type = 'd';
-			token->next->type = 'd';
+			update_token_heredoc(token, command, fd);
 			token = token->next;
 		}
 		token = token->next;

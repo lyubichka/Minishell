@@ -6,35 +6,23 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:18:14 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/16 19:56:31 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:08:25 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
-* Outputs delimited arguments to the echo command.
- * args Array of arguments (starting from index i).
-* i is the initial index for output.
- * ret 0 on success, 1 on output error.
- */
 static void print_args(char **args, int i)
 {
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], 1);
-		if (args[i + 1]) // Adding a space between the arguments
+		if (args[i + 1])
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
 }
 
-/**
-* The built-in echo command for outputting arguments to stdout.
- * args Array of arguments (args[0] is "echo", args[1] is the first argument).
-* env is a pointer to the environment list for status updates.
- * ret 0 on success, 1 on error.
- */
 int ft_echo(char **args)
 {
 	int n_flag;
@@ -52,44 +40,8 @@ int ft_echo(char **args)
 		print_args(args, i);
 		ft_putchar_fd('\n', 1);
 	}
-	else if (!n_flag) // If there are no arguments and there is no -n, output \n
+	else if (!n_flag)
 		ft_putchar_fd('\n', 1);
-	// else
-	//	 return (exit_static_status(0), 0); // Only -n with no arguments ---- same as below, duplicated
 	exit_static_status(0);
 	return (0);
 }
-
-/*
-* Tests to verify the operation of ft_echo:
-*
-* # 1. Output without a flag -n
-* minishell> echo Hello World
- * # Expected output: Hello World\n
- * minishell > echo $?
-* # Expected output: 0
-*
-* # 2. Output with the flag -n
-* minishell> echo -n Hello World
- * # Expected output: Hello World (without line feed)
-* minishell > echo $?
-* # Expected output: 0
-*
-* # 3. Empty input with no arguments
- * minishell> echo
- * # Expected output: \n (empty string)
-* minishell > echo $?
-* # Expected output: 0
-*
-* # 4. Output error (e.g. closed stdout)
- * minishell> echo Hello > /dev/full
- * # Expected output: minishell: echo: write error
- * minishell > echo $?
-* # Expected output: 1
- *
-* # 5. Only the -n flag with no arguments
- * minishell> echo -n
- * # Expected output: (nothing, no line feed)
-* minishell > echo $?
-* # Expected output: 0
- */

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:06:49 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/16 20:26:09 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/17 23:36:39 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	handle_direct_path(char *cmd_name, t_command *cmd)
 	if (access(cmd_name, X_OK) == 0)
 	{
 		cmd->path = ft_strdup(cmd_name);
-		return(0);
+		return (0);
 	}
 	else if (access(cmd_name, F_OK) == 0 && access(cmd_name, X_OK) != 0)
 		path_error_setting(cmd, cmd_name, "DENIED");
@@ -62,7 +62,7 @@ static int	search_in_paths(char **paths, char *cmd_name, t_command *cmd)
 	i = 0;
 	while (paths[i])
 	{
-		joined = join_path(paths[i], cmd_name); // adds slash
+		joined = join_path(paths[i], cmd_name);
 		if (access(joined, F_OK) == 0)
 		{
 			if(access(joined, X_OK) == 0)
@@ -90,10 +90,10 @@ int	find_exec_path(char *cmd_name, t_env *env_list, t_command *cmd)
 
 	if (is_builtin(cmd_name) == 1)
 		return(cmd->is_builtin = 1, 0);
-	path_env = get_env_value("PATH", env_list);// your env lookup helper
+	path_env = get_env_value("PATH", env_list);
 	if (!path_env || !cmd_name ) 
 		return (-1);
-	if (ft_strchr(cmd_name, '/')) // absolute or relative
+	if (ft_strchr(cmd_name, '/'))
 		return (handle_direct_path(cmd_name, cmd));
 	paths = ft_split(path_env, ':');
 	return (search_in_paths(paths, cmd_name, cmd));
