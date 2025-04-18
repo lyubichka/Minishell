@@ -53,9 +53,9 @@ void	token_split(t_token **tokens)
 
 void	token_cleanup(t_token **tokens)
 {
-	t_token		*prev;
-	t_token		*curr;
-	t_token		*forw;
+	t_token	*prev;
+	t_token	*curr;
+	t_token	*forw;
 
 	curr = *tokens;
 	prev = NULL;
@@ -74,15 +74,15 @@ void	token_cleanup(t_token **tokens)
 			curr = NULL;
 		}
 		else
-			prev = curr;	
+			prev = curr;
 		curr = forw;
 	}
 }
 
-void token_index(t_token *tokens)
+void	token_index(t_token *tokens)
 {
-	int id;
-	
+	int	id;
+
 	id = 0;
 	while (tokens)
 	{
