@@ -14,7 +14,7 @@
 
 static int	is_valid_name(char *name)
 {
-	int i;
+	int	i;
 
 	if (!name || !name[0] || (!ft_isalpha(name[0]) && name[0] != '_'))
 		return (0);
@@ -28,9 +28,9 @@ static int	is_valid_name(char *name)
 	return (1);
 }
 
-static void parse_export_arg(char *arg, char **name, char **value)
+static void	parse_export_arg(char *arg, char **name, char **value)
 {
-	char *equal_sign;
+	char	*equal_sign;
 
 	equal_sign = ft_strchr(arg, '=');
 	if (!equal_sign)
@@ -47,7 +47,7 @@ static void parse_export_arg(char *arg, char **name, char **value)
 
 static void	update_or_add_var(char *name, char *value, t_env **env)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = *env;
 	while (tmp)
@@ -60,7 +60,7 @@ static void	update_or_add_var(char *name, char *value, t_env **env)
 				free(tmp->value);
 				tmp->value = value;
 			}
-			return;
+			return ;
 		}
 		tmp = tmp->next;
 	}
@@ -75,8 +75,8 @@ static void	update_or_add_var(char *name, char *value, t_env **env)
 
 static int	handle_valid_export(char *arg, t_env **env)
 {
-	char *name;
-	char *value;
+	char	*name;
+	char	*value;
 
 	parse_export_arg(arg, &name, &value);
 	if (!name)
@@ -91,8 +91,8 @@ static int	handle_valid_export(char *arg, t_env **env)
 
 int	ft_export(char **args, t_env **env)
 {
-	int		i;
-	int		status;
+	int	i;
+	int	status;
 
 	status = 0;
 	if (!args[0] || !args[1])
