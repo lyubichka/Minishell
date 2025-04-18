@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:27:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:37:05 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:51:15 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ static void	update_command(t_command *command, int fd_in, int fd_out, int id)
 	}
 }
 
-static int	handle_input_redir(const char *filename, t_command *cmd, \
-	t_token **tmp_token)
+static int	handle_input_redir(const char *filename, t_command *cmd,
+		t_token **tmp_token)
 {
-	int fd_in;
-	
+	int	fd_in;
+
 	fd_in = open(filename, O_RDONLY, 0);
 	if (fd_in == -1)
 	{
@@ -54,10 +54,10 @@ static int	handle_input_redir(const char *filename, t_command *cmd, \
 	return (0);
 }
 
-static int	handle_append_redir(const char *filename, t_command *cmd, \
-	t_token **tmp_token)
+static int	handle_append_redir(const char *filename, t_command *cmd,
+		t_token **tmp_token)
 {
-	int		fd_out;
+	int	fd_out;
 
 	fd_out = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd_out == -1)
@@ -78,10 +78,10 @@ static int	handle_append_redir(const char *filename, t_command *cmd, \
 	return (0);
 }
 
-static int	handle_trunc_redir(const char *filename, t_command *cmd, \
-	t_token **tmp_token)
+static int	handle_trunc_redir(const char *filename, t_command *cmd,
+		t_token **tmp_token)
 {
-	int		fd_out;
+	int	fd_out;
 
 	fd_out = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_out == -1)
@@ -102,27 +102,29 @@ static int	handle_trunc_redir(const char *filename, t_command *cmd, \
 	return (0);
 }
 
-int	handle_redir(t_token **tmp_token,t_command *cmd, t_env **env_list)
+int	handle_redir(t_token **tmp_token, t_command *cmd, t_env **env_list)
 {
-	int fd_in;
-	int fd_out;
-	int stop_parsing; // Flag to stop parsing after error
-	char *filename;
+	int		fd_in;
+	int		fd_out;
+	int		stop_parsing;
+	char	*filename;
 
 	fd_in = 0;
 	fd_out = 0;
 	stop_parsing = 0;
 	if ((*tmp_token)->next == NULL || (*tmp_token)->next->type != 'w')
-		return -300; // Redirection Error --> all further parsing should stop. Need to evaluate how and when are we closing the fd
+		return (-300);
+	// Redirection Error --> all further parsing should stop.
+	// Need to evaluate how and when are we closing the fd
 	var_expansion((*tmp_token)->next, *env_list);
 	filename = remove_quotes((*tmp_token)->next->value);
 	if (!filename)
 		return (-1);
-	if ((*tmp_token)->value[0] == '<') 
-		return(handle_input_redir(filename, cmd, tmp_token));
+	if ((*tmp_token)->value[0] == '<')
+		return (handle_input_redir(filename, cmd, tmp_token));
 	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] != '>')
 		return (handle_trunc_redir(filename, cmd, tmp_token));
 	else if ((*tmp_token)->value[0] == '>' && (*tmp_token)->value[1] == '>')
 		return (handle_append_redir(filename, cmd, tmp_token));
-	return 0; // Return 0 to continue parsing
+	return (0);
 }
