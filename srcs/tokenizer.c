@@ -32,11 +32,12 @@ static void	extract_quote(t_token **tokens, char *line, int *line_pos)
 	*line_pos = j;
 }
 
-static void	extract_operator(t_token **tokens, char *line, int *line_pos, char *delimiters)
+static void	extract_operator(t_token **tokens, char *line, int *line_pos,
+		char *delimiters)
 {
 	int		j;
-	char 	*extract;
-	t_token *new_token;
+	char	*extract;
+	t_token	*new_token;
 
 	j = *line_pos;
 	while (line[j] != '\0')
@@ -55,7 +56,8 @@ static void	extract_operator(t_token **tokens, char *line, int *line_pos, char *
 		*line_pos = j;
 }
 
-static void	extract_word(t_token **tokens, char *line, int *line_pos, char *delimiters)
+static void	extract_word(t_token **tokens, char *line, int *line_pos,
+		char *delimiters)
 {
 	int		j;
 	char	quote;
@@ -72,9 +74,9 @@ static void	extract_word(t_token **tokens, char *line, int *line_pos, char *deli
 			while (line[j] != '\0')
 			{
 				if (line[j++] == quote)
-					break;
+					break ;
 			}
-			continue;
+			continue ;
 		}
 		j++;
 	}
@@ -86,13 +88,13 @@ static void	extract_word(t_token **tokens, char *line, int *line_pos, char *deli
 
 static int	check_operators(t_token *tokens)
 {
-	while(tokens)
+	while (tokens)
 	{
-		if(tokens->type == 'o')
+		if (tokens->type == 'o')
 		{
-			if(ft_strncmp((tokens->value), "<", 2) == 0 || \
-				ft_strncmp((tokens->value), ">", 2) == 0 || \
-				ft_strncmp((tokens->value), ">>", 3) == 0)
+			if (ft_strncmp((tokens->value), "<", 2) == 0
+				|| ft_strncmp((tokens->value), ">", 2) == 0
+				|| ft_strncmp((tokens->value), ">>", 3) == 0)
 				tokens->type = 'r';
 			else if (ft_strncmp((tokens->value), "<<", 3) == 0)
 				tokens->type = 'h';
@@ -100,7 +102,8 @@ static int	check_operators(t_token *tokens)
 				tokens->type = 'p';
 			else
 			{
-				ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+				ft_putstr_fd("minishell: syntax error near unexpected token `",
+					2);
 				ft_putchar_fd(tokens->value[0], 2);
 				ft_putstr_fd("'\n", 2);
 				exit_static_status(2);
