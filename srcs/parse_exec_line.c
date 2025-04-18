@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-void	parse_exec_line(t_env **env_list, char* new_line, t_shell *shell_info)
+void	parse_exec_line(t_env **env_list, char *new_line, t_shell *shell_info)
 {
 	t_token		*tokens;
 	t_command	*commands;
 	char		delimiters[10];
-	
+
 	tokens = NULL;
 	commands = NULL;
-	ft_strlcpy(delimiters, "|<>()& \n",9);
+	ft_strlcpy(delimiters, "|<>()& \n", 9);
 	if (check_quotes(new_line) == 0)
 	{
 		if (tokenizer(&tokens, new_line, delimiters) == -1)
@@ -30,10 +30,9 @@ void	parse_exec_line(t_env **env_list, char* new_line, t_shell *shell_info)
 		{
 			shell_info->commands = &commands;
 			execute_command(commands, env_list);
-			 // tokens as well? other memory?
+			// tokens as well? other memory?
 		}
 		lst_clear_commands(&commands);
 		lst_clear_tokens(&tokens);
 	}
-
 }
