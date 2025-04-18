@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 20:49:57 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 22:08:33 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:55:41 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	check_quotes(char *line)
 	double_open = 0;
 	while (line[i] != '\0')
 	{
-		if (line[i] == '\'' && double_open == 0) // Ignore if inside double quotes
+		if (line[i] == '\'' && double_open == 0)
 			single_open = !single_open;
-		else if (line[i] == '\"' && single_open == 0) // Ignore if inside single quotes
+		else if (line[i] == '\"' && single_open == 0)
 			double_open = !double_open;
 		i++;
 	}
