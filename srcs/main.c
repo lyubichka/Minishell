@@ -12,18 +12,20 @@
 
 #include "minishell.h"
 
-static int boot_shell(int ac, char **envp, t_env **env_list, t_shell *shell_info)
+static int	boot_shell(int ac, char **envp, t_env **env_list,
+		t_shell *shell_info)
 {
 	if (ac > 1)
 	{
 		ft_putstr_fd("No arguments should be entered\n", 2);
 		return (1);
 	}
-	init_signal(); //add a function to kill this process if SHLVL is above limit (200?) before I allocate memory
+	init_signal();
+		// add a function to kill this process if SHLVL is above limit (200?) before I allocate memory
 	envp_to_list(envp, env_list);
 	shlvl_increase(env_list);
 	shell_info->env_list = env_list;
-	return(0);
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -31,8 +33,8 @@ int	main(int ac, char **av, char **envp)
 	t_env	*env_list;
 	char	*new_line;
 	int		status;
-	t_shell	shell_info;	
-	
+	t_shell	shell_info;
+
 	(void)av;
 	status = 0;
 	if (boot_shell(ac, envp, &env_list, &shell_info) == 1)
@@ -40,17 +42,18 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		new_line = readline("minishell> ");
-		if(!new_line)
+		if (!new_line)
 		{
 			ft_putstr_fd("minishell: error: readline failed\n", 2);
-			break; //clean exit here? or break and at the end?
+			break ; // clean exit here? or break and at the end?
 		}
 		add_history(new_line);
-		parse_exec_line(&env_list, new_line, &shell_info); //we can execute from here as well
+		parse_exec_line(&env_list, new_line, &shell_info);
+			// we can execute from here as well
 		free(new_line);
-		//break in case of signal and update status
+		// break in case of signal and update status
 	}
 	lst_clear_env(&env_list);
 	rl_clear_history();
-	return(status);
+	return (status);
 }
