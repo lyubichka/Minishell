@@ -31,14 +31,15 @@ int	envp_to_list(char **envp, t_env **env_list)
 	int		eq_pos;
 	t_env	*node;
 
-	i = 0;	
+	i = 0;
 	while (envp[i])
 	{
 		if (ft_strchr(envp[i], '='))
 		{
 			eq_pos = ft_strchr(envp[i], '=') - envp[i];
 			env_name = ft_substr(envp[i], 0, eq_pos);
-			env_value = ft_substr(envp[i], eq_pos + 1, ft_strlen(envp[i]) - eq_pos - 1);
+			env_value = ft_substr(envp[i], eq_pos + 1, ft_strlen(envp[i])
+					- eq_pos - 1);
 			node = lst_create_envp(env_name, env_value);
 			lst_add_back(node, env_list);
 		}
