@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:17:40 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/17 23:04:50 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:46:54 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*get_target_dir(char **args, t_env **env)
 	home = get_env_value("HOME", *env);
 	oldpwd = get_env_value("OLDPWD", *env);
 	if (!args[1] || ft_strncmp(args[1], "~", 2) == 0)
-		return(handle_home_case(home));
+		return (handle_home_case(home));
 	if (ft_strncmp(args[1], "-", 2) == 0)
 	{
 		if (!oldpwd)
@@ -44,10 +44,11 @@ static char	*get_target_dir(char **args, t_env **env)
 	}
 	return (args[1]);
 }
-static void update_env_var(char *name, char *value, t_env **env)
+
+static void	update_env_var(char *name, char *value, t_env **env)
 {
-	t_env *tmp;
-	
+	t_env	*tmp;
+
 	tmp = *env;
 	while (tmp)
 	{
@@ -57,7 +58,7 @@ static void update_env_var(char *name, char *value, t_env **env)
 			tmp->value = ft_strdup(value);
 			if (!tmp->value)
 				ft_putstr_fd("minishell: cd: memory allocation failed\n", 2);
-			return;
+			return ;
 		}
 		tmp = tmp->next;
 	}
@@ -67,6 +68,7 @@ static void update_env_var(char *name, char *value, t_env **env)
 	else
 		ft_putstr_fd("minishell: cd: memory allocation failed\n", 2);
 }
+
 static int	prepare_cd(char **args, char *oldpwd)
 {
 	if (!getcwd(oldpwd, PATH_MAX))
@@ -113,35 +115,35 @@ int	ft_cd(char **args, t_env **env)
 }
 
 /*
-* Tests to verify ft_cd operation:
-*
-* # 1. Go to the home directory (without arguments)
-* minishell > cd
-* minishell> pwd
+ * Tests to verify ft_cd operation:
+ *
+ * # 1. Go to the home directory (without arguments)
+ * minishell > cd
+ * minishell> pwd
  * # Expected output: /home/user (HOME value)
-*
-* # 2. Move to the previous directory
+ *
+ * # 2. Move to the previous directory
  * minishell> cd /tmp
  * minishell> cd -
  * # Expected output: /home/user (previous PWD)
-* minishell > echo $?
-* # Expected output: 0
-*
-* # 3. Move to a non-existent directory
+ * minishell > echo $?
+ * # Expected output: 0
+ *
+ * # 3. Move to a non-existent directory
  * minishell> cd /nonexistent
  * # Expected output: cd: /nonexistent: No such file or directory
  * minishell > echo $?
-* # Expected output: 1
+ * # Expected output: 1
  *
-* # 4. Too many arguments
+ * # 4. Too many arguments
  * minishell> cd dir1 dir2
  * # Expected output: cd: too many arguments
  * minishell > echo $?
-* # Expected output: 1
+ * # Expected output: 1
  *
-* # 5. Navigating to a directory without access rights
+ * # 5. Navigating to a directory without access rights
  * minishell> cd /root
  * # Expected output: cd: /root: Permission denied
  * minishell > echo $?
-* # Expected output: 1
+ * # Expected output: 1
  */
