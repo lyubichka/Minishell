@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static void	path_error_setting(t_command *command, char *cmd_name, \
-	char *last_path)
+static void	path_error_setting(t_command *command, char *cmd_name,
+		char *last_path)
 {
 	command->is_redir_error = 1;
 	if (!last_path)
@@ -46,13 +46,13 @@ static int	handle_direct_path(char *cmd_name, t_command *cmd)
 	return (-1);
 }
 
-static int	handle_path_not_found(char **paths, char *cmd_name, t_command *command, int i)
+static int	handle_path_not_found(char **paths, char *cmd_name,
+		t_command *command, int i)
 {
 	path_error_setting(command, cmd_name, paths[i]);
 	free_split(paths);
 	return (-1);
 }
-
 
 static int	search_in_paths(char **paths, char *cmd_name, t_command *cmd)
 {
@@ -65,7 +65,7 @@ static int	search_in_paths(char **paths, char *cmd_name, t_command *cmd)
 		joined = join_path(paths[i], cmd_name);
 		if (access(joined, F_OK) == 0)
 		{
-			if(access(joined, X_OK) == 0)
+			if (access(joined, X_OK) == 0)
 			{
 				free_split(paths);
 				cmd->path = joined;
@@ -74,7 +74,7 @@ static int	search_in_paths(char **paths, char *cmd_name, t_command *cmd)
 			else
 			{
 				free(joined);
-				break;
+				break ;
 			}
 		}
 		free(joined);
@@ -89,9 +89,9 @@ int	find_exec_path(char *cmd_name, t_env *env_list, t_command *cmd)
 	char	*path_env;
 
 	if (is_builtin(cmd_name) == 1)
-		return(cmd->is_builtin = 1, 0);
+		return (cmd->is_builtin = 1, 0);
 	path_env = get_env_value("PATH", env_list);
-	if (!path_env || !cmd_name ) 
+	if (!path_env || !cmd_name)
 		return (-1);
 	if (ft_strchr(cmd_name, '/'))
 		return (handle_direct_path(cmd_name, cmd));
