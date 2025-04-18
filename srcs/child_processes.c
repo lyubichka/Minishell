@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_processes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 22:59:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:01:23 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:59:50 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,14 @@ void	run_builtin(t_command *cmd, t_env **env_list)
 		ft_putstr_fd("minishell: unknown builtin\n", 2);
 }
 
-void run_external_command(t_command *cmd, t_env **env_list)
+void	run_external_command(t_command *cmd, t_env **env_list)
 {
 	char	**env_array;
-	
+
 	env_array = env_list_to_array(*env_list);
 	setup_input(cmd);
 	setup_output(cmd);
-	execve(cmd->path, cmd->argv, env_array); // Executes an external program, replacing the current process
+	execve(cmd->path, cmd->argv, env_array);
 	ft_putstr_fd("minishell: execve failed\n", 2);
 	free_split(env_array);
 	exit_static_status(127);
