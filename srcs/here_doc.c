@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 20:50:36 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:41:53 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:57:39 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 	pid_t	pid;
 	int		pipe_fd[2];
 	int		status;
-	
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
@@ -42,7 +41,7 @@ static int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 	{
 		close(pipe_fd[1]);
 		close(pipe_fd[0]);
-		return(-1);
+		return (-1);
 	}
 	if (pid == 0)
 	{
@@ -53,7 +52,7 @@ static int	fork_one_heredoc(char *delimiter, t_env *env, int is_quoted)
 		return (handle_heredoc_parent(pipe_fd, pid, &status));
 }
 
-static void	update_token_heredoc(t_token* token, t_command* command, int fd)
+static void	update_token_heredoc(t_token *token, t_command *command, int fd)
 {
 	command->last_hd_fd = fd;
 	command->last_hd_pos = token->id;
@@ -61,20 +60,20 @@ static void	update_token_heredoc(t_token* token, t_command* command, int fd)
 	token->next->type = 'd';
 }
 
-int handle_heredoc(t_token *token, t_command *command, t_env **env_list)
+int	handle_heredoc(t_token *token, t_command *command, t_env **env_list)
 {
-	char 	*delimiter;
+	char	*delimiter;
 	int		fd;
-	
+
 	while (token && token->type != 'p')
 	{
 		if (token->type == 'h')
 		{
 			if (!token->next || token->next->type != 'w')
-				return -300; //syntax error
+				return (-300);
 			delimiter = remove_quotes(token->next->value);
-			fd = fork_one_heredoc(delimiter, *env_list, \
-				is_delimiter_quoted(token->next->value, delimiter));
+			fd = fork_one_heredoc(delimiter, *env_list,
+					is_delimiter_quoted(token->next->value, delimiter));
 			free(delimiter);
 			if (fd < 0)
 				return (-1);
