@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_to_argv.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:54:38 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/11 22:00:41 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:20:56 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ static int	init_first_argv(t_command *cmd, const char *value)
 
 static int	append_to_existing_argv(t_command *cmd, const char *token_value)
 {
-	int		i = 0;
-	int		j = 0;
+	int		i;
+	int		j;
 	char	**new_argv;
 
+	i = 0;
+	j = 0;
 	while (cmd->argv[i])
 		i++;
 	new_argv = (char **)malloc(sizeof(char *) * (i + 2));
@@ -53,7 +55,7 @@ int	add_to_argv(t_token *token, t_command *cmd, t_env **env_list)
 {
 	char	*cleaned;
 	int		status;
-	
+
 	status = 0;
 	var_expansion(token, *env_list);
 	cleaned = remove_quotes(token->value);
