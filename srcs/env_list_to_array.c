@@ -14,8 +14,9 @@
 
 static int	count_env_vars(t_env *env)
 {
-	int	count = 0;
+	int	count;
 
+	count = 0;
 	while (env)
 	{
 		count++;
@@ -33,7 +34,7 @@ static char	*make_env_string(t_env *env, char **array, int i)
 	if (!name_eq)
 	{
 		while (i > 0)
-		free(array[--i]);
+			free(array[--i]);
 		free(array);
 		return (NULL);
 	}
@@ -51,10 +52,10 @@ static char	*make_env_string(t_env *env, char **array, int i)
 
 char	**env_list_to_array(t_env *env_list)
 {
-	char		**array;
-	int			count;
-	char 		*full_str; 
-	int  		i;
+	char	**array;
+	int		count;
+	char	*full_str;
+	int		i;
 
 	i = 0;
 	count = count_env_vars(env_list);
