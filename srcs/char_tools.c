@@ -26,7 +26,7 @@ int	is_operator(char c, char *delimiters)
 	return (0);
 }
 
-int is_delimiter_quoted(const char *delimiter_raw, const char* delimiter_cut)
+int	is_delimiter_quoted(const char *delimiter_raw, const char *delimiter_cut)
 {
 	if (ft_strlen(delimiter_cut) < ft_strlen(delimiter_raw))
 		return (1);
