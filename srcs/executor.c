@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:09:33 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:31:03 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	run_builtin_in_parent(t_command *cmd, t_env **env_list)
 {
-	t_shell shell_std;
+	t_shell	shell_std;
 
 	shell_std.std_in = dup(STDIN_FILENO);
 	shell_std.std_out = dup(STDOUT_FILENO);
@@ -39,16 +39,16 @@ static void	handle_parent_process(t_command *cmd, pid_t pid)
 		exit_static_status(1);
 }
 
-static void fork_and_run_builtin(t_command *cmd, t_env **env_list)
+static void	fork_and_run_builtin(t_command *cmd, t_env **env_list)
 {
-	pid_t pid;
-	
+	pid_t	pid;
+
 	pid = fork();
 	if (pid == -1)
 	{
 		ft_putstr_fd("minishell: fork error\n", 2);
 		exit_static_status(1);
-		return;
+		return ;
 	}
 	if (pid == 0)
 	{
@@ -61,14 +61,14 @@ static void fork_and_run_builtin(t_command *cmd, t_env **env_list)
 
 static void	fork_and_execve(t_command *cmd, t_env **env_list)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
 	{
 		ft_putstr_fd("minishell: fork error\n", 2);
 		exit_static_status(1);
-		return;
+		return ;
 	}
 	if (pid == 0)
 		run_external_command(cmd, env_list);
@@ -78,12 +78,13 @@ static void	fork_and_execve(t_command *cmd, t_env **env_list)
 
 void	execute_command(t_command *cmd, t_env **env_list)
 {
-	int needs_fork;
+	int	needs_fork;
 
 	while (cmd)
 	{
-		needs_fork = (cmd->fd_in >= 0 || cmd->fd_out >= 0 || cmd->pipe_in || cmd->pipe_out);
-		if (cmd->path) // external command
+		needs_fork = (cmd->fd_in >= 0 || cmd->fd_out >= 0 || cmd->pipe_in
+				|| cmd->pipe_out);
+		if (cmd->path)
 		{
 			fork_and_execve(cmd, env_list);
 		}
