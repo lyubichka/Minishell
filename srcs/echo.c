@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void print_args(char **args, int i)
+static void	print_args(char **args, int i)
 {
 	while (args[i])
 	{
@@ -23,10 +23,10 @@ static void print_args(char **args, int i)
 	}
 }
 
-int ft_echo(char **args)
+int	ft_echo(char **args)
 {
-	int n_flag;
-	int i;
+	int	n_flag;
+	int	i;
 
 	n_flag = 0;
 	i = 1;
