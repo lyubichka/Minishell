@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:24:18 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/17 23:12:41 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:33:18 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static int	correct_exit_status(long res)
 
 static int	is_numeric_arg(char *str)
 {
-	int i;
+	int	i;
 
 	if (!str || !str[0])
 		return (0);
 	i = 0;
 	if (str[i] == '-' || str[i] == '+')
-		i++; // Skip the sign
+		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
@@ -41,14 +41,14 @@ static int	is_numeric_arg(char *str)
 }
 
 /**
-* Built-in exit command for shell shutdown.
+ * Built-in exit command for shell shutdown.
  * args Array of arguments (args[0] — "exit", args[1] — exit code, if any).
-* env Pointer to the environment list to update $?.
-* ret Does not return a value, terminates the program.
+ * env Pointer to the environment list to update $?.
+ * ret Does not return a value, terminates the program.
  */
 void	ft_exit(char **args)
 {
-	int exit_code;
+	int	exit_code;
 
 	if (!args[1])
 	{
@@ -67,7 +67,7 @@ void	ft_exit(char **args)
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: too many arguments\n", 2);
 		exit_static_status(1);
-		return;
+		return ;
 	}
 	ft_putstr_fd("exit\n", 1);
 	exit_code = ft_atoi(args[1]);
