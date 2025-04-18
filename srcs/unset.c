@@ -14,7 +14,7 @@
 
 static int	is_valid_name(char *name)
 {
-	int i;
+	int	i;
 
 	if (!name || !name[0] || (!ft_isalpha(name[0]) && name[0] != '_'))
 		return (0);
@@ -30,8 +30,8 @@ static int	is_valid_name(char *name)
 
 static void	remove_var(char *name, t_env **env)
 {
-	t_env *tmp;
-	t_env *prev;
+	t_env	*tmp;
+	t_env	*prev;
 
 	tmp = *env;
 	prev = NULL;
@@ -46,7 +46,7 @@ static void	remove_var(char *name, t_env **env)
 			free(tmp->name);
 			free(tmp->value);
 			free(tmp);
-			return;
+			return ;
 		}
 		prev = tmp;
 		tmp = tmp->next;
@@ -55,8 +55,8 @@ static void	remove_var(char *name, t_env **env)
 
 int	ft_unset(char **args, t_env **env)
 {
-	int		i;
-	int		status;
+	int	i;
+	int	status;
 
 	status = 0;
 	if (!args[1])
