@@ -48,7 +48,6 @@ static int	link_commands(t_command *cmd1, t_command *cmd2)
 	}
 	else
 		close(pipe_fd[1]);
-
 	if (cmd2->fd_in == -1 && cmd2->is_redir_error == 0)
 	{
 		cmd2->fd_in = pipe_fd[0];
@@ -59,7 +58,8 @@ static int	link_commands(t_command *cmd1, t_command *cmd2)
 	return (0);
 }
 
-static int	create_and_link_command(t_command **curr, t_command **prior, t_command **head)
+static int	create_and_link_command(t_command **curr, t_command **prior,
+		t_command **head)
 {
 	init_command(curr);
 	if (!*curr)
@@ -87,11 +87,11 @@ int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 	t_token		*tmp_token;
 	t_command	*curr_cmd;
 	t_command	*prev_cmd;
-	
+
 	tmp_token = *tokens;
 	curr_cmd = NULL;
 	prev_cmd = NULL;
-	while(tmp_token)
+	while (tmp_token)
 	{
 		if (create_and_link_command(&curr_cmd, &prev_cmd, commands) == -1)
 			return (-1);
