@@ -23,9 +23,9 @@ void	lst_add_front(t_env *new, t_env **lst)
 
 void	lst_add_back(t_env *new, t_env **lst)
 {
-	t_env *tmp;
-	
-	if (!new || !lst)	
+	t_env	*tmp;
+
+	if (!new || !lst)
 		return ;
 	if (*lst == NULL)
 	{
@@ -42,8 +42,8 @@ void	lst_add_back(t_env *new, t_env **lst)
 
 void	lst_token_add_back(t_token *new, t_token **lst)
 {
-	t_token *tmp;
-	
+	t_token	*tmp;
+
 	if (!new || !lst)
 		return ;
 	if (*lst == NULL)
