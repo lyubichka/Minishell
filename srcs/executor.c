@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/18 17:31:03 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/20 19:20:22 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,16 @@ static void	handle_parent_process(t_command *cmd, pid_t pid)
 	if (cmd->fd_out >= 0)
 		close(cmd->fd_out);
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status) && (WEXITSTATUS(status) == 1))
-		exit_static_status(1);
+	init_signal();
+	parent_exit_status(status);
 }
 
 static void	fork_and_run_builtin(t_command *cmd, t_env **env_list)
 {
 	pid_t	pid;
 
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -63,6 +65,8 @@ static void	fork_and_execve(t_command *cmd, t_env **env_list)
 {
 	pid_t	pid;
 
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	pid = fork();
 	if (pid == -1)
 	{

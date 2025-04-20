@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 22:59:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 17:43:31 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 19:19:17 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ void	run_external_command(t_command *cmd, t_env **env_list)
 	env_array = env_list_to_array(*env_list);
 	setup_input(cmd);
 	setup_output(cmd);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	execve(cmd->path, cmd->argv, env_array);
-	ft_putstr_fd("minishell: execve failed\n", 2);
 	free_split(env_array);
 	exit_static_status(127);
 	exit(127);

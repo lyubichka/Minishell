@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 14:51:18 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 19:19:37 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ int	main(int ac, char **av, char **envp)
 		new_line = readline("minishell> ");
 		if (!new_line)
 		{
-			ft_putstr_fd("minishell: error: readline failed\n", 2);
-			break ;
+			lst_clear_env(&env_list);
+			rl_clear_history();
+			ft_exit(NULL);
 		}
-		add_history(new_line);
+		if (ft_strncmp(new_line, "", ft_strlen(new_line)) != 0)
+			add_history(new_line);
 		parse_exec_line(&env_list, new_line, &shell_info);
 		free(new_line);
+		init_signal();
 		// break in case of signal and update status
 	}
 	lst_clear_env(&env_list);

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:17:40 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/20 17:38:05 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 19:26:50 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	update_env_var(char *name, char *value, t_env **env)
 
 static int	prepare_cd(char **args, char *oldpwd, t_env **env)
 {
-	char *env_pwd;
+	char	*env_pwd;
 
 	env_pwd = get_env_value("PWD", *env);
 	if (!getcwd(oldpwd, PATH_MAX))
@@ -121,37 +121,3 @@ int	ft_cd(char **args, t_env **env)
 	}
 	return (exit_static_status(0));
 }
-
-/*
- * Tests to verify ft_cd operation:
- *
- * # 1. Go to the home directory (without arguments)
- * minishell > cd
- * minishell> pwd
- * # Expected output: /home/user (HOME value)
- *
- * # 2. Move to the previous directory
- * minishell> cd /tmp
- * minishell> cd -
- * # Expected output: /home/user (previous PWD)
- * minishell > echo $?
- * # Expected output: 0
- *
- * # 3. Move to a non-existent directory
- * minishell> cd /nonexistent
- * # Expected output: cd: /nonexistent: No such file or directory
- * minishell > echo $?
- * # Expected output: 1
- *
- * # 4. Too many arguments
- * minishell> cd dir1 dir2
- * # Expected output: cd: too many arguments
- * minishell > echo $?
- * # Expected output: 1
- *
- * # 5. Navigating to a directory without access rights
- * minishell> cd /root
- * # Expected output: cd: /root: Permission denied
- * minishell > echo $?
- * # Expected output: 1
- */

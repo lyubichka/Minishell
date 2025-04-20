@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:24:18 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/18 17:33:18 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/20 18:04:10 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_exit(char **args)
 {
 	int	exit_code;
 
-	if (!args[1])
+	if (!args || !args[1])
 	{
 		ft_putstr_fd("exit\n", 1);
 		exit(exit_static_status(0));

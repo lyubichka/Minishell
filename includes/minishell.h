@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 17:43:54 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 19:11:39 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <sys/wait.h>
+# include <termios.h>
 
 typedef struct s_shell
 {
@@ -165,6 +166,9 @@ t_token					*lst_token_create(char type, char *value);
 
 // memory_free.c
 void					free_split(char **array);
+
+// parent_exit_message.c
+void					parent_exit_status(int status);
 
 // parse_exec_line.c
 void					parse_exec_line(t_env **env_list, char *new_line,

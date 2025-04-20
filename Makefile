@@ -43,6 +43,7 @@ SRCS_FILES		= 	add_to_argv.c \
 					lst_create.c \
 					main.c \
 					memory_free.c \
+					parent_exit_message.c \
 					parse_exec_line.c \
 					pwd.c \
 					remove_quotes.c \
