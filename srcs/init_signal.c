@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 22:13:28 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 19:19:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 19:31:26 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	sigint_handle(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	exit_static_status(1);
+	exit_static_status(130);
 }
 
 void	init_signal(void)

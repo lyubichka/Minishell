@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:37:25 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 19:19:37 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 19:33:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static int	boot_shell(int ac, char **envp, t_env **env_list,
 		exit (127);
 	}
 	init_signal();
-		// add a function to kill this process if SHLVL is above limit (200?) before I allocate memory
 	envp_to_list(envp, env_list);
 	shlvl_increase(env_list);
 	shell_info->env_list = env_list;
