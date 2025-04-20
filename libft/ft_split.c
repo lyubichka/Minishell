@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 15:20:35 by saherrer          #+#    #+#             */
-/*   Updated: 2024/07/02 20:24:25 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:51:26 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ char	**ft_split(char const *s, char c)
 	int		word_count;
 	char	*str;
 
+	if (!s)
+		return (NULL);
 	str = (char *)s;
 	word_count = ft_word_count(s, c);
 	ret = (char **)malloc(sizeof(char *) * word_count + sizeof(NULL));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   line_var_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/18 19:25:46 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/20 15:43:46 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	var_not_found_line(char **line, char *var_name, int *pos_value)
 	ft_strlcat(new_line_value, *line + suffix_start, total_len + 1);
 	free(*line);
 	*line = new_line_value;
+	*pos_value = prefix_len;
 }
 
 static void	replace_var_line(char **line, char *var_value, char *var_name,
@@ -77,9 +78,11 @@ static void	find_and_expand_line(char **line, t_env *env_list, int *pos_value)
 	j = *pos_value + 1;
 	while ((*line)[j] && (ft_isalnum((*line)[j]) || (*line)[j] == '_'))
 		j++;
+	if ((j == *pos_value + 1) && (*line)[j] == '$')
+		j++;
 	var_name = ft_substr(*line, *pos_value + 1, j - *pos_value - 1);
-	while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name)
-			+ 1) != 0)
+	while (env_list && ft_strncmp(env_list->name, var_name,
+			ft_strlen(var_name) + 1) != 0)
 		env_list = env_list->next;
 	if (env_list)
 		replace_var_line(line, env_list->value, var_name, pos_value);
@@ -95,9 +98,13 @@ void	line_var_expansion(char **line_to_expand, t_env *env_list)
 	i = 0;
 	while ((*line_to_expand)[i] != '\0')
 	{
-		if ((*line_to_expand)[i] == '$')
+		if ((*line_to_expand)[i] == '$'
+			&& (ft_isalnum((*line_to_expand)[i + 1])
+				|| (*line_to_expand)[i + 1] == '?'
+					|| (*line_to_expand)[i + 1] == '_'
+						|| (*line_to_expand)[i + 1] == '$'))
 		{
-			if (*line_to_expand[i + 1] == '?')
+			if ((*line_to_expand)[i + 1] == '?')
 				found_exit_var_line(line_to_expand, &i);
 			else
 				find_and_expand_line(line_to_expand, env_list, &i);

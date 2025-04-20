@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:18:14 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/17 23:08:25 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:11:55 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	ft_echo(char **args)
 	if (args[i])
 	{
 		print_args(args, i);
-		ft_putchar_fd('\n', 1);
+		if (!n_flag)
+			ft_putchar_fd('\n', 1);
 	}
 	else if (!n_flag)
 		ft_putchar_fd('\n', 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/18 20:14:56 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/20 17:43:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include "libft.h"
 # include <fcntl.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
 # include <string.h>
 # include <unistd.h>
 # include <sys/wait.h>
@@ -171,7 +171,7 @@ void					parse_exec_line(t_env **env_list, char *new_line,
 							t_shell *shell_info);
 
 // pwd.c
-int						ft_pwd(void);
+int						ft_pwd(t_env **env_list);
 
 // remove_quotes.c
 char					*remove_quotes(const char *s);
@@ -182,6 +182,7 @@ void					shlvl_increase(t_env **env_list);
 // syntax_check.c
 int						syntax_error(char *error_token);
 int						syntax_check(t_token *tokens);
+int						line_has_only_space(char *line);
 
 // token_clean_split.c
 void					token_split(t_token **tokens);

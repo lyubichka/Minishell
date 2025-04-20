@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:17:40 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/18 16:46:54 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/20 17:38:05 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,21 @@ static void	update_env_var(char *name, char *value, t_env **env)
 		ft_putstr_fd("minishell: cd: memory allocation failed\n", 2);
 }
 
-static int	prepare_cd(char **args, char *oldpwd)
+static int	prepare_cd(char **args, char *oldpwd, t_env **env)
 {
+	char *env_pwd;
+
+	env_pwd = get_env_value("PWD", *env);
 	if (!getcwd(oldpwd, PATH_MAX))
 	{
-		ft_putstr_fd("minishell: cd: getcwd error\n", 2);
-		exit_static_status(1);
-		return (0);
+		if (env_pwd)
+			ft_strlcpy(oldpwd, env_pwd, PATH_MAX);
+		else
+		{
+			ft_putstr_fd("minishell: cd: getcwd error\n", 2);
+			exit_static_status(1);
+			return (0);
+		}
 	}
 	if (args[1] && args[2])
 	{
@@ -92,7 +100,7 @@ int	ft_cd(char **args, t_env **env)
 	char	pwd[PATH_MAX];
 	char	*target_dir;
 
-	if (!prepare_cd(args, oldpwd))
+	if (!prepare_cd(args, oldpwd, env))
 		return (1);
 	target_dir = get_target_dir(args, env);
 	if (!target_dir)

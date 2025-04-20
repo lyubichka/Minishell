@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 20:21:00 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 21:52:06 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:00:30 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	parse_exec_line(t_env **env_list, char *new_line, t_shell *shell_info)
 
 	tokens = NULL;
 	commands = NULL;
-	ft_strlcpy(delimiters, "|<>()& \n", 9);
+	ft_strlcpy(delimiters, "|<>\t \n", 7);
 	if (check_quotes(new_line) == 0)
 	{
 		if (tokenizer(&tokens, new_line, delimiters) == -1)

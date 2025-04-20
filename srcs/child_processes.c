@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_processes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 22:59:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/18 16:59:50 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/20 17:43:31 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	run_builtin(t_command *cmd, t_env **env_list)
 	else if (ft_strncmp(cmd->argv[0], "cd", 3) == 0)
 		ft_cd(cmd->argv, env_list);
 	else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
-		ft_pwd();
+		ft_pwd(env_list);
 	else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
 		ft_env(env_list);
 	else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)

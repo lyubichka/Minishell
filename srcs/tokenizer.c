@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:44:50 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:04:24 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ int	tokenizer(t_token **tokens, char *line, char *delimiters)
 	int	i;
 
 	i = 0;
+	if (line_has_only_space(line) == 1)
+		return (-1);
 	while (line[i] != '\0')
 	{
 		if (is_quote(line[i]) == 1)

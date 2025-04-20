@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:54:42 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:14:56 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ static void	find_and_expand(t_token *token, t_env *env_list, int *pos_value)
 	while (token->value[j] && (ft_isalnum(token->value[j])
 			|| token->value[j] == '_'))
 		j++;
+	if ((j == *pos_value + 1) && token->value[j] == '$')
+		j++;
 	var_name = ft_substr(token->value, *pos_value + 1, j - *pos_value - 1);
 	while (env_list && ft_strncmp(env_list->name, var_name, ft_strlen(var_name)
 			+ 1) != 0)
@@ -107,7 +109,9 @@ void	var_expansion(t_token *token, t_env *env_list)
 			in_single_quote = !in_single_quote;
 		else if (token->value[i] == '"' && !in_single_quote)
 			in_double_quote = !in_double_quote;
-		else if (token->value[i] == '$' && !in_single_quote)
+		else if (token->value[i] == '$' && !in_single_quote
+			&& (ft_isalnum(token->value[i + 1]) || token->value[i + 1] == '?'
+				|| token->value[i + 1] == '_' || token->value[i + 1] == '$'))
 		{
 			if (token->value[i + 1] == '?')
 				found_exit_var(token, &i);
