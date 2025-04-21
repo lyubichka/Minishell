@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:26:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 21:12:36 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:32:25 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	shell_cleanup(t_shell *shell, int exit_code, int env_flag)
 {
 	if (shell)
 	{
-		if (shell->env_list && env_flag != 1)
+		if (shell->env_list && env_flag == 1)
 			lst_clear_env(&(shell->env_list));
 		if (shell->tokens)
 			lst_clear_tokens(&(shell->tokens));

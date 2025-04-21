@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 22:15:00 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:19:49 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	decide_fd_in(t_command *command)
 	{
 		if (command->last_hd_pos > command->last_file_pos)
 		{
-			if (command->fd_in >= 0 && command->fd_in != STDIN_FILENO)
+			if (command->fd_in >= 0)
 			{
 				close(command->fd_in);
 				command->fd_in = -1;
@@ -53,8 +53,8 @@ static void	decide_fd_in(t_command *command)
 		return ;
 	else if (command->pipe_in == 1)
 		command->fd_in = -1;
-	else
-		command->fd_in = STDIN_FILENO;
+	// else
+	// 	command->fd_in = STDIN_FILENO;
 }
 
 static int	handle_token_loop(t_token **tmp_token, t_command *cmd,

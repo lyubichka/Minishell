@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:17:40 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/20 19:26:50 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:38:28 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static int	prepare_cd(char **args, char *oldpwd, t_env **env)
 	return (1);
 }
 
-int	ft_cd(char **args, t_env **env)
+int	ft_cd(char **args, t_env **env, t_shell *shell)
 {
 	char	oldpwd[PATH_MAX];
 	char	pwd[PATH_MAX];
@@ -114,6 +114,7 @@ int	ft_cd(char **args, t_env **env)
 		return (exit_static_status(1));
 	}
 	update_env_var("PWD", pwd, env);
+	shell->env_list = *env;
 	if (args[1] && ft_strncmp(args[1], "-", 2) == 0)
 	{
 		ft_putstr_fd(pwd, 1);

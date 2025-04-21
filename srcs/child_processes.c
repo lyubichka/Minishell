@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 22:59:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 22:19:51 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:41:45 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	setup_input(t_command *cmd, t_shell *shell)
 	{
 		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 		{
-			ft_putstr_fd("dup2 fd_in", 2);
+			ft_putstr_fd("dup2 fd_in here", 2);
 			shell_cleanup(shell, exit_static_status(1), 1);
 		}
 		close(cmd->fd_in);
@@ -48,15 +48,15 @@ void	run_builtin(t_command *cmd, t_env **env_list, t_shell *shell_info)
 	if (ft_strncmp(cmd->argv[0], "echo", 5) == 0)
 		ft_echo(cmd->argv);
 	else if (ft_strncmp(cmd->argv[0], "cd", 3) == 0)
-		ft_cd(cmd->argv, env_list);
+		ft_cd(cmd->argv, env_list, shell_info);
 	else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
 		ft_pwd(env_list);
 	else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
 		ft_env(env_list);
 	else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)
-		ft_export(cmd->argv, env_list);
+		ft_export(cmd->argv, env_list, shell_info);
 	else if (ft_strncmp(cmd->argv[0], "unset", 6) == 0)
-		ft_unset(cmd->argv, env_list);
+		ft_unset(cmd->argv, env_list, shell_info);
 	else if (ft_strncmp(cmd->argv[0], "exit", 5) == 0)
 		ft_exit(cmd->argv, shell_info);
 	else

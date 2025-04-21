@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:25:13 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/17 23:36:21 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:35:17 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	handle_valid_export(char *arg, t_env **env)
 	return (0);
 }
 
-int	ft_export(char **args, t_env **env)
+int	ft_export(char **args, t_env **env, t_shell *shell)
 {
 	int	i;
 	int	status;
@@ -111,5 +111,6 @@ int	ft_export(char **args, t_env **env)
 			status |= handle_valid_export(args[i], env);
 		i++;
 	}
+	shell->env_list = *env;
 	return (exit_static_status(status));
 }

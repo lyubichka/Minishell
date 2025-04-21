@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 22:10:40 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:38:42 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int						add_to_argv(t_token *token, t_command *cmd,
 							t_env **env_list);
 
 // cd.c
-int						ft_cd(char **args, t_env **env);
+int						ft_cd(char **args, t_env **env, t_shell *shell);
 
 // char_tools.c
 int						is_quote(char c);
@@ -115,7 +115,7 @@ void					execute_command(t_command *cmd, t_env **env_list, t_shell *shell_info);
 void					ft_exit(char **args, t_shell *shell);
 
 // export.c
-int						ft_export(char **args, t_env **env);
+int						ft_export(char **args, t_env **env, t_shell *shell);
 
 // find_exec_path.c
 int						find_exec_path(char *cmd_name, t_env *env_list,
@@ -201,7 +201,7 @@ int						tokens_to_command(t_command **commands,	t_token **tokens,
 							t_env **env_list, t_shell *shell);
 
 // unset.c
-int						ft_unset(char **args, t_env **env);
+int						ft_unset(char **args, t_env **env, t_shell *shell);
 
 // update_exit_status.c
 int						exit_static_status(int set_status);

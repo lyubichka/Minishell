@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:30:57 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/17 23:54:19 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:35:51 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	remove_var(char *name, t_env **env)
 	}
 }
 
-int	ft_unset(char **args, t_env **env)
+int	ft_unset(char **args, t_env **env, t_shell *shell)
 {
 	int	i;
 	int	status;
@@ -78,6 +78,7 @@ int	ft_unset(char **args, t_env **env)
 			remove_var(args[i], env);
 		i++;
 	}
+	shell->env_list = *env;
 	exit_static_status(status);
 	return (status);
 }

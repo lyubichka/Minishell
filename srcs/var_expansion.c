@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 18:20:04 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 15:14:56 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:31:44 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	var_expansion(t_token *token, t_env *env_list)
 	i = 0;
 	in_single_quote = 0;
 	in_double_quote = 0;
-	while (token->value[i] != '\0')
+	while (token && token->value[i] != '\0')
 	{
 		if (token->value[i] == '\'' && !in_double_quote)
 			in_single_quote = !in_single_quote;

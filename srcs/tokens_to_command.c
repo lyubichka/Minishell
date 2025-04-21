@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 22:13:53 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:07:48 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	init_command(t_command **commands)
 	(*commands)->is_builtin = 0;
 	(*commands)->is_redir_error = 0;
 	(*commands)->last_hd_pos = -1;
-	(*commands)->last_hd_fd = -300; // why -300
+	(*commands)->last_hd_fd = -1; // why -300
 	(*commands)->last_file_pos = -1;
 	(*commands)->found_heredoc = 0;
 	(*commands)->argv = NULL;
@@ -42,14 +42,14 @@ static int	link_commands(t_command *cmd1, t_command *cmd2)
 		return (-1);
 	if (pipe(pipe_fd) == -1)
 		return (-1);
-	if (cmd1->fd_out == -1 && cmd1->is_redir_error == 0)
+	if (cmd1->fd_out < 0 && cmd1->is_redir_error == 0)
 	{
 		cmd1->fd_out = pipe_fd[1];
 		cmd1->pipe_out = 1;
 	}
 	else
 		close(pipe_fd[1]);
-	if (cmd2->fd_in == -1 && cmd2->is_redir_error == 0)
+	if (cmd2->fd_in < 0 && cmd2->is_redir_error == 0)
 	{
 		cmd2->fd_in = pipe_fd[0];
 		cmd2->pipe_in = 1;
