@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 18:38:24 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 22:15:00 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,11 @@ static void	decide_fd_in(t_command *command)
 }
 
 static int	handle_token_loop(t_token **tmp_token, t_command *cmd,
-		t_env **env_list, int found_heredoc)
+		t_env **env_list, t_shell *shell)
 {
 	int	status;
 
+	(void)shell;
 	status = 0;
 	while (cmd && *tmp_token && status == 0)
 	{
@@ -70,10 +71,10 @@ static int	handle_token_loop(t_token **tmp_token, t_command *cmd,
 			cmd->is_pipe = 1;
 			break ;
 		}
-		if (found_heredoc == 1)
+		if (cmd->found_heredoc == 1)
 		{
 			status = handle_heredoc(*tmp_token, cmd, env_list);
-			found_heredoc = -1;
+			cmd->found_heredoc = -1;
 		}
 		if ((*tmp_token)->type == 'w')
 			status = add_to_argv(*tmp_token, cmd, env_list);
@@ -84,16 +85,15 @@ static int	handle_token_loop(t_token **tmp_token, t_command *cmd,
 	return (status);
 }
 
-int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list)
+int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list, t_shell *shell)
 {
 	t_token	*tmp_token;
 	int		status;
-	int		found_heredoc;
 
 	status = 0;
 	tmp_token = *tokens;
-	found_heredoc = any_heredoc(*tokens);
-	status = handle_token_loop(&tmp_token, cmd, env_list, found_heredoc);
+	cmd->found_heredoc = any_heredoc(*tokens);
+	status = handle_token_loop(&tmp_token, cmd, env_list, shell);
 	if (status == -300)
 		return (syntax_error(tmp_token->value));
 	if (cmd->argv && cmd->argv[0] && cmd->is_redir_error == 0)

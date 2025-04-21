@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_clean_split.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:22:15 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 19:40:22 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 21:48:19 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	token_split(t_token **tokens)
 	t_token	*tmp1;
 	t_token	*tmp2;
 
+	if (!tokens || !*tokens)
+		return ;
 	tmp1 = *tokens;
 	while (tmp1)
 	{
@@ -57,6 +59,8 @@ void	token_cleanup(t_token **tokens)
 	t_token	*curr;
 	t_token	*forw;
 
+	if (!tokens || !*tokens)
+		return ;
 	curr = *tokens;
 	prev = NULL;
 	while (curr)
@@ -74,7 +78,9 @@ void	token_cleanup(t_token **tokens)
 			curr = NULL;
 		}
 		else
+		{
 			prev = curr;
+		}
 		curr = forw;
 	}
 }

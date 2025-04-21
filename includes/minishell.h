@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 19:54:36 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 22:10:40 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@
 
 typedef struct s_shell
 {
-	int					std_in;
-	int					std_out;
-	struct s_env		**env_list;
-	struct s_token		**tokens;
-	struct s_command	**commands;
+	struct s_env		*env_list;
+	struct s_token		*tokens;
+	struct s_command	*commands;
 }						t_shell;
 
 typedef struct s_env
@@ -63,6 +61,7 @@ typedef struct s_command
 	int					last_file_pos;
 	int					last_hd_pos;
 	int					last_hd_fd;
+	int					found_heredoc;
 	struct s_command	*next;
 	struct s_command	*prev;
 }						t_command;
@@ -90,7 +89,7 @@ void					run_external_command(t_command *cmd, t_env **env_list, t_shell *shell);
 
 // command_parse.c
 int						command_parse(t_command *command, t_token **tokens,
-							t_env **env_list);
+							t_env **env_list, t_shell *shell);
 
 // custom_signals.c
 void					ign_signals(void);
@@ -152,8 +151,6 @@ void					lst_token_add_back(t_token *new, t_token **lst);
 // lst_append_del.c
 void					lst_token_append(t_token *new_elem, t_token *tmp1,
 							t_token *tmp2);
-void					lst_token_del(t_token *prev, t_token *curr,
-							t_token *forw);
 
 // lst_clear.c
 void					lst_clear_tokens(t_token **tokens);
@@ -200,8 +197,8 @@ int						tokenizer(t_token **tokens, char *line,
 							char *delimiters);
 
 // tokens_to_command.c
-int						tokens_to_command(t_command **commands,
-							t_token **tokens, t_env **env_list);
+int						tokens_to_command(t_command **commands,	t_token **tokens, 
+							t_env **env_list, t_shell *shell);
 
 // unset.c
 int						ft_unset(char **args, t_env **env);

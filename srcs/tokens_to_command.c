@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_to_command.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 17:24:49 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 22:13:53 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	init_command(t_command **commands)
 	(*commands)->last_hd_pos = -1;
 	(*commands)->last_hd_fd = -300; // why -300
 	(*commands)->last_file_pos = -1;
+	(*commands)->found_heredoc = 0;
 	(*commands)->argv = NULL;
 	(*commands)->path = NULL;
 	(*commands)->next = NULL;
@@ -82,7 +83,7 @@ static int	handle_pipe_between_commands(t_command *prev, t_command *curr)
 	return (0);
 }
 
-int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
+int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list, t_shell *shell)
 {
 	t_token		*tmp_token;
 	t_command	*curr_cmd;
@@ -95,7 +96,7 @@ int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 	{
 		if (create_and_link_command(&curr_cmd, &prev_cmd, commands) == -1)
 			return (-1);
-		if (command_parse(curr_cmd, &tmp_token, env_list) == -1)
+		if (command_parse(curr_cmd, &tmp_token, env_list, shell) == -1)
 			return (-1);
 		if (handle_pipe_between_commands(prev_cmd, curr_cmd) == -1)
 			return (-1);
@@ -107,5 +108,6 @@ int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list)
 		prev_cmd = curr_cmd;
 	}
 	token_cleanup(tokens);
+	shell->tokens = *tokens;
 	return (0);
 }

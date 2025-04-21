@@ -11,7 +11,7 @@ NAME		= libft.a
 
 CFLAGS		= -Wall -Wextra -Werror
 
-CC			= cc
+CC			= gcc
 
 AR			= ar rcs	
 
@@ -22,7 +22,7 @@ RM			= rm -f
 all:		${NAME}
 
 .c.o:
-			${CC} ${CFLAGS} -c -I libft.h $< -o ${<:.c=.o}
+			${CC} ${CFLAGS} -c -I. $< -o ${<:.c=.o}
 
 ${NAME}:	${MY_OBJECTS}
 			${AR} ${NAME} ${MY_OBJECTS}

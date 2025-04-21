@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:32:30 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 15:12:21 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 21:44:29 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	syntax_error(char *error_token)
 
 int	syntax_check(t_token *tokens)
 {
+	if (!tokens)
+		return (0);
 	if (tokens->type == 'p')
 		return (-1);
 	while (tokens->next)

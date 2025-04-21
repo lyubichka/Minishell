@@ -2,9 +2,9 @@ NAME			= minishell
 
 INCLUDES_FILES	= includes/minishell.h
 
-CC				= CC -g
+CC				= gcc
 
-CFLAGS			= -Wall -Wextra -Werror -Iincludes -Ilibft
+CFLAGS			= -g -Wall -Wextra -Werror -Iincludes -Ilibft
 
 RM				= rm -rf
 

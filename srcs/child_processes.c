@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_processes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 22:59:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 19:54:12 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 22:19:51 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 static void	setup_input(t_command *cmd, t_shell *shell)
 {
-	// t_shell *shell;
-	
-	// shell = get_shell_info(NULL);
 	if (cmd->fd_in >= 0)
 	{
 		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 		{
-			ft_putstr_fd("dup2 fd_in", 2); // should we add memory free?
+			ft_putstr_fd("dup2 fd_in", 2);
 			shell_cleanup(shell, exit_static_status(1), 1);
 		}
 		close(cmd->fd_in);
@@ -31,13 +28,11 @@ static void	setup_input(t_command *cmd, t_shell *shell)
 
 static void	setup_output(t_command *cmd, t_shell *shell)
 {
-	// t_shell *shell = get_shell_info(NULL);
-
 	if (cmd->fd_out >= 0)
 	{
 		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
 		{
-			ft_putstr_fd("dup2 fd_out", 2); // should we add memory free?
+			ft_putstr_fd("dup2 fd_out", 2);
 			shell_cleanup(shell, exit_static_status(1), 1);
 		}
 		close(cmd->fd_out);
@@ -71,7 +66,6 @@ void	run_builtin(t_command *cmd, t_env **env_list, t_shell *shell_info)
 void	run_external_command(t_command *cmd, t_env **env_list, t_shell *shell)
 {
 	char	**env_array;
-	// t_shell *shell = get_shell_info(NULL);
 
 	env_array = env_list_to_array(*env_list);
 	setup_input(cmd, shell);
@@ -80,5 +74,5 @@ void	run_external_command(t_command *cmd, t_env **env_list, t_shell *shell)
 	signal(SIGQUIT, SIG_DFL);
 	execve(cmd->path, cmd->argv, env_array);
 	free_split(env_array);
-	shell_cleanup(shell, exit_static_status(127), 1); // added
+	shell_cleanup(shell, exit_static_status(127), 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 19:55:56 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 20:26:51 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 static void	run_builtin_in_parent(t_command *cmd, t_env **env_list, t_shell *shell_info)
 {
-	t_shell	shell_std;
+	int	std_in;
+	int	std_out;
 
-	shell_std.std_in = dup(STDIN_FILENO);
-	shell_std.std_out = dup(STDOUT_FILENO);
+	std_in = dup(STDIN_FILENO);
+	std_out = dup(STDOUT_FILENO);
 	run_builtin(cmd, env_list, shell_info);
-	dup2(shell_std.std_in, STDIN_FILENO);
-	dup2(shell_std.std_out, STDOUT_FILENO);
-	close(shell_std.std_in);
-	close(shell_std.std_out);
+	dup2(std_in, STDIN_FILENO);
+	dup2(std_out, STDOUT_FILENO);
+	close(std_in);
+	close(std_out);
 }
 
 static void	handle_parent_process(t_command *cmd, pid_t pid)

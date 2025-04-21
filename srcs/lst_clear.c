@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_clear.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:03:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 20:05:15 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 20:56:54 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	lst_clear_tokens(t_token **tokens)
 	t_token	*tmp1;
 	t_token	*tmp2;
 
+	if (!tokens || !*tokens)
+		return;
 	tmp1 = *tokens;
+	tmp2 = NULL;
 	while (tmp1)
 	{
 		tmp2 = tmp1->next;
@@ -36,7 +39,10 @@ void	lst_clear_env(t_env **env)
 	t_env	*tmp1;
 	t_env	*tmp2;
 
+	if (!env || !*env)
+		return;
 	tmp1 = *env;
+	tmp2 = NULL;
 	while (tmp1)
 	{
 		tmp2 = tmp1->next;
