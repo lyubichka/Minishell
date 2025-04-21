@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 19:11:39 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 19:54:36 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ char					*join_path(const char *dir, const char *cmd);
 int						check_quotes(char *line);
 
 // child_processes.c
-void					run_builtin(t_command *cmd, t_env **env_list);
-void					run_external_command(t_command *cmd, t_env **env_list);
+void					run_builtin(t_command *cmd, t_env **env_list, t_shell *shell_info);
+void					run_external_command(t_command *cmd, t_env **env_list, t_shell *shell);
 
 // command_parse.c
 int						command_parse(t_command *command, t_token **tokens,
@@ -110,10 +110,10 @@ char					*get_env_value(char *name, t_env *env);
 int						envp_to_list(char **envp, t_env **env_list);
 
 // executor.c
-void					execute_command(t_command *cmd, t_env **env_list);
+void					execute_command(t_command *cmd, t_env **env_list, t_shell *shell_info);
 
 // exit.c
-void					ft_exit(char **args);
+void					ft_exit(char **args, t_shell *shell);
 
 // export.c
 int						ft_export(char **args, t_env **env);
@@ -166,6 +166,7 @@ t_token					*lst_token_create(char type, char *value);
 
 // memory_free.c
 void					free_split(char **array);
+void					shell_cleanup(t_shell *shell, int exit_code, int env_flag);
 
 // parent_exit_message.c
 void					parent_exit_status(int status);
@@ -173,6 +174,7 @@ void					parent_exit_status(int status);
 // parse_exec_line.c
 void					parse_exec_line(t_env **env_list, char *new_line,
 							t_shell *shell_info);
+t_shell					*get_shell_info(t_shell *set_shell);
 
 // pwd.c
 int						ft_pwd(t_env **env_list);
