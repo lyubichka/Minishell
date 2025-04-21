@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_to_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:31:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 22:46:56 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 13:51:50 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

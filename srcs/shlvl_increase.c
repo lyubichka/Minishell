@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shlvl_increase.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:15:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/15 20:28:04 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:02:52 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ void	shlvl_increase(t_env **env_list)
 	else
 	{
 		free(tmp->value);
-		tmp->value = ft_strdup(ft_itoa(lvl));
+		tmp->value = ft_itoa(lvl);
 	}
 }

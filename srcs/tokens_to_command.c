@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_to_command.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:48:37 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:24:49 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	init_command(t_command **commands)
 	(*commands)->is_builtin = 0;
 	(*commands)->is_redir_error = 0;
 	(*commands)->last_hd_pos = -1;
-	(*commands)->last_hd_fd = -300;
+	(*commands)->last_hd_fd = -300; // why -300
 	(*commands)->last_file_pos = -1;
 	(*commands)->argv = NULL;
 	(*commands)->path = NULL;

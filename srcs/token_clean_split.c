@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_clean_split.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:22:15 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:44:19 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 19:40:22 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static void	token_append(t_token *tmp1, t_token *tmp2)
 	{
 		while (tmp_array[i])
 		{
-			new_elem = lst_token_create('o', tmp_array[i]);
+			new_elem = lst_token_create('o', ft_strdup(tmp_array[i]));
 			lst_token_append(new_elem, tmp1, tmp2);
 			tmp1 = new_elem;
 			i++;
 		}
-		free(tmp_array);
+		free_split(tmp_array);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:26:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 21:51:55 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 19:31:58 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,22 @@ void	free_command(t_command *cmd)
 			free(cmd->path);
 		free(cmd);
 	}
+}
+
+void	shell_cleanup(t_shell *shell, int exit_code, int env_flag)
+{
+	if (shell)
+	{
+		if (shell->env_list && *shell->env_list && env_flag)
+			lst_clear_env(shell->env_list);
+		if (shell->tokens && *shell->tokens)
+			lst_clear_tokens(shell->tokens);
+		if (shell->commands && *shell->commands)
+			lst_clear_commands(shell->commands);
+	}
+	rl_clear_history();
+	if (env_flag)
+		exit(exit_code);
 }
 
 // void	lst_clear_commands(t_command **commands)

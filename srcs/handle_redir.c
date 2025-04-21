@@ -6,7 +6,7 @@
 /*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:27:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/18 17:51:15 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 19:24:23 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,20 @@ static void	update_command(t_command *command, int fd_in, int fd_out, int id)
 	if (fd_in != 0)
 	{
 		if (command->fd_in != -300 && command->fd_in != -1)
+		{
 			close(command->fd_in);
+			command->fd_in = -1;
+		}
 		command->fd_in = fd_in;
 		command->last_file_pos = id;
 	}
 	if (fd_out != 0)
 	{
 		if (command->fd_out != -300 && command->fd_out != -1)
+		{
 			close(command->fd_out);
+			command->fd_out = -1;
+		}
 		command->fd_out = fd_out;
 		command->last_file_pos = id;
 	}
@@ -104,14 +110,8 @@ static int	handle_trunc_redir(const char *filename, t_command *cmd,
 
 int	handle_redir(t_token **tmp_token, t_command *cmd, t_env **env_list)
 {
-	int		fd_in;
-	int		fd_out;
-	int		stop_parsing;
 	char	*filename;
 
-	fd_in = 0;
-	fd_out = 0;
-	stop_parsing = 0;
 	if ((*tmp_token)->next == NULL || (*tmp_token)->next->type != 'w')
 		return (-300);
 	// Redirection Error --> all further parsing should stop.

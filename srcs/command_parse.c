@@ -6,7 +6,7 @@
 /*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/18 17:14:48 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/21 18:38:24 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,26 @@ static int	any_heredoc(t_token *tokens)
 
 static void	decide_fd_in(t_command *command)
 {
-	if (command->last_hd_fd != -1 && command->last_file_pos != 0)
+	if (command->last_hd_fd >= 0 && command->last_file_pos != 0)
 	{
 		if (command->last_hd_pos > command->last_file_pos)
 		{
-			if (command->fd_in != -1 && command->fd_in != STDIN_FILENO)
+			if (command->fd_in >= 0 && command->fd_in != STDIN_FILENO)
+			{
 				close(command->fd_in);
+				command->fd_in = -1;
+			}
 			command->fd_in = command->last_hd_fd;
 		}
 		else
 		{
-			if (command->last_hd_fd != -1)
+			if (command->last_hd_fd >= 0)
 				close(command->last_hd_fd);
 		}
 	}
-	else if (command->last_hd_fd != -1)
+	else if (command->last_hd_fd >= 0)
 		command->fd_in = command->last_hd_fd;
-	else if (command->fd_in != -1)
+	else if (command->fd_in >= 0)
 		return ;
 	else if (command->pipe_in == 1)
 		command->fd_in = -1;

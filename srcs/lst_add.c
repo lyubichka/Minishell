@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
+/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:15:41 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/17 23:42:07 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:17:53 by veronikalub      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
