@@ -4,7 +4,7 @@ INCLUDES_FILES	= includes/minishell.h
 
 CC				= cc
 
-CFLAGS			= -g -Wall -Wextra -Werror -Iincludes -Ilibft
+CFLAGS			= -Wall -Wextra -Werror -Iincludes -Ilibft
 
 RM				= rm -rf
 
