@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:27:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/22 20:05:44 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:09:39 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	update_command(t_command *command, int fd_in, int fd_out, int id)
 	}
 }
 
-static int	handle_input_redir(const char *filename, t_command *cmd,
+static int	handle_input_redir(char *filename, t_command *cmd,
 		t_token **tmp_token)
 {
 	int	fd_in;
@@ -51,6 +51,7 @@ static int	handle_input_redir(const char *filename, t_command *cmd,
 	(*tmp_token)->type = 'd';
 	(*tmp_token)->next->type = 'd';
 	*tmp_token = (*tmp_token)->next;
+	free(filename);
 	if (fd_in == -1)
 	{
 		exit_static_status(1);
@@ -60,7 +61,7 @@ static int	handle_input_redir(const char *filename, t_command *cmd,
 	return (0);
 }
 
-static int	handle_append_redir(const char *filename, t_command *cmd,
+static int	handle_append_redir(char *filename, t_command *cmd,
 		t_token **tmp_token)
 {
 	int	fd_out;
@@ -75,6 +76,7 @@ static int	handle_append_redir(const char *filename, t_command *cmd,
 	(*tmp_token)->type = 'd';
 	(*tmp_token)->next->type = 'd';
 	*tmp_token = (*tmp_token)->next;
+	free(filename);
 	if (fd_out == -1)
 	{
 		exit_static_status(1);
@@ -84,7 +86,7 @@ static int	handle_append_redir(const char *filename, t_command *cmd,
 	return (0);
 }
 
-static int	handle_trunc_redir(const char *filename, t_command *cmd,
+static int	handle_trunc_redir(char *filename, t_command *cmd,
 		t_token **tmp_token)
 {
 	int	fd_out;
@@ -99,6 +101,7 @@ static int	handle_trunc_redir(const char *filename, t_command *cmd,
 	(*tmp_token)->type = 'd';
 	(*tmp_token)->next->type = 'd';
 	*tmp_token = (*tmp_token)->next;
+	free(filename);
 	if (fd_out == -1)
 	{
 		exit_static_status(1);
