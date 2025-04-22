@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/22 20:33:38 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:28:45 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	fork_and_run_builtin(t_command *cmd, t_env **env_list,\
 	if (pid == 0)
 	{
 		run_builtin(cmd, env_list, shell_info);
-		exit(0);
+		shell_cleanup(shell_info, exit_static_status(127), 1);
 	}
 	else
 		handle_parent_process(cmd, pid);
