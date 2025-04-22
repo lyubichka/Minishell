@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:27:06 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 19:24:23 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/22 20:05:44 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,6 @@ int	handle_redir(t_token **tmp_token, t_command *cmd, t_env **env_list)
 
 	if ((*tmp_token)->next == NULL || (*tmp_token)->next->type != 'w')
 		return (-300);
-	// Redirection Error --> all further parsing should stop.
-	// Need to evaluate how and when are we closing the fd
 	var_expansion((*tmp_token)->next, *env_list);
 	filename = remove_quotes((*tmp_token)->next->value);
 	if (!filename)

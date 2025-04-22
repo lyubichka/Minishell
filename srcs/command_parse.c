@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:09:58 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 23:19:49 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:05:18 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,26 @@ static void	decide_fd_in(t_command *command)
 		return ;
 	else if (command->pipe_in == 1)
 		command->fd_in = -1;
-	// else
-	// 	command->fd_in = STDIN_FILENO;
+}
+
+static void	advance_remaining_tokens(t_token **token)
+{
+	t_token	*tmp;
+
+	if (!token || !*token)
+		return ;
+	tmp = *token;
+	while (tmp)
+	{
+		if (tmp->type == 'p')
+			break ;
+		else
+		{
+			tmp->type = 'd';
+			tmp = tmp->next;
+		}
+	}
+	*token = tmp;
 }
 
 static int	handle_token_loop(t_token **tmp_token, t_command *cmd,
@@ -73,19 +91,22 @@ static int	handle_token_loop(t_token **tmp_token, t_command *cmd,
 		}
 		if (cmd->found_heredoc == 1)
 		{
-			status = handle_heredoc(*tmp_token, cmd, env_list);
+			status = handle_heredoc(*tmp_token, cmd, env_list, shell);
 			cmd->found_heredoc = -1;
 		}
-		if ((*tmp_token)->type == 'w')
+		if ((*tmp_token)->type == 'w' && status == 0)
 			status = add_to_argv(*tmp_token, cmd, env_list);
-		else if ((*tmp_token)->type == 'r')
+		else if ((*tmp_token)->type == 'r' && status == 0)
 			status = handle_redir(tmp_token, cmd, env_list);
 		*tmp_token = (*tmp_token)->next;
 	}
+	if (*tmp_token && (*tmp_token)->type != 'p' && status != -300)
+		advance_remaining_tokens(tmp_token);
 	return (status);
 }
 
-int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list, t_shell *shell)
+int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list,\
+					t_shell *shell)
 {
 	t_token	*tmp_token;
 	int		status;
@@ -98,8 +119,6 @@ int	command_parse(t_command *cmd, t_token **tokens, t_env **env_list, t_shell *s
 		return (syntax_error(tmp_token->value));
 	if (cmd->argv && cmd->argv[0] && cmd->is_redir_error == 0)
 		status = find_exec_path(cmd->argv[0], *env_list, cmd);
-	// if (status == -1)
-	//	clear everything ? but do not return (-1 as execution would continue);
 	decide_fd_in(cmd);
 	*tokens = tmp_token;
 	return (0);

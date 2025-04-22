@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 21:36:40 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 22:38:42 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:51:46 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ typedef struct s_shell
 	struct s_env		*env_list;
 	struct s_token		*tokens;
 	struct s_command	*commands;
+	char				*new_line;
+	int					saved_std_in;
+	int					saved_std_out;
 }						t_shell;
 
 typedef struct s_env
@@ -84,8 +87,10 @@ char					*join_path(const char *dir, const char *cmd);
 int						check_quotes(char *line);
 
 // child_processes.c
-void					run_builtin(t_command *cmd, t_env **env_list, t_shell *shell_info);
-void					run_external_command(t_command *cmd, t_env **env_list, t_shell *shell);
+void					run_builtin(t_command *cmd, t_env **env_list,\
+										t_shell *shell_info);
+void					run_external_command(t_command *cmd, t_env **env_list,\
+												t_shell *shell);
 
 // command_parse.c
 int						command_parse(t_command *command, t_token **tokens,
@@ -109,7 +114,8 @@ char					*get_env_value(char *name, t_env *env);
 int						envp_to_list(char **envp, t_env **env_list);
 
 // executor.c
-void					execute_command(t_command *cmd, t_env **env_list, t_shell *shell_info);
+void					execute_command(t_command *cmd, t_env **env_list,\
+											t_shell *shell_info);
 
 // exit.c
 void					ft_exit(char **args, t_shell *shell);
@@ -126,12 +132,14 @@ int						handle_redir(t_token **tmp_token, t_command *cmd,
 							t_env **env_list);
 
 // here_doc_child.c
-void					handle_heredoc_child(int *pipe_fd, char *delimiter,
-							int is_quoted, t_env *env);
+void					handle_heredoc_child_quoted(int *pipe_fd,\
+							char *delimiter, t_shell *shell, t_env *env);
+void					handle_heredoc_child_not_quoted(int *pipe_fd,\
+							char *delimiter, t_shell *shell, t_env *env);
 
 // here_doc.c
 int						handle_heredoc(t_token *token, t_command *command,
-							t_env **env_list);
+							t_env **env_list, t_shell *shell);
 
 // init_signal.c
 void					init_signal(void);
@@ -163,14 +171,15 @@ t_token					*lst_token_create(char type, char *value);
 
 // memory_free.c
 void					free_split(char **array);
-void					shell_cleanup(t_shell *shell, int exit_code, int env_flag);
+void					shell_cleanup(t_shell *shell, int exit_code,\
+										int env_flag);
 
 // parent_exit_message.c
 void					parent_exit_status(int status);
 
 // parse_exec_line.c
-void					parse_exec_line(t_env **env_list, char *new_line,
-							t_shell *shell_info);
+void					parse_exec_line(t_env **env_list, char *new_line,\
+											t_shell *shell_info);
 t_shell					*get_shell_info(t_shell *set_shell);
 
 // pwd.c
@@ -178,6 +187,10 @@ int						ft_pwd(t_env **env_list);
 
 // remove_quotes.c
 char					*remove_quotes(const char *s);
+
+// run_builtin_in_parent.c
+void					run_builtin_in_parent(t_command *cmd,\
+							t_env **env_list, t_shell *shell);
 
 // shlvl_increase.c
 void					shlvl_increase(t_env **env_list);
@@ -197,8 +210,8 @@ int						tokenizer(t_token **tokens, char *line,
 							char *delimiters);
 
 // tokens_to_command.c
-int						tokens_to_command(t_command **commands,	t_token **tokens, 
-							t_env **env_list, t_shell *shell);
+int						tokens_to_command(t_command **commands,\
+						t_token **tokens, t_env **env_list, t_shell *shell);
 
 // unset.c
 int						ft_unset(char **args, t_env **env, t_shell *shell);

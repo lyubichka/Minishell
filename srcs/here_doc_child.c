@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_child.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 23:40:19 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/18 18:01:59 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/22 20:05:11 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,22 @@ static void	heredoc_write_read(char *delimiter, int write_end, int is_quoted,
 	close(write_end);
 }
 
-void	handle_heredoc_child(int *pipe_fd, char *delimiter, int is_quoted,
-		t_env *env)
+void	handle_heredoc_child_quoted(int *pipe_fd, char *delimiter,\
+										t_shell *shell, t_env *env)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_heredoc_sig);
 	close(pipe_fd[0]);
-	heredoc_write_read(delimiter, pipe_fd[1], is_quoted, env);
-	// check the need of clearing all memory at this point
-	exit(0);
+	heredoc_write_read(delimiter, pipe_fd[1], 1, env);
+	shell_cleanup(shell, exit_static_status(-1), 1);
+}
+
+void	handle_heredoc_child_not_quoted(int *pipe_fd, char *delimiter,\
+										t_shell *shell, t_env *env)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_heredoc_sig);
+	close(pipe_fd[0]);
+	heredoc_write_read(delimiter, pipe_fd[1], 0, env);
+	shell_cleanup(shell, exit_static_status(-1), 1);
 }

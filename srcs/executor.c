@@ -6,32 +6,18 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:07:13 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 20:26:51 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:33:38 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	run_builtin_in_parent(t_command *cmd, t_env **env_list, t_shell *shell_info)
-{
-	int	std_in;
-	int	std_out;
-
-	std_in = dup(STDIN_FILENO);
-	std_out = dup(STDOUT_FILENO);
-	run_builtin(cmd, env_list, shell_info);
-	dup2(std_in, STDIN_FILENO);
-	dup2(std_out, STDOUT_FILENO);
-	close(std_in);
-	close(std_out);
-}
 
 static void	handle_parent_process(t_command *cmd, pid_t pid)
 {
 	int	status;
 
 	status = 0;
-	if (cmd->fd_in >= 0) // should we close here if we close in run_external_command?
+	if (cmd->fd_in >= 0)
 	{
 		close(cmd->fd_in);
 		cmd->fd_in = -1;
@@ -46,7 +32,8 @@ static void	handle_parent_process(t_command *cmd, pid_t pid)
 	parent_exit_status(status);
 }
 
-static void	fork_and_run_builtin(t_command *cmd, t_env **env_list, t_shell *shell_info)
+static void	fork_and_run_builtin(t_command *cmd, t_env **env_list,\
+									t_shell *shell_info)
 {
 	pid_t	pid;
 
@@ -68,7 +55,8 @@ static void	fork_and_run_builtin(t_command *cmd, t_env **env_list, t_shell *shel
 		handle_parent_process(cmd, pid);
 }
 
-static void	fork_and_execve(t_command *cmd, t_env **env_list, t_shell *shell_info)
+static void	fork_and_execve(t_command *cmd, t_env **env_list,\
+								t_shell *shell_info)
 {
 	pid_t	pid;
 

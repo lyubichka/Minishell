@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:26:48 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 23:32:25 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:53:45 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,18 @@
 
 void	free_split(char **array)
 {
-	char	**current;
-	int		i;
+	int	i;
 
-	i = 0;
-	if (!array || !*array)
+	if (!array)
 		return ;
-	current = array;
-	if (array)
+	i = 0;
+	while (array[i])
 	{
-		while (current[i])
-		{
-			free(current[i]);
-			current[i] = NULL;
-			i++;
-		}
-		free(array);
-		array = NULL;
+		free(array[i]);
+		array[i] = NULL;
+		i++;
 	}
+	free(array);
 }
 
 void	shell_cleanup(t_shell *shell, int exit_code, int env_flag)
@@ -44,6 +38,21 @@ void	shell_cleanup(t_shell *shell, int exit_code, int env_flag)
 			lst_clear_tokens(&(shell->tokens));
 		if (shell->commands)
 			lst_clear_commands(&(shell->commands));
+		if (shell->new_line)
+		{
+			free(shell->new_line);
+			shell->new_line = NULL;
+		}
+		if (shell->saved_std_in != -1)
+		{
+			close(shell->saved_std_in);
+			shell->saved_std_in = -1;
+		}
+		if (shell->saved_std_out != -1)
+		{
+			close(shell->saved_std_out);
+			shell->saved_std_out = -1;
+		}
 	}
 	if (env_flag == 1)
 		rl_clear_history();
@@ -51,36 +60,3 @@ void	shell_cleanup(t_shell *shell, int exit_code, int env_flag)
 		exit(exit_code);
 }
 
-// void	lst_clear_commands(t_command **commands)
-// {
-//     t_command *tmp;
-//     t_command *next;
-
-//     tmp = *commands;
-//     while (tmp)
-//     {
-//         next = tmp->next;
-//         free_command(tmp);
-//         tmp = next;
-//     }
-//     *commands = NULL;
-// }
-
-// void	lst_clear_env(t_env **env_list)
-// {
-//     t_env *tmp;
-//     t_env *next;
-
-//     tmp = *env_list;
-//     while (tmp)
-//     {
-//         next = tmp->next;
-//         if (tmp->name)
-//             free(tmp->name);
-//         if (tmp->value)
-//             free(tmp->value);
-//         free(tmp);
-//         tmp = next;
-//     }
-//     *env_list = NULL;
-// }

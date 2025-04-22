@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: veronikalubickaa <veronikalubickaa@stud    +#+  +:+       +#+        */
+/*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:24:18 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/21 19:49:55 by veronikalub      ###   ########.fr       */
+/*   Updated: 2025/04/22 19:05:45 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,9 @@ static int	is_numeric_arg(char *str)
 	return (1);
 }
 
-/**
- * Built-in exit command for shell shutdown.
- * args Array of arguments (args[0] — "exit", args[1] — exit code, if any).
- * env Pointer to the environment list to update $?.
- * ret Does not return a value, terminates the program.
- */
 void	ft_exit(char **args, t_shell *shell)
 {
 	int	exit_code;
-	// t_shell *shell = get_shell_info(NULL);
 
 	if (!args || !args[1])
 	{

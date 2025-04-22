@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 04:30:57 by veronikalub       #+#    #+#             */
-/*   Updated: 2025/04/21 22:35:51 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:00:28 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ int	ft_unset(char **args, t_env **env, t_shell *shell)
 
 	status = 0;
 	if (!args[1])
-	{
-		exit_static_status(0);
-		return (0);
-	}
+		return (exit_static_status(0));
 	i = 1;
 	while (args[i])
 	{

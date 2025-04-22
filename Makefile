@@ -47,6 +47,7 @@ SRCS_FILES		= 	add_to_argv.c \
 					parse_exec_line.c \
 					pwd.c \
 					remove_quotes.c \
+					run_builtin_in_parent.c \
 					shlvl_increase.c \
 					syntax_check.c \
 					token_clean_split.c \

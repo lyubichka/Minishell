@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 21:32:30 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 21:44:29 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:02:05 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ int	syntax_check(t_token *tokens)
 {
 	if (!tokens)
 		return (0);
-	if (tokens->type == 'p')
-		return (-1);
+	if (tokens->type == 'p' || (!(tokens->next)
+			&& (tokens->type == 'r' || tokens->type == 'h')))
+		return (syntax_error("newline"));
 	while (tokens->next)
 	{
 		if (tokens->type == 'p')

@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:22:15 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 21:48:19 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:12:40 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ static void	token_append(t_token *tmp1, t_token *tmp2)
 			tmp1 = new_elem;
 			i++;
 		}
-		free_split(tmp_array);
 	}
+	if (tmp_array)
+		free_split(tmp_array);
 }
 
 void	token_split(t_token **tokens)
@@ -53,6 +54,26 @@ void	token_split(t_token **tokens)
 	}
 }
 
+static void	delete_token_if_discarded(t_token **tokens, t_token **curr,
+										t_token **prev, t_token *forw)
+{
+	if ((*curr)->type == 'd')
+	{
+		if (*prev)
+			(*prev)->next = forw;
+		else
+			*tokens = forw;
+		free((*curr)->value);
+		(*curr)->value = NULL;
+		free(*curr);
+		*curr = NULL;
+	}
+	else
+	{
+		*prev = *curr;
+	}
+}
+
 void	token_cleanup(t_token **tokens)
 {
 	t_token	*prev;
@@ -66,21 +87,7 @@ void	token_cleanup(t_token **tokens)
 	while (curr)
 	{
 		forw = curr->next;
-		if (curr->type == 'd')
-		{
-			if (prev)
-				prev->next = forw;
-			else
-				*tokens = forw;
-			free(curr->value);
-			curr->value = NULL;
-			free(curr);
-			curr = NULL;
-		}
-		else
-		{
-			prev = curr;
-		}
+		delete_token_if_discarded(tokens, &curr, &prev, forw);
 		curr = forw;
 	}
 }

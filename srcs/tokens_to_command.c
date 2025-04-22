@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 20:18:20 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 23:07:48 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:01:06 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	init_command(t_command **commands)
 	(*commands)->is_builtin = 0;
 	(*commands)->is_redir_error = 0;
 	(*commands)->last_hd_pos = -1;
-	(*commands)->last_hd_fd = -1; // why -300
+	(*commands)->last_hd_fd = -1;
 	(*commands)->last_file_pos = -1;
 	(*commands)->found_heredoc = 0;
 	(*commands)->argv = NULL;
@@ -83,7 +83,8 @@ static int	handle_pipe_between_commands(t_command *prev, t_command *curr)
 	return (0);
 }
 
-int	tokens_to_command(t_command **commands, t_token **tokens, t_env **env_list, t_shell *shell)
+int	tokens_to_command(t_command **commands, t_token **tokens,\
+						t_env **env_list, t_shell *shell)
 {
 	t_token		*tmp_token;
 	t_command	*curr_cmd;
