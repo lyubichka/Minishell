@@ -2,6 +2,7 @@ Makefile
 README.md
 a
 b.txt
+c
 includes
 l
 libft

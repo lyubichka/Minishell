@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 22:59:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/21 22:41:45 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:11:46 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,30 @@
 
 static void	setup_input(t_command *cmd, t_shell *shell)
 {
+	int	devnull;
+
 	if (cmd->fd_in >= 0)
 	{
 		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 		{
-			ft_putstr_fd("dup2 fd_in here", 2);
+			ft_putstr_fd("dup2 fd_in", 2);
 			shell_cleanup(shell, exit_static_status(1), 1);
 		}
 		close(cmd->fd_in);
 		cmd->fd_in = -1;
+	}
+	else if (!cmd->prev && cmd->pipe_out)
+	{
+		devnull = open("/dev/null", O_RDONLY);
+		if (devnull == -1)
+			shell_cleanup(shell, exit_static_status(1), 1);
+		if (dup2(devnull, STDIN_FILENO) == -1)
+		{
+			perror("dup2 /dev/null");
+			close(devnull);
+			shell_cleanup(shell, exit_static_status(1), 1);
+		}
+		close(devnull);
 	}
 }
 

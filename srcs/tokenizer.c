@@ -6,31 +6,11 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:58:17 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 15:04:24 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:28:02 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	extract_quote(t_token **tokens, char *line, int *line_pos)
-{
-	int		j;
-	char	quote;
-	char	*extract;
-	t_token	*new_token;
-
-	j = *line_pos;
-	quote = line[j];
-	j++;
-	while (line[j] != '\0' && line[j] != quote)
-		j++;
-	if (line[j] == quote)
-		j++;
-	extract = ft_substr(line, *line_pos, j - *line_pos);
-	new_token = lst_token_create('w', extract);
-	lst_token_add_back(new_token, tokens);
-	*line_pos = j;
-}
 
 static void	extract_operator(t_token **tokens, char *line, int *line_pos,
 		char *delimiters)
@@ -124,9 +104,7 @@ int	tokenizer(t_token **tokens, char *line, char *delimiters)
 		return (-1);
 	while (line[i] != '\0')
 	{
-		if (is_quote(line[i]) == 1)
-			extract_quote(tokens, line, &i);
-		else if (is_operator(line[i], delimiters) == 1)
+		if (is_operator(line[i], delimiters) == 1)
 			extract_operator(tokens, line, &i, delimiters);
 		else
 			extract_word(tokens, line, &i, delimiters);

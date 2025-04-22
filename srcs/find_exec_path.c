@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 21:06:49 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 16:16:51 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:22:50 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ static void	path_error_setting(t_command *command, char *cmd_name,
 
 static int	handle_direct_path(char *cmd_name, t_command *cmd)
 {
-	if (access(cmd_name, X_OK) == 0)
+	if (cmd_name[0] != '\0' && access(cmd_name, X_OK) == 0)
 	{
 		cmd->path = ft_strdup(cmd_name);
 		return (0);
 	}
-	else if (access(cmd_name, F_OK) == 0 && access(cmd_name, X_OK) != 0)
+	else if (cmd_name[0] != '\0' && access(cmd_name, F_OK) == 0)
 		path_error_setting(cmd, cmd_name, NULL, "DENIED");
 	else
 		path_error_setting(cmd, cmd_name, NULL, NULL);
@@ -49,7 +49,7 @@ static int	handle_direct_path(char *cmd_name, t_command *cmd)
 static int	handle_path_not_found(char **paths, char *cmd_name,
 		t_command *command, int i)
 {
-	if (!paths)
+	if (!paths || cmd_name[0] == '\0')
 	{
 		path_error_setting(command, cmd_name, paths, NULL);
 	}
@@ -67,7 +67,7 @@ static int	search_in_paths(char **paths, char *cmd_name, t_command *cmd)
 	char	*joined;
 
 	i = 0;
-	while (paths && paths[i])
+	while (paths && paths[i] && cmd_name[0] != '\0')
 	{
 		joined = join_path(paths[i], cmd_name);
 		if (access(joined, F_OK) == 0)
