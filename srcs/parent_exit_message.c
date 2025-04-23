@@ -6,7 +6,7 @@
 /*   By: saherrer <saherrer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 19:08:45 by saherrer          #+#    #+#             */
-/*   Updated: 2025/04/20 19:25:53 by saherrer         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:22:46 by saherrer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parent_exit_status(int status)
 		if (WTERMSIG(status) == SIGQUIT || WTERMSIG(status) == SIGSEGV)
 		{
 			if (WTERMSIG(status) == SIGQUIT)
-				write(2, "Quit: \n", 8);
+				write(2, "Quit: 3\n", 8);
 			else
 			{
 				write(2, "Segmentation fault: ", 20);
@@ -34,7 +34,7 @@ void	parent_exit_status(int status)
 				free(text_to_write);
 				write(2, "\n", 1);
 			}
-			exit_static_status(WTERMSIG(status) + 128);
 		}
+		exit_static_status(WTERMSIG(status) + 128);
 	}
 }
